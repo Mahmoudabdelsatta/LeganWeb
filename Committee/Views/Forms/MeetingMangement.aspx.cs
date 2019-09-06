@@ -1,0 +1,219 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Web;
+using System.Web.Script.Serialization;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace Committee.Views.Forms
+{
+    public partial class MeetingMangement : System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (Session["UserName"] == null || Session["SystemRole"] == null)
+            {
+                Response.Redirect("login.aspx");
+            }
+            if (!IsPostBack)
+            {
+                gvMeeting.DataSource = ShowMeetings();
+                gvMeeting.DataBind();
+            }
+
+        }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnaddMeeting_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Meeting.aspx?status=new");
+        }
+        private List<Committee.Models.MeetingSearch> ShowMeetings()
+        {
+            List<Committee.Models.MeetingSearch> meetingResults = new List<Models.MeetingSearch>();
+            string apiUrl3 = "http://localhost:1481/api/Meetings";
+
+            WebClient client = new WebClient();
+            client.Headers["Content-type"] = "application/json";
+            client.Encoding = Encoding.UTF8;
+
+            List<Committee.Models.Meeting> meetings = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.Meeting>>(client.DownloadString(apiUrl3 + "/GetMeeting?meetingName=" + txtSearch.Text));
+            if (meetings.Count != 0)
+            {
+                int status = 0;
+                foreach (var meeting in meetings)
+                {
+                    status = Convert.ToInt32(meeting.Status);
+                    meetingResults.Add(new Models.MeetingSearch()
+                    {
+                        الرقم = meeting.MeetingId,
+                        عنوان_الاجتماع = meeting.MeetingTitle,
+                        تاريخ_الاجتماع = meeting.MeetingDate,
+                        وقت_الاجتماع = meeting.MeetingTime,
+                        موقع_الاجتماع = meeting.MeetingAddress,
+                        وصف_الاجتماع = meeting.MeetingDesc,
+                        حالة_الاجتماع = meeting.MeetingHistories.Count == 0 ? "" : meeting.MeetingHistories.LastOrDefault(x => x.MeetingId == meeting.MeetingId).TitleAr,
+                        اللجنة = meeting.CommitteeId.ToString(),
+
+                    });
+                }
+
+
+
+            }
+
+            return meetingResults;
+
+        }
+        protected void gvMeeting_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            int meetingId = Convert.ToInt32(gvMeeting.Rows[e.RowIndex].Cells[1].Text.ToString());
+            string apiUrl3 = "http://localhost:1481/api/Meetings";
+
+            WebClient client = new WebClient();
+            client.Headers["Content-type"] = "application/json";
+            client.Encoding = Encoding.UTF8;
+            object input = new
+            {
+                id = meetingId,
+            };
+            string inputJson3 = (new JavaScriptSerializer()).Serialize(input);
+            string meeting = (new JavaScriptSerializer()).Deserialize<string>(client.DownloadString(apiUrl3 + "/DeleteMeeting?id=" + meetingId));
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم مسح بيانات العضو بنجاح', 'تم')", true);
+            gvMeeting.DataSource = ShowMeetings();
+            gvMeeting.DataBind();
+        }
+
+        protected void gvMeeting_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                //Change the index number as per your gridview design
+                e.Row.Cells[1].Enabled = false;
+
+                if (e.Row.RowType != DataControlRowType.DataRow) return;
+
+                var deleteButton = (LinkButton)e.Row.Cells[0].Controls[2];
+                var editButton = (LinkButton)e.Row.Cells[0].Controls[0];
+                var selectButton = (LinkButton)e.Row.Cells[0].Controls[4];
+                if (deleteButton.Text == "Delete")
+                {
+                    deleteButton.Text = "مسح";
+                    deleteButton.OnClientClick = "return confirm('هل تريد مسح هذا العنصر؟');";
+                    // deleteButton2.OnClientClick = "return confirm('هل تريد مسح هذا العنصر؟');";
+
+                }
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    //Change the index number as per your gridview design
+                    e.Row.Cells[1].Enabled = false;
+
+
+
+                }
+
+
+                deleteButton.Visible = true;
+                deleteButton.Text = "مسح";
+
+                editButton.Visible = true;
+                editButton.Text = "تعديل";
+                selectButton.Text = "اختيار";
+            }
+        }
+
+        protected void gvMeeting_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            List<Committee.Models.StatusSearch> histories = new List<Models.StatusSearch>();
+            int meetingId = Convert.ToInt32(gvMeeting.SelectedRow.Cells[1].Text);
+            int committeeId = Convert.ToInt32(gvMeeting.SelectedRow.Cells[8].Text);
+            GridViewRow row = gvMeeting.SelectedRow;
+            List<Committee.Models.AgendaUpdate> data = ShowmeetingAgenda(meetingId);
+        
+            ViewState["MeetingId"] = meetingId;
+            WebClient webClient = new WebClient();
+            webClient.Headers["Content-type"] = "application/json";
+            webClient.Encoding = Encoding.UTF8;
+            string result = webClient.DownloadString("http://localhost:1481/api/Meetings/GetMeetingHistory?meetingId=" + meetingId);
+            List<Committee.Models.MeetingHistory> Statuss = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.MeetingHistory>>(result);
+            foreach (var status in Statuss)
+            {
+                histories.Add(new Models.StatusSearch()
+                {
+                    الرقم = status.Id,
+                    الحاله = status.TitleAr,
+                    التاريخ = status.CreatedAt
+
+                });
+            }
+
+           
+        }
+
+        private List<Committee.Models.AgendaUpdate> ShowmeetingAgenda(int meetingId)
+        {
+            string apiUrl3 = "http://localhost:1481/api/Meetings";
+
+            WebClient client = new WebClient();
+            client.Headers["Content-type"] = "application/json";
+            client.Encoding = Encoding.UTF8;
+
+            List<Committee.Models.Agendum> Committees = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.Agendum>>(client.DownloadString(apiUrl3 + "/GetMeetingAgendas?meetingId=" + meetingId));
+
+
+            return Committees.Select(x => new Models.AgendaUpdate() { الرقم = x.id, وصف_الاجندة = x.AgendaDesc, وقت_الاجندة = x.AgendaTime.ToString() }).ToList();
+        }
+        private void ShowmeetingAgendaUpdate(int meetingId)
+        {
+            string apiUrl3 = "http://localhost:1481/api/Meetings";
+
+            WebClient client = new WebClient();
+            client.Headers["Content-type"] = "application/json";
+            client.Encoding = Encoding.UTF8;
+
+            List<Committee.Models.Agendum> Committees = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.Agendum>>(client.DownloadString(apiUrl3 + "/GetMeetingAgendas?meetingId=" + meetingId));
+
+
+
+        }
+        protected void gvMeeting_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            int id = Convert.ToInt32(gvMeeting.Rows[e.NewEditIndex].Cells[1].Text);
+            Response.Redirect("Meeting.aspx?meetingId=" + id + "&status=update");
+            //string apiUrl3 = "http://localhost:1481/api/Meetings";
+
+            //WebClient client = new WebClient();
+            //client.Headers["Content-type"] = "application/json";
+            //client.Encoding = Encoding.UTF8;
+
+            //Committee.Models.Meeting meeting = (new JavaScriptSerializer()).Deserialize<Committee.Models.Meeting>(client.DownloadString(apiUrl3 + "/GetMeetingForWeb?meetingId=" + gvMeeting.Rows[e.NewEditIndex].Cells[1].Text));
+            //txtMeetingName.Text = meeting.MeetingTitle;
+            //txtMeetingDate.Text = meeting.MeetingDate;
+            //txtMeetingLocation.Text = meeting.MeetingAddress;
+            //txtMeetingTopic.Text = meeting.MeetingDesc;
+            //lat.Value = meeting.Latitude;
+            //lng.Value = meeting.longitude;
+            //ddlCommitteeSpecified.SelectedValue = meeting.CommitteeId.ToString();
+            //txtMeetingTime.Text = meeting.MeetingTime;
+            //txtStatus.Text = meeting.MeetingHistories.Count == 0 ? "" : meeting.MeetingHistories.Last(x => x.MeetingId == meeting.MeetingId).TitleAr;
+
+
+            //btnSave.Text = "تعديل";
+            //ViewState["MeetingId"] = gvMeeting.Rows[e.NewEditIndex].Cells[1].Text;
+        }
+
+        protected void gvMeeting_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            gvMeeting.PageIndex = e.NewPageIndex;
+            gvMeeting.DataSource = ShowMeetings();
+            gvMeeting.DataBind();
+        }
+    }
+}
