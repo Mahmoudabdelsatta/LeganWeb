@@ -22,11 +22,11 @@ namespace Committee.Forms
         {
             try
             {
-                //string apiUrl = "https://committeeapi20190806070934.azurewebsites.net/api/CommitteesMembers";
+              
 
 
-                string apiUrl = "http://localhost:1481/api/CommitteesMembers";
-            string apiUrl2 ="http://localhost:1481/api/Users";
+                string apiUrl = "https://committeeapi20190806070934.azurewebsites.net/api/CommitteesMembers";
+            string apiUrl2 = "https://committeeapi20190806070934.azurewebsites.net/api/Users";
 
             object input = new
             {
