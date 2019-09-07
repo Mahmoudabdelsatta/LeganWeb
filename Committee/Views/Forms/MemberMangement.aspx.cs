@@ -55,7 +55,7 @@ namespace Committee.Views.Forms
         protected void gvMembers_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             int userId = Convert.ToInt32(gvMembers.Rows[e.RowIndex].Cells[1].Text.ToString());
-            string apiUrl3 = "http://localhost:1481/api/Users";
+            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Users";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -73,7 +73,7 @@ namespace Committee.Views.Forms
         private List<Committee.Models.UserArabicSearch> ShowMembers()
         {
             List<Committee.Models.UserArabicSearch> users = new List<Models.UserArabicSearch>();
-            string apiUrl3 = "http://localhost:1481/api/Users";
+            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Users";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";

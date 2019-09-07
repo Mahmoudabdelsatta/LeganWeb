@@ -86,7 +86,7 @@ namespace Committee
                 {
 
 
-                    string apiUrlFcm = "http://localhost:1481/api/Fcm";
+                    string apiUrlFcm = "https://committeeapi20190806070934.azurewebsites.net/api/Fcm";
                     WebClient clienfcm = new WebClient();
                     clienfcm.Headers["Content-type"] = "application/json";
                     clienfcm.Encoding = Encoding.UTF8;

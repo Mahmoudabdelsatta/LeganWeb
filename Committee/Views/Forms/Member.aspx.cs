@@ -25,7 +25,7 @@ namespace Committee.Views.Forms
                 if (Request.QueryString["status"] == "update")
                 {
                     ImgUser.Visible = true;
-                    string apiUrl3 = "http://localhost:1481/api/Users";
+                    string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Users";
 
                     WebClient client = new WebClient();
                     client.Headers["Content-type"] = "application/json";
@@ -88,7 +88,7 @@ namespace Committee.Views.Forms
              
                 ViewState["UserID"] = Request.QueryString["mId"];
               
-                string apiUrlUpdate = "http://localhost:1481/api/Users";
+                string apiUrlUpdate = "https://committeeapi20190806070934.azurewebsites.net/api/Users";
 
                 Committee.Models.User memberUpdate = new Models.User()
                 {
@@ -126,7 +126,7 @@ namespace Committee.Views.Forms
                 }
                
 
-                string apiUrlMember = "http://localhost:1481/api/Users";
+                string apiUrlMember = "https://committeeapi20190806070934.azurewebsites.net/api/Users";
                 Committee.Models.User member = new Models.User()
                 {
                     ID = Convert.ToInt32(ViewState["memberID"]),
@@ -172,7 +172,7 @@ namespace Committee.Views.Forms
         private List<Committee.Models.UserArabicSearch> ShowMembers()
         {
             List<Committee.Models.UserArabicSearch> users = new List<Models.UserArabicSearch>();
-            string apiUrl3 = "http://localhost:1481/api/Users";
+            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Users";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -237,7 +237,7 @@ namespace Committee.Views.Forms
         //protected void gvMembers_RowDeleting(object sender, GridViewDeleteEventArgs e)
         //{
         //    int userId = Convert.ToInt32(gvMembers.Rows[e.RowIndex].Cells[1].Text.ToString());
-        //    string apiUrl3 = "http://localhost:1481/api/Users";
+      
 
         //    WebClient client = new WebClient();
         //    client.Headers["Content-type"] = "application/json";
@@ -256,7 +256,7 @@ namespace Committee.Views.Forms
         //protected void gvMembers_RowEditing(object sender, GridViewEditEventArgs e)
         //{
           
-        //    string apiUrl3 = "http://localhost:1481/api/Users";
+    
 
         //    WebClient client = new WebClient();
         //    client.Headers["Content-type"] = "application/json";
@@ -369,7 +369,7 @@ namespace Committee.Views.Forms
                 WebClient webClient = new WebClient();
                 webClient.Headers["Content-type"] = "application/json";
                 webClient.Encoding = Encoding.UTF8;
-                string result2 = webClient.DownloadString("http://localhost:1481/api/Deapartments/GetDepartments");
+                string result2 = webClient.DownloadString("https://committeeapi20190806070934.azurewebsites.net/api/Deapartments/GetDepartments");
                 List<Committee.Models.Department> departments = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.Department>>(result2);
 
 

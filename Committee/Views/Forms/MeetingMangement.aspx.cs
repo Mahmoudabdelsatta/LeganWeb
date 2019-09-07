@@ -38,7 +38,7 @@ namespace Committee.Views.Forms
         private List<Committee.Models.MeetingSearch> ShowMeetings()
         {
             List<Committee.Models.MeetingSearch> meetingResults = new List<Models.MeetingSearch>();
-            string apiUrl3 = "http://localhost:1481/api/Meetings";
+            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -75,7 +75,7 @@ namespace Committee.Views.Forms
         protected void gvMeeting_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             int meetingId = Convert.ToInt32(gvMeeting.Rows[e.RowIndex].Cells[1].Text.ToString());
-            string apiUrl3 = "http://localhost:1481/api/Meetings";
+            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -141,7 +141,7 @@ namespace Committee.Views.Forms
             WebClient webClient = new WebClient();
             webClient.Headers["Content-type"] = "application/json";
             webClient.Encoding = Encoding.UTF8;
-            string result = webClient.DownloadString("http://localhost:1481/api/Meetings/GetMeetingHistory?meetingId=" + meetingId);
+            string result = webClient.DownloadString("https://committeeapi20190806070934.azurewebsites.net/api/Meetings/GetMeetingHistory?meetingId=" + meetingId);
             List<Committee.Models.MeetingHistory> Statuss = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.MeetingHistory>>(result);
             foreach (var status in Statuss)
             {
@@ -159,7 +159,7 @@ namespace Committee.Views.Forms
 
         private List<Committee.Models.AgendaUpdate> ShowmeetingAgenda(int meetingId)
         {
-            string apiUrl3 = "http://localhost:1481/api/Meetings";
+            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -172,7 +172,7 @@ namespace Committee.Views.Forms
         }
         private void ShowmeetingAgendaUpdate(int meetingId)
         {
-            string apiUrl3 = "http://localhost:1481/api/Meetings";
+            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -187,8 +187,7 @@ namespace Committee.Views.Forms
         {
             int id = Convert.ToInt32(gvMeeting.Rows[e.NewEditIndex].Cells[1].Text);
             Response.Redirect("Meeting.aspx?meetingId=" + id + "&status=update");
-            //string apiUrl3 = "http://localhost:1481/api/Meetings";
-
+         
             //WebClient client = new WebClient();
             //client.Headers["Content-type"] = "application/json";
             //client.Encoding = Encoding.UTF8;

@@ -23,7 +23,7 @@ namespace Committee.Views.Forms
                 WebClient webClient = new WebClient();
                 webClient.Headers["Content-type"] = "application/json";
                 webClient.Encoding = Encoding.UTF8;
-                string result = webClient.DownloadString("http://localhost:1481/api/Committees/GetCommitteesForWeb");
+                string result = webClient.DownloadString("https://committeeapi20190806070934.azurewebsites.net/api/Committees/GetCommitteesForWeb");
                 List<Committee.Models.Committee> committees = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.Committee>>(result);
                 ddlCommitteeSpecified.DataSource = committees;
                 ddlCommitteeSpecified.DataTextField = "CommitteeName";
@@ -37,7 +37,7 @@ namespace Committee.Views.Forms
         {
             int committeeId = Convert.ToInt32(ddlCommitteeSpecified.SelectedItem.Value);
             ViewState["committeeId"] = committeeId;
-            string apiUrl2 = "http://localhost:1481/api/CommitteesMembers";
+            string apiUrl2 = "https://committeeapi20190806070934.azurewebsites.net/api/CommitteesMembers";
             WebClient members = new WebClient();
             members.Headers["Content-type"] = "application/json";
             members.Encoding = Encoding.UTF8;
