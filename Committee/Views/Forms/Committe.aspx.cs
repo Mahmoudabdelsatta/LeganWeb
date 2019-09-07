@@ -438,7 +438,7 @@ namespace Committee.Views.Forms
         private List<CommitteeSearch> ShowCommittees()
         {
             List<CommitteeSearch> committeesUpdate = new List<CommitteeSearch>();
-            string apiUrl3 = https://committeeapi20190806070934.azurewebsites.net/api/Committees";
+            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Committees";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
