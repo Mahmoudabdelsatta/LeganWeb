@@ -30,7 +30,7 @@ namespace Committee.Views.Forms
                 if (Request.QueryString["status"] == "update")
                 {
                     List<Committee.Models.StatusSearch> histories = new List<Models.StatusSearch>();
-                    string apiUrl3 = "http://localhost:1481/api/Meetings";
+                    string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
 
                     WebClient client = new WebClient();
                     client.Headers["Content-type"] = "application/json";
@@ -53,7 +53,7 @@ namespace Committee.Views.Forms
 
                     gvAgenda.DataBind();
                   
-                    string result2 = client.DownloadString("http://localhost:1481/api/Meetings/GetMeetingHistory?meetingId=" + Convert.ToInt32(ViewState["MeetingId"]));
+                    string result2 = client.DownloadString("https://committeeapi20190806070934.azurewebsites.net/api/Meetings/GetMeetingHistory?meetingId=" + Convert.ToInt32(ViewState["MeetingId"]));
                     List<Committee.Models.MeetingHistory> Statuss = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.MeetingHistory>>(result2);
                     foreach (var status in Statuss)
                     {
@@ -77,7 +77,7 @@ namespace Committee.Views.Forms
                 WebClient webClient = new WebClient();
                 webClient.Headers["Content-type"] = "application/json";
                 webClient.Encoding = Encoding.UTF8;
-                string result = webClient.DownloadString("http://localhost:1481/api/Committees/GetCommitteesForWeb");
+                string result = webClient.DownloadString("https://committeeapi20190806070934.azurewebsites.net/api/Committees/GetCommitteesForWeb");
                 List<Committee.Models.Committee> committees = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.Committee>>(result);
                 ddlCommitteeSpecified.DataSource = committees;
                 ddlCommitteeSpecified.DataTextField = "CommitteeName";
@@ -110,7 +110,7 @@ namespace Committee.Views.Forms
                     MinutesOfMeetingUpload.SaveAs(Server.MapPath(Path.Combine("~/Uploads/", fname)));
 
                 }
-                string apiUrlUpdate = "http://localhost:1481/api/Meetings";
+                string apiUrlUpdate = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
                 Committee.Models.Meeting meetingUpdate = new Models.Meeting()
                 {
 
@@ -148,7 +148,7 @@ namespace Committee.Views.Forms
 
                 }
                 //object file = ReadStream(MinutesOfMeetingUpload.PostedFile.InputStream);
-                string apiUrlUpdate = "http://localhost:1481/api/Meetings";
+                string apiUrlUpdate = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
                 if (Session["fileNem"]==""|| Session["fileNem"]==null)
                 {
                    // string fileName = "/" + fname;
@@ -182,7 +182,7 @@ namespace Committee.Views.Forms
               meetingId= client.UploadString(apiUrlUpdate + "/PostMeeting", inputJson);
                 for (int i = 0; i < Agendas.Count; i++)
                 {
-                    string apiUrlAgenda = "http://localhost:1481/api/Meetings";
+                    string apiUrlAgenda = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
                     Committee.Models.Agendum agenda = new Models.Agendum()
                     {
 
@@ -223,7 +223,7 @@ namespace Committee.Views.Forms
                 client3.UploadString(apiUrlUpdate + "/PostStatusOfMeeting", inputJson3);
                int committeeId= Convert.ToInt32(ddlCommitteeSpecified.SelectedItem.Value);
                 ViewState["committeeId"] = committeeId;
-                string apiUrl2 = "http://localhost:1481/api/CommitteesMembers";
+                string apiUrl2 = "https://committeeapi20190806070934.azurewebsites.net/api/CommitteesMembers";
                 WebClient members = new WebClient();
                 members.Headers["Content-type"] = "application/json";
                 members.Encoding = Encoding.UTF8;
@@ -231,7 +231,7 @@ namespace Committee.Views.Forms
                 foreach (var user in users)
                 {
                    
-                    string apiUrlFcm = "http://localhost:1481/api/Fcm";
+                    string apiUrlFcm = "https://committeeapi20190806070934.azurewebsites.net/api/Fcm";
                     WebClient clienfcm = new WebClient();
                     clienfcm.Headers["Content-type"] = "application/json";
                     clienfcm.Encoding = Encoding.UTF8;
@@ -247,7 +247,7 @@ namespace Committee.Views.Forms
                     };
                     string inputFcm = (new JavaScriptSerializer()).Serialize(UserFcmo);
                     clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to=" + user.FCMToken, inputFcm);
-                    string apiUrlAlert = "http://localhost:1481/api/Committees";
+                    string apiUrlAlert = "https://committeeapi20190806070934.azurewebsites.net/api/Committees";
                     WebClient client4 = new WebClient();
 
                     client4.Headers["Content-type"] = "application/json";
@@ -321,7 +321,7 @@ namespace Committee.Views.Forms
         private List<Committee.Models.MeetingSearch> ShowMeetings()
         {
             List<Committee.Models.MeetingSearch> meetingResults = new List<Models.MeetingSearch>();
-            string apiUrl3 = "http://localhost:1481/api/Meetings";
+            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -419,7 +419,7 @@ namespace Committee.Views.Forms
      
         private List<Committee.Models.AgendaUpdate> ShowmeetingAgenda(int meetingId)
         {
-            string apiUrl3 = "http://localhost:1481/api/Meetings";
+            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -432,7 +432,7 @@ namespace Committee.Views.Forms
         }
         private void ShowmeetingAgendaUpdate(int meetingId)
         {
-            string apiUrl3 = "http://localhost:1481/api/Meetings";
+            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -448,7 +448,7 @@ namespace Committee.Views.Forms
         protected void gvAgenda_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             int agendaId = Convert.ToInt32(gvAgenda.Rows[e.RowIndex].Cells[1].Text.ToString());
-            string apiUrl3 = "http://localhost:1481/api/Meetings";
+            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -522,7 +522,7 @@ namespace Committee.Views.Forms
             TextBox textAgendaDesc = (TextBox)row.Cells[3].Controls[0];
             //   TextBox textitemName = (TextBox)row.Cells[7].Controls[0];
            
-            //string apiUrl3 = "http://localhost:1481/api/Meetings";
+          
 
             //WebClient client = new WebClient();
             //client.Headers["Content-type"] = "application/json";
@@ -625,7 +625,7 @@ namespace Committee.Views.Forms
         {
 
             int statusId = Convert.ToInt32(gvStatus.Rows[e.RowIndex].Cells[1].Text.ToString());
-            string apiUrl3 = "http://localhost:1481/api/Meetings";
+            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -643,7 +643,7 @@ namespace Committee.Views.Forms
 
         private List<Committee.Models.StatusSearch> ShowmeetingHistories(int v)
         {
-            string apiUrl3 = "http://localhost:1481/api/Meetings";
+            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -691,7 +691,7 @@ namespace Committee.Views.Forms
 
         protected void btnAgendaUpdate_Click(object sender, EventArgs e)
         {
-            string apiUrl3 = "http://localhost:1481/api/Meetings";
+            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -713,7 +713,7 @@ namespace Committee.Views.Forms
 
 
             client.UploadString(apiUrl3 + "/putMeetingAgenda?id=" + Convert.ToInt32(AgendaId.Value), inputJson);
-            string apiUrl2 = "http://localhost:1481/api/CommitteesMembers";
+            string apiUrl2 = "https://committeeapi20190806070934.azurewebsites.net/api/CommitteesMembers";
             WebClient members = new WebClient();
             members.Headers["Content-type"] = "application/json";
             members.Encoding = Encoding.UTF8;
@@ -721,7 +721,7 @@ namespace Committee.Views.Forms
             foreach (var user in users)
             {
 
-                string apiUrlFcm = "http://localhost:1481/api/Fcm";
+                string apiUrlFcm = "https://committeeapi20190806070934.azurewebsites.net/api/Fcm";
                 WebClient clienfcm = new WebClient();
                 clienfcm.Headers["Content-type"] = "application/json";
                 clienfcm.Encoding = Encoding.UTF8;
@@ -737,7 +737,7 @@ namespace Committee.Views.Forms
                 };
                 string inputFcm = (new JavaScriptSerializer()).Serialize(UserFcmo);
                 clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to=" + user.FCMToken, inputFcm);
-                string apiUrlAlert = "http://localhost:1481/api/Committees";
+                string apiUrlAlert = "https://committeeapi20190806070934.azurewebsites.net/api/Committees";
                 WebClient client4 = new WebClient();
 
                 client4.Headers["Content-type"] = "application/json";
@@ -775,7 +775,7 @@ namespace Committee.Views.Forms
 
         protected void btnHistoryUpdate_Click(object sender, EventArgs e)
         {
-            string apiUrl3 = "http://localhost:1481/api/Meetings";
+            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
