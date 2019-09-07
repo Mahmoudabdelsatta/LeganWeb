@@ -2,7 +2,6 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage/master.Master" AutoEventWireup="true" CodeBehind="~/Views/Forms/Notification.aspx.cs" Inherits="Committee.Views.Forms.Notification" %>
 <asp:Content ID="ContentPlaceHolder1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-      <form role="form" class="form-horizontal form-groups-bordered" runat="server" id="f1">
                  <asp:ScriptManager ID="ScriptManager1" EnableCdn="False" runat="server"></asp:ScriptManager>
                 <asp:UpdatePanel ID="UpdatePaneltypeOfservice" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
@@ -102,6 +101,6 @@
              </div> 
             </ContentTemplate>
         </asp:UpdatePanel>
-          </form>
+     
                                 
     </asp:Content>

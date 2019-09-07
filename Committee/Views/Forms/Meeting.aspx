@@ -4,7 +4,7 @@
 
 <asp:Content ID="ContentPlaceHolder1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     
-    <form id="form1" runat="server" role="form" class="form-horizontal form-groups-bordered">
+   
       <asp:ScriptManager ID="ScriptManager2" EnableCdn="False" runat="server"></asp:ScriptManager>
      
   
@@ -301,7 +301,7 @@
 
   </ContentTemplate>
                     </asp:UpdatePanel>--%>
-    </form>
+   
       <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
     <script type="text/javascript">
         jQuery(document).ready(function ($) {

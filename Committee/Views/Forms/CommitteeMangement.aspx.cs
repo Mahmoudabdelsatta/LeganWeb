@@ -319,7 +319,7 @@ namespace Committee.Views.Forms
 
             //Call ShowData method for displaying updated data  
 
-            string apiUrlUpdate = https://committeeapi20190806070934.azurewebsites.net/api/Committees";
+            string apiUrlUpdate = "https://committeeapi20190806070934.azurewebsites.net/api/Committees";
             Committee.Models.Committee committeeUpdate = new Models.Committee()
             {
                 CommitteeId = Convert.ToInt32(textid.Text),

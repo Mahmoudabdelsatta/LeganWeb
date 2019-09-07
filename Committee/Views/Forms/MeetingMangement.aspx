@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage/master.Master" AutoEventWireup="true" CodeBehind="MeetingMangement.aspx.cs" Inherits="Committee.Views.Forms.MeetingMangement" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-       <form role="form" class="form-horizontal form-groups-bordered" runat="server" id="f1">
+   
     <div class="form-group">
 								<%--<label for="field-1" class="col-sm-3 control-label">حفظ :</label>--%>
         <div class="col-sm-3">
@@ -38,7 +38,7 @@
                         </div>
 
                     </div>
-        </form>
+     
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder2" runat="server">
 </asp:Content>

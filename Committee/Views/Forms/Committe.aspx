@@ -3,7 +3,7 @@
 
 <asp:Content ID="ContentPlaceHolder1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
-	<form role="form" class="form-horizontal form-groups-bordered" runat="server" id="f1">
+	
     			  <asp:ScriptManager ID="ScriptManager1" EnableCdn="False" runat="server"></asp:ScriptManager>
         <asp:UpdatePanel ID="UpdatePaneltypeOfservice" runat="server" UpdateMode="Conditional">
             <ContentTemplate>
@@ -234,7 +234,7 @@
     
             </ContentTemplate>
         </asp:UpdatePanel>
-          </form>
+        
        <script type="text/javascript">
                     jQuery(document).ready(function ($) {
 

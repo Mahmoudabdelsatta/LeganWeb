@@ -176,7 +176,7 @@ namespace Committee.Views.Forms
             }
             else if (Request.QueryString["status"] == "new")
             {
-                string isCommitteeExist = "http://localhost:1481/api/Committees";
+                string isCommitteeExist = "https://committeeapi20190806070934.azurewebsites.net/api/Committees";
                 object input = new
                 {
                     Name = txtCommitteeName.Text.Trim(),
@@ -204,8 +204,8 @@ namespace Committee.Views.Forms
 
                     // HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create("https://committeeapi20190806070934.azurewebsites.net/api/CommitteesMembers/ValidateUserNameAndPassword?userName=" + txtuserName.Text + "&password=" + txtPass.Text);
 
-                    string apiUrl2 = "http://localhost:1481/api/CommitteesMembers";
-                    string apiUrl3 = "http://localhost:1481/api/Committees";
+                    string apiUrl2 = "https://committeeapi20190806070934.azurewebsites.net/api/CommitteesMembers";
+                    string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Committees";
                     WebClient client3 = new WebClient();
                     client3.Headers["Content-type"] = "application/json";
                     client3.Encoding = Encoding.UTF8;
@@ -274,11 +274,11 @@ namespace Committee.Views.Forms
                     ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('تم حفظ بيانات اللجنة بنجاح')", true);
 
                   //  Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم حفظ بيانات اللجنة بنجاح', 'تم')", true);
-                    string apiUrlUser = "http://localhost:1481/api/Users";
+                    string apiUrlUser = "https://committeeapi20190806070934.azurewebsites.net/api/Users";
                     WebClient clientuser = new WebClient();
                     clientuser.Headers["Content-type"] = "application/json";
                     clientuser.Encoding = Encoding.UTF8;
-                    //string apiUrlFcm = "http://localhost:1481/api/Fcm";
+                    //string apiUrlFcm = "https://committeeapi20190806070934.azurewebsites.net/api/Fcm";
                     //WebClient clienfcm = new WebClient();
                     //clienfcm.Headers["Content-type"] = "application/json";
                     //clienfcm.Encoding = Encoding.UTF8;
@@ -292,7 +292,7 @@ namespace Committee.Views.Forms
                        
                         string inputuser = (new JavaScriptSerializer()).Serialize(input);
                         User userFcm = (new JavaScriptSerializer()).Deserialize<User>(client.DownloadString(apiUrlUser + "/GetUser?id=" + member.MemberId));
-                        string apiUrlFcm = "http://localhost:1481/api/Fcm";
+                        string apiUrlFcm = "https://committeeapi20190806070934.azurewebsites.net/api/Fcm";
                         WebClient clienfcm = new WebClient();
                         clienfcm.Headers["Content-type"] = "application/json";
                         clienfcm.Encoding = Encoding.UTF8;
@@ -307,7 +307,7 @@ namespace Committee.Views.Forms
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم ارسال الاشعارات بنجاح', 'تم')", true);
                         ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('تم ارسال الاشعارات بنجاح')", true);
 
-                        string apiUrlAlert = "http://localhost:1481/api/Committees";
+                        string apiUrlAlert = "https://committeeapi20190806070934.azurewebsites.net/api/Committees";
                         WebClient client4 = new WebClient();
 
                         client4.Headers["Content-type"] = "application/json";
@@ -418,7 +418,6 @@ namespace Committee.Views.Forms
 
         //    int committeeId = Convert.ToInt32(gvCommittee.Rows[e.RowIndex].Cells[1].Text.ToString());
      
-
         //    WebClient client = new WebClient();
         //    client.Headers["Content-type"] = "application/json";
         //    client.Encoding = Encoding.UTF8;
@@ -439,7 +438,7 @@ namespace Committee.Views.Forms
         private List<CommitteeSearch> ShowCommittees()
         {
             List<CommitteeSearch> committeesUpdate = new List<CommitteeSearch>();
-            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Committees";
+            string apiUrl3 = https://committeeapi20190806070934.azurewebsites.net/api/Committees";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -560,7 +559,6 @@ namespace Committee.Views.Forms
  //           WebClient webClient = new WebClient();
  //           webClient.Headers["Content-type"] = "application/json";
  //           webClient.Encoding = Encoding.UTF8;
- //     
  //           List<Committee.Models.User> Members = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.User>>(result);
  //           ddlMemberChange.DataSource = Members;
  //           ddlMemberChange.DataTextField = "UserName";
@@ -609,7 +607,7 @@ namespace Committee.Views.Forms
  //       {
 
  //           List<CommitteeSearchUpdate> committeesUpdate = new List<CommitteeSearchUpdate>();
- //     
+
  //           WebClient client = new WebClient();
  //           client.Headers["Content-type"] = "application/json";
  //           client.Encoding = Encoding.UTF8;
@@ -666,7 +664,6 @@ namespace Committee.Views.Forms
 
  //           //Call ShowData method for displaying updated data  
 
- //     
  //           Committee.Models.Committee committeeUpdate = new Models.Committee()
  //           {
  //               CommitteeId = Convert.ToInt32(textid.Text),
