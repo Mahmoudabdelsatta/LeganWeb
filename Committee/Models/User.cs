@@ -5,8 +5,14 @@ using System.Web;
 
 namespace Committee.Models
 {
+   
     public class User
     {
+        public User()
+        {
+            this.Alerts = new HashSet<Alert>();
+        }
+
         public int ID { get; set; }
         public string UserName { get; set; }
         public string Phone { get; set; }
@@ -25,6 +31,8 @@ namespace Committee.Models
         public string DeviceType { get; set; }
         public SystemRole SystemRoleMap { get; set; }
         public   Department Department { get; set; }
+        public  Role Role { get; set; }
+        public virtual ICollection<Alert> Alerts { get; set; }
 
     }
 }

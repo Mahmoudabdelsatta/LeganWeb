@@ -7,9 +7,9 @@ namespace Committee.Models
 {
     public class AgendaUpdate
     {
-        public int الرقم { get; set; }
+       public int الرقم { get; set; }
 
-        public string وقت_الاجندة { get; set; }
-        public string وصف_الاجندة { get; set; }
+      //  public string وقت_الاجندة { get; set; }
+        public string الاجندة { get; set; }
     }
 }

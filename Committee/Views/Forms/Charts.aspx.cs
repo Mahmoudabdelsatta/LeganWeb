@@ -26,7 +26,7 @@ namespace Committee.Views.Forms
         [WebMethod]
         public List<int> GetActiveAndNonActive()
         {
-            string apiUrl3 = "http://localhost:1481/api/Chart";
+            string apiUrl3 = Utilities.BASE_URL+"/api/Chart";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";

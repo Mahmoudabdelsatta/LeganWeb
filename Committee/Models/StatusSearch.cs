@@ -7,7 +7,7 @@ namespace Committee.Models
 {
     public class StatusSearch
     {
-        public int الرقم { get; set; }
+     //   public int الرقم { get; set; }
         public string الحاله { get; set; }
         public string التاريخ { get; set; }
 

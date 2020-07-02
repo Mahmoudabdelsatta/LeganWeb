@@ -11,7 +11,7 @@ namespace Committee.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    [Serializable]
     public partial class SystemRole
     {
         public int Id { get; set; }

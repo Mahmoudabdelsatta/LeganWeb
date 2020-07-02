@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Committee.Controller;
 using Committee.Models;
 
 namespace Committee.Views.Forms
@@ -17,24 +18,24 @@ namespace Committee.Views.Forms
     {
         public static List<int> selectedUsers;
         public static List<int> changedUsers;
-
+        public static List<UserGrid> userGrids = new List<UserGrid>();
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["UserName"] == null || Session["SystemRole"]==null)
+            if (Session["UserName"] == null || Session["SystemRole"] == null)
             {
                 Response.Redirect("login.aspx");
             }
-
+            txtCommitteeDate.Text = txtCommitteeDateHidden.Value;
             if (!IsPostBack)
             {
+              
+                txtCommitteeDate.Text = "";
                 divAddMember.Visible = false;
                 selectedUsers = new List<int>();
+                userGrids = new List<UserGrid>();
+                List<User> Members = WebApiConsume.GetUsers(Utilities.BASE_URL+"/api/Users/GetUsers");
 
-                WebClient webClient = new WebClient();
-                webClient.Headers["Content-type"] = "application/json";
-                webClient.Encoding = Encoding.UTF8;
-                string result = webClient.DownloadString("https://committeeapi20190806070934.azurewebsites.net/api/Users/GetUsers");
-                List<Committee.Models.User> Members = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.User>>(result);
+
                 ddlMemberSelect.DataSource = Members;
                 ddlMemberSelect.DataTextField = "UserName";
                 ddlMemberSelect.DataValueField = "ID";
@@ -50,47 +51,140 @@ namespace Committee.Views.Forms
                 ddlCommitteepresident.DataTextField = "UserName";
                 ddlCommitteepresident.DataValueField = "ID";
                 ddlCommitteepresident.DataBind();
-                ddlCommitteepresident.Items.Insert(0, new ListItem("أختر من القائمه","NULL"));
-                WebClient webClient2 = new WebClient();
-                webClient2.Headers["Content-type"] = "application/json";
-                webClient2.Encoding = Encoding.UTF8;
-                string result2 = webClient.DownloadString("https://committeeapi20190806070934.azurewebsites.net/api/Deapartments/GetDepartments");
-                List<Committee.Models.Department> departments = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.Department>>(result2);
+                ddlCommitteepresident.Items.Insert(0, new ListItem("أختر من القائمه", "NULL"));
 
-               
+
+                List<Committee.Models.Department> departments = WebApiConsume.GetDepartments(Utilities.BASE_URL+"/api/Deapartments/GetDepartments");
+
+
                 ddlCommitteeDept.DataSource = departments;
                 ddlCommitteeDept.DataTextField = "DeptName";
                 ddlCommitteeDept.DataValueField = "DeptId";
                 ddlCommitteeDept.DataBind();
+                ddlCommitteeDept.SelectedValue = Session["DeptId"].ToString();
+                ddlCommitteeDept.Enabled = false;
                 ddlCommitteeDept.Items.Insert(0, new ListItem("أختر من القائمه", "NULL"));
-                if (Session["SystemRole"].ToString() == "2")
+                int committeeId = Convert.ToInt32(Request.QueryString["cId"]);
 
-                {
-                    //lblsec.Visible = false;
-                    //lblmanger.Visible = false;
-                    LabelddlCommitteepresident.Visible = false;
-                    LabeddlCommitteeSecrtary.Visible = false;
-                    ddlCommitteeSecrtary.Visible = false;
-                    ddlCommitteepresident.Visible = false;
+                List<UserGrid> data = WebApiConsume.ShowCommitteeMembers(committeeId);
+                if ( Request.QueryString["status"] == "selected")
+                  {
+                    gvMeeting.DataSource = ShowMeetings(Convert.ToInt32(Request.QueryString["cId"]));
+                    gvMeeting.DataBind();
+                    
+                 
+                   
+                    if (data.Count!=0)
+                    {
+                        lblmembersOfCommittee.Visible = true;
+                        lblmembersOfCommittee.Text = "الاعضاء المشتركون فى اللجنة";
+                    }
+                    else { 
+                        lblmembersOfCommittee.Visible = true;
+                        lblmembersOfCommittee.Text = "لا يوجد اعضاء مشتركون فى  هذه اللجنة";
+                    }
+                    gvMembersOfCommittee.DataSource = data.Where(x => x != null).ToList();
+
+                    gvMembersOfCommittee.DataBind();
+                    ddlMemberChange.Visible = true;
+                    ddlMemberChange.DataSource = Members;
+                    ddlMemberChange.DataTextField = "UserName";
+                    ddlMemberChange.DataValueField = "ID";
+                    ddlMemberChange.DataBind();
+                    ddlMemberChange.Items.Insert(0, new ListItem("أختر من القائمه", "NULL"));
+                    gvMembersOfCommittee.Visible = true;
+                    divAddMember.Visible = true;
+
+
+
+                }
+                
+                    gvMembersOfCommittee.DataSource = data.Where(x => x != null).ToList();
+
+                    gvMembersOfCommittee.DataBind();
+                    LabelddlCommitteepresident.Visible = true;
+                    LabeddlCommitteeSecrtary.Visible = true;
+                    ddlCommitteeSecrtary.Visible = true;
+                    ddlCommitteepresident.Visible = true;
                     divAddMembers.Visible = true;
                     ddlMemberSelect.Visible = true;
                     ddlMemberSelect.DataSource = Members;
+                    ddlMemberSelect.DataTextField = "UserName";
+                    ddlMemberSelect.DataValueField = "ID";
                     ddlMemberSelect.DataBind();
-                        
-
-                }
-                if (Request.QueryString["status"]== "update")
-                    
+                    ddlMemberSelect.Items.Insert(0, new ListItem("أختر من القائمه", "NULL"));
+                
+                if (Request.QueryString["status"] == "selected")
                 {
+                    gvMeeting.DataSource = ShowMeetings(Convert.ToInt32(Request.QueryString["cId"]));
+                    gvMeeting.DataBind();
+
+
+                    committeeId = Convert.ToInt32(Request.QueryString["cId"]);
+
+                    data = WebApiConsume.ShowCommitteeMembers(committeeId);
+                    if (data.Count != 0)
+                    {
+                        lblmembersOfCommittee.Visible = true;
+                        lblmembersOfCommittee.Text = "الاعضاء المشتركون فى اللجنة";
+                        gvMembersOfCommittee.DataSource = data.Where(x => x != null).ToList();
+                        gvMembersOfCommittee.DataBind();
+                    }
+                    else
+                    {
+                        lblmembersOfCommittee.Visible = true;
+                        lblmembersOfCommittee.Text = "لا يوجد اعضاء مشتركون فى  هذه اللجنة";
+                    }
+                }
+
+                    if (Request.QueryString["status"] == "update" || Request.QueryString["status"] == "selected")
+
+                {
+                 
+                    gvMeeting.Visible = true;
+                    List<MeetingSearch>ms= ShowMeetings(Convert.ToInt32(Request.QueryString["cId"]));
+                    if (ms.Count!=0)
+                    {
+                        lblgvMeeting.Visible = true;
+                        lblgvMeeting.Text = "اجتماعات اللجنة";
+                        gvMeeting.DataSource = ms;
+                        gvMeeting.DataBind();
+                    }
+                    else
+                    {
+                        lblgvMeeting.Visible = true;
+                        lblgvMeeting.Text = " لا يوجد اجتماعات لهذه اللجنة";
+                     
+                    }
+                   
+                    data = WebApiConsume.ShowCommitteeMembers(Convert.ToInt32(Request.QueryString["cId"]));
+                    if (data.Count != 0)
+                    {
+                        lblmembersOfCommittee.Visible = true;
+                        lblmembersOfCommittee.Text = "الاعضاء المشتركون فى اللجنة";
+                        gvMembersOfCommittee.DataSource = data.Where(x => x != null).ToList();
+                        gvMembersOfCommittee.DataBind();
+                        lblmembersOfCommittee.Visible = true;
+                      
+                    }
+                    else
+                    {
+                        lblmembersOfCommittee.Visible = true;
+                        lblmembersOfCommittee.Text = "لا يوجد اعضاء مشتركون فى  هذه اللجنة";
+                    }
+                   
+
+                    lblAddCommitteetitle.Text = "تعديل اللجنة";
+                    lblAddCommitteeh2.Text = "تعديل اللجنة";
                     List<CommitteeSearchUpdate> committeesUpdate = new List<CommitteeSearchUpdate>();
-                    string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Committees";
+                    string apiUrl3 = Utilities.BASE_URL+"/api/Committees";
 
                     WebClient client = new WebClient();
                     client.Headers["Content-type"] = "application/json";
                     client.Encoding = Encoding.UTF8;
                     int cId = Convert.ToInt32(Request.QueryString["cId"]);
-                    ViewState["committeeID"] = cId;
-                    Committee.Models.CommitteeRetrieveUpdate Committee = (new JavaScriptSerializer()).Deserialize<Committee.Models.CommitteeRetrieveUpdate>(client.DownloadString(apiUrl3 + "/GetCommitteeByIdForWeb?committeeId=" +cId.ToString()));
+                    ViewState["CommitteeId"] = cId;
+                    Committee.Models.CommitteeRetrieveUpdate Committee = (new JavaScriptSerializer()).Deserialize<Committee.Models.CommitteeRetrieveUpdate>(client.DownloadString(apiUrl3 + "/GetCommitteeByIdForWeb?committeeId=" + cId.ToString()));
                     txtCommitteeDate.Text = Committee.CommitteeDate;
                     ddlCommitteeClassification.SelectedValue = Committee.Type.Id.ToString();
                     ddlCommitteeImportancy.SelectedValue = Committee.Importance.Id.ToString();
@@ -104,39 +198,96 @@ namespace Committee.Views.Forms
                     txtCommitteeName.Text = Committee.CommitteeName;
                     ddlCommitteepresident.SelectedValue = Committee.CommitteeManager;
                     ddlCommitteeSecrtary.SelectedValue = Committee.CommitteeSecretary;
-                   
+                    ViewState["CreatedAt"] = Committee.CreatedAt;
                     //gvCommittee.DataSource = ShowCommittees();
                     //gvCommittee.DataBind();
+                }
+                else
+                {
+                    lblAddCommitteetitle.Text = "اضافة لجنة جديدة";
+                    lblAddCommitteeh2.Text = "اضافة لجنة جديدة";
+                }
+                if (Request.QueryString["status"] == "selected")
+                {
+                    lblAddCommitteetitle.Text = "عرض اللجنة";
+                    lblAddCommitteeh2.Text = "عرض اللجنة";
+                    List<CommitteeSearchUpdate> committeesUpdate = new List<CommitteeSearchUpdate>();
+                    string apiUrl3 = Utilities.BASE_URL+"/api/Committees";
+
+                    WebClient client = new WebClient();
+                    client.Headers["Content-type"] = "application/json";
+                    client.Encoding = Encoding.UTF8;
+                    int cId = Convert.ToInt32(Request.QueryString["cId"]);
+                    ViewState["CommitteeId"] = cId;
+                    Committee.Models.CommitteeRetrieveUpdate Committee = (new JavaScriptSerializer()).Deserialize<Committee.Models.CommitteeRetrieveUpdate>(client.DownloadString(apiUrl3 + "/GetCommitteeByIdForWeb?committeeId=" + cId.ToString()));
+                    txtCommitteeDate.Text = Committee.CommitteeDate;
+                    txtCommitteeDate.Enabled = false;
+                    ddlCommitteeClassification.SelectedValue = Committee.Type.Id.ToString();
+                    ddlCommitteeClassification.Enabled = false;
+                    ddlCommitteeImportancy.SelectedValue = Committee.Importance.Id.ToString();
+                    ddlCommitteeImportancy.Enabled = false;
+                    ddlcommitteeStatus.SelectedValue = Committee.Activity.Id.ToString();
+                    ddlcommitteeStatus.Enabled = false;
+                    txtCommitteeTopic.Text = Committee.CommitteeTopic;
+                    txtCommitteeTopic.Enabled = false;
+                    txtCommitteeBasedON.Text = Committee.CommitteeBasedOn;
+                    txtCommitteeBasedON.Enabled = false;
+                    txtEnrollmentNumber.Text = Committee.CommitteeEnrollmentNumber;
+                    txtEnrollmentNumber.Enabled = false;
+                    txtEnrollmentDate.Text = Committee.CommitteeEnrollmentDate;
+                    txtEnrollmentDate.Enabled = false;
+                    txtInboxSide.Text = Committee.CommitteeInbox1;
+                    txtInboxSide.Enabled = false;
+                    ddlCommitteeDept.SelectedValue = Committee?.Department?.DeptId.ToString();
+                    ddlCommitteeDept.Enabled = false;
+                    txtCommitteeName.Text = Committee.CommitteeName;
+                    txtCommitteeName.Enabled = false;
+                    ddlCommitteepresident.SelectedValue = Committee.CommitteeManager;
+                    ddlCommitteepresident.Enabled = false;
+                    ddlCommitteeSecrtary.SelectedValue = Committee.CommitteeSecretary;
+                    ddlCommitteeSecrtary.Enabled = false;
+                    btnSave.Visible = false;
+                    divAddMember.Visible = false;
+                }
+                if (Request.QueryString["status"] == "update")
+                {
+                    divAddMember.Visible = true;
+                    divAddMembers.Visible = false;
+                    ddlMemberChange.Visible = true;
+                    ddlMemberChange.DataSource = Members;
+                    ddlMemberChange.DataTextField = "UserName";
+                    ddlMemberChange.DataValueField = "ID";
+                    ddlMemberChange.DataBind();
+                    ddlMemberChange.Items.Insert(0, new ListItem("أختر من القائمه", "NULL"));
+                }
+                if (Session["SystemRole"].ToString() == "1" && Request.QueryString["status"] == "update")
+                {
+                    divAddMember.Visible = false;
+                    divAddMembers.Visible = false;
                 }
             }
         }
 
-        protected void btnAdd1_Click(object sender, EventArgs e)
+        protected void btnSave_Click(object sender, EventArgs e)
         {
-            string apiUrl = "https://committeeapi20190806070934.azurewebsites.net/api/Committees";
-            WebClient client = new WebClient();
-            client.Headers["Content-type"] = "application/json";
-            client.Encoding = Encoding.UTF8;
-            if (Request.QueryString["status"] == "update")
+
+
+            if (Request.QueryString["status"] == "update" || Request.QueryString["status"] == "selected")
             {
                 int committeeId = Convert.ToInt32(Request.QueryString["cId"]);
-              
-                List<UserGrid> data = ShowCommitteeMembers(committeeId);
+
+                List<UserGrid> data = WebApiConsume.ShowCommitteeMembers(committeeId);
                 gvMembersOfCommittee.DataSource = data.Where(x => x != null).ToList();
 
                 gvMembersOfCommittee.DataBind();
                 ViewState["CommitteeId"] = committeeId;
-                WebClient webClient = new WebClient();
-                webClient.Headers["Content-type"] = "application/json";
-                webClient.Encoding = Encoding.UTF8;
-                string result = webClient.DownloadString("https://committeeapi20190806070934.azurewebsites.net/api/Users/GetUsers");
-                List<Committee.Models.User> Members = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.User>>(result);
+                List<User> Members = WebApiConsume.GetUsers(Utilities.BASE_URL+"/api/Users/GetUsers");
                 ddlMemberChange.DataSource = Members;
                 ddlMemberChange.DataTextField = "UserName";
                 ddlMemberChange.DataValueField = "ID";
                 ddlMemberChange.DataBind();
                 divAddMember.Visible = true;
-                List<UserGrid> data2 = ShowCommitteeMembers(committeeId);
+                List<UserGrid> data2 = WebApiConsume.ShowCommitteeMembers(committeeId);
                 gvMembersOfCommittee.DataSource = data2.Where(x => x != null).ToList();
 
                 gvMembersOfCommittee.DataBind();
@@ -149,7 +300,7 @@ namespace Committee.Views.Forms
                 Committee.Models.Committee committeeUpdate = new Models.Committee()
                 {
                     CommitteeName = txtCommitteeName.Text,
-                    CommitteeDate = txtCommitteeDate.Text,
+                    CommitteeDate = txtCommitteeDateHidden.Value,
                     TypeId = Convert.ToInt32(ddlCommitteeClassification.SelectedItem.Value),
                     ActivityId = Convert.ToInt32(ddlcommitteeStatus.SelectedItem.Value),
                     ImportanceId = Convert.ToInt32(ddlCommitteeImportancy.SelectedItem.Value),
@@ -161,31 +312,29 @@ namespace Committee.Views.Forms
                     CommitteeSecretary = ddlCommitteeSecrtary.SelectedItem.Value == "NULL" ? null : ddlCommitteeSecrtary.SelectedItem.Value,
                     CommitteeInbox1 = txtInboxSide.Text,
                     DeptId = ddlCommitteeDept.SelectedItem.Value == "NULL" ? null : ddlCommitteeDept.SelectedItem.Value,
-                    CommitteeId = Convert.ToInt32(ViewState["committeeID"])
+                    CommitteeId = Convert.ToInt32(ViewState["CommitteeId"]),
+                    UpdatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                    CreatedAt = ViewState["CreatedAt"].ToString()
+
 
                 };
 
                 string inputJson = (new JavaScriptSerializer()).Serialize(committeeUpdate);
+                WebApiConsume.UpdateCommittee(Utilities.BASE_URL+"/api/Committees", Convert.ToInt32(ViewState["CommitteeId"]), inputJson);
+                btnSave.Text = "حفظ";
 
-                client.UploadString(apiUrl + "/PutCommittee?id=" + Convert.ToInt32(ViewState["committeeID"]), inputJson);
-                btnAdd1.Text = "حفظ";
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('تم تعديل بيانات اللجنة بنجاح')", true);
+                Response.Redirect("CommitteeMangement.aspx?id=redirectUpdate");
 
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم تعديل بيانات اللجنة بنجاح', 'تم')", true);
                 //gvCommittee.EditIndex = -1;
             }
             else if (Request.QueryString["status"] == "new")
             {
-                string isCommitteeExist = "https://committeeapi20190806070934.azurewebsites.net/api/Committees";
-                object input = new
-                {
-                    Name = txtCommitteeName.Text.Trim(),
-                };
-                string inputJson3 = (new JavaScriptSerializer()).Serialize(input);
-                bool CommitteeExist = (new JavaScriptSerializer()).Deserialize<bool>(client.DownloadString(apiUrl + "/IsCommitteeExist?committeeName=" + txtCommitteeName.Text));
+                string isCommitteeExist = "";
+
+                bool CommitteeExist = WebApiConsume.IsCommitteeExist(Utilities.BASE_URL+"/api/Committees", txtCommitteeName.Text.Trim().ToLower());
                 if (CommitteeExist)
                 {
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.error('هذا الاسم موجود بالفعل من فضلك قم بادخال اسم اخر لللجنه ', 'تحذير')", true);
+                    ScriptManager.RegisterClientScriptBlock(this.Page, this.Page.GetType(), "تم", "alert('هذا الاسم موجود بالفعل من فضلك قم بادخال اسم اخر لللجنه');", true);
 
 
                 }
@@ -193,7 +342,7 @@ namespace Committee.Views.Forms
                 {
                     if (ddlCommitteepresident.SelectedItem.Value != "NULL" || ddlCommitteeSecrtary.SelectedItem.Value != "NULL")
                     {
-                        if (selectedUsers.Count == 0&&ddlCommitteeSecrtary.Visible==true&&ddlCommitteepresident.Visible==true)
+                        if (selectedUsers.Count == 0 && ddlCommitteeSecrtary.Visible == true && ddlCommitteepresident.Visible == true)
                         {
                             selectedUsers.Add(Convert.ToInt32(ddlCommitteeSecrtary.SelectedItem.Value));
                             selectedUsers.Add(Convert.ToInt32(ddlCommitteepresident.SelectedItem.Value));
@@ -201,19 +350,10 @@ namespace Committee.Views.Forms
                         }
                     }
 
-
-                    // HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create("https://committeeapi20190806070934.azurewebsites.net/api/CommitteesMembers/ValidateUserNameAndPassword?userName=" + txtuserName.Text + "&password=" + txtPass.Text);
-
-                    string apiUrl2 = "https://committeeapi20190806070934.azurewebsites.net/api/CommitteesMembers";
-                    string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Committees";
-                    WebClient client3 = new WebClient();
-                    client3.Headers["Content-type"] = "application/json";
-                    client3.Encoding = Encoding.UTF8;
-
                     Committee.Models.Committee committee = new Models.Committee()
                     {
                         CommitteeName = txtCommitteeName.Text,
-                        CommitteeDate = txtCommitteeDate.Text,
+                        CommitteeDate = txtCommitteeDateHidden.Value,
                         TypeId = Convert.ToInt32(ddlCommitteeClassification.SelectedItem.Value),
                         ActivityId = Convert.ToInt32(ddlcommitteeStatus.SelectedItem.Value),
                         ImportanceId = Convert.ToInt32(ddlCommitteeImportancy.SelectedItem.Value),
@@ -225,137 +365,190 @@ namespace Committee.Views.Forms
                         CommitteeSecretary = ddlCommitteeSecrtary.SelectedItem.Value == "NULL" ? null : ddlCommitteeSecrtary.SelectedItem.Value,
                         CommitteeInbox1 = txtInboxSide.Text,
                         DeptId = ddlCommitteeDept.SelectedItem.Value == "NULL" ? null : ddlCommitteeDept.SelectedItem.Value,
-                        CreatedAt= DateTime.Now.ToString("yyyy-MM-dd"),
-                        UpdatedAt= DateTime.Now.ToString("yyyy-MM-dd")
+                        CreatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                        UpdatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
 
 
                     };
 
-
-
                     string inputJson = (new JavaScriptSerializer()).Serialize(committee);
-
-
-                    client3.UploadString(apiUrl + "/PostCommitteeForWeb", inputJson);
+                    WebApiConsume.PostCommittee(Utilities.BASE_URL+"/api/Committees", inputJson);
+                    
 
                     List<CommitteesMember> committeesMembers = new List<CommitteesMember>();
-                    int Committee = (new JavaScriptSerializer()).Deserialize<int>(client.DownloadString(apiUrl3 + "/GetCommitteeId?committeeName=" + txtCommitteeName.Text));
+                    int Committee = WebApiConsume.GetCommitteeId(Utilities.BASE_URL+"/api/Committees", txtCommitteeName.Text.Trim().ToLower());
                     int committeeRole = 0;
-                    for (int i = 0; i < selectedUsers.Count; i++)
-                    {
-                        // client.DownloadString(apiUrl3 + "/GetCommitteeId?committeeName=" + txtCommitteeName.Text);
+                    
+                        for (int i = 0; i < selectedUsers.Count; i++)
+                        {
+                            // client.DownloadString(apiUrl3 + "/GetCommitteeId?committeeName=" + txtCommitteeName.Text);
 
-                        if (i == 0)
-                        {
-                            committeeRole = 4;
-                        }
-                        if (i == 1)
-                        {
-                            committeeRole = 5;
-                        }
-                        if (i > 1)
-                        {
-                            committeeRole = 6;
-                        }
-                        committeesMembers.Add(new CommitteesMember()
-                        {
-                            MemberId = selectedUsers[i],
-                            CommitteeId = Committee,
-                            CommitteeRole = committeeRole
+                            if (i == 0)
+                            {
+                                committeeRole = 4;
+                            }
+                            if (i == 1)
+                            {
+                                committeeRole = 5;
+                            }
+                            if (i > 1)
+                            {
+                                committeeRole = 6;
+                            }
+                            committeesMembers.Add(new CommitteesMember()
+                            {
+                                MemberId = selectedUsers[i],
+                                CommitteeId = Committee,
+                                CommitteeRole = committeeRole,
+                                CreatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                                UpdatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
 
 
-                        });
+                            });
+                        
                     }
+                
                     string inputJson2 = (new JavaScriptSerializer()).Serialize(committeesMembers);
                     //WebClient client = new WebClient();
-                    client.Headers["Content-type"] = "application/json";
-                    client.Encoding = Encoding.UTF8;
-                    client.UploadString(apiUrl2 + "/PostListOfCommitteesMember", inputJson2);
-                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('تم حفظ بيانات اللجنة بنجاح')", true);
 
-                  //  Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم حفظ بيانات اللجنة بنجاح', 'تم')", true);
-                    string apiUrlUser = "https://committeeapi20190806070934.azurewebsites.net/api/Users";
-                    WebClient clientuser = new WebClient();
-                    clientuser.Headers["Content-type"] = "application/json";
-                    clientuser.Encoding = Encoding.UTF8;
-                    //string apiUrlFcm = "https://committeeapi20190806070934.azurewebsites.net/api/Fcm";
-                    //WebClient clienfcm = new WebClient();
-                    //clienfcm.Headers["Content-type"] = "application/json";
-                    //clienfcm.Encoding = Encoding.UTF8;
+                    WebApiConsume.PostCommitteeMembers(Utilities.BASE_URL+"/api/CommitteesMembers", inputJson2);
+
                     foreach (var member in committeesMembers)
                     {
-                       
+
                         object memb = new
                         {
                             id = member.MemberId,
                         };
-                       
-                        string inputuser = (new JavaScriptSerializer()).Serialize(input);
-                        User userFcm = (new JavaScriptSerializer()).Deserialize<User>(client.DownloadString(apiUrlUser + "/GetUser?id=" + member.MemberId));
-                        string apiUrlFcm = "https://committeeapi20190806070934.azurewebsites.net/api/Fcm";
-                        WebClient clienfcm = new WebClient();
-                        clienfcm.Headers["Content-type"] = "application/json";
-                        clienfcm.Encoding = Encoding.UTF8;
-                        object UserFcmo = new
+
+                        try
                         {
-                          
-                           Action_id= member.CommitteeId, Body="اشعار بخصوص لجنة",Click_action= "type_join_committe", Title="اضافة لجنة" 
-                        };
-                        string inputFcm = (new JavaScriptSerializer()).Serialize(UserFcmo);
-                        clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to="+ userFcm.FCMToken, inputFcm);
 
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم ارسال الاشعارات بنجاح', 'تم')", true);
-                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('تم ارسال الاشعارات بنجاح')", true);
-
-                        string apiUrlAlert = "https://committeeapi20190806070934.azurewebsites.net/api/Committees";
-                        WebClient client4 = new WebClient();
-
-                        client4.Headers["Content-type"] = "application/json";
-                        client4.Encoding = Encoding.UTF8;
-
-                        Alert alert = new Alert()
+                        
+                        User userFcm = WebApiConsume.GetUserById(Utilities.BASE_URL+"/api/Users", member.MemberId);
+                        WebApiConsume.SendUserNotification(Utilities.BASE_URL+"/api/Fcm", member.CommitteeId,txtCommitteeName.Text, userFcm.FCMToken);
+                        if (userFcm.Phone!="" || userFcm.Phone!=null)
                         {
-                            Title = "لجنة جديده",
-                            Message = "اشعار بخصوص اضافة لجنة",
-                            UserId = member.MemberId,
-                            CreatedAt = DateTime.Now.ToString("yyyy-MM-dd"),
-                        };
-                        string inputAlert = (new JavaScriptSerializer()).Serialize(alert);
+                           // SMS.SendSms("+"+Convert.ToInt64(userFcm.Phone), "انت عضو فى لجنة " + "\n" + txtCommitteeName.Text + " المشكلة بتاريخ   " + "\n" +txtCommitteeDate.Text );
+                                Utilities.SendMailToOnePerson(userFcm.UserEmailId, "انضمام للجنة", "تم اضافتك للجنة بنجاح");
+
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            string filePath = @Utilities.LogError_Path + "Error.txt";
 
 
-                        client4.UploadString(apiUrlAlert + "/PostAlert", inputAlert);
+                            using (StreamWriter writer = new StreamWriter(filePath, true))
+                            {
+                                writer.WriteLine("-----------------------------------------------------------------------------");
+                                writer.WriteLine("Date : " + DateTime.Now.ToString());
+                                writer.WriteLine();
+
+                                while (ex != null)
+                                {
+                                    writer.WriteLine(ex.GetType().FullName);
+                                    writer.WriteLine("Message : " + ex.Message);
+                                    writer.WriteLine("StackTrace : " + ex.StackTrace);
+
+                                    ex = ex.InnerException;
+                                }
+                            }
+
+
+                        }
+                        string apiUrlAlert = "";
+                        WebApiConsume.PostAlert(Utilities.BASE_URL+"/api/Committees",member.CommitteeId, member.MemberId);
                     }
                     ViewState["update"] = 0;
                     selectedUsers = new List<int>();
+                    userGrids = new List<UserGrid>();
+                    Response.Redirect("CommitteeMangement.aspx?id=redirectSave");
+
                 }
             }
         }
         protected void btnAdd_Click(object sender, EventArgs e)
         {
-            if (selectedUsers.Count==0 && ddlCommitteepresident.Visible==true && ddlCommitteeSecrtary.Visible==true)
+            if (selectedUsers.Count == 0 && ddlCommitteepresident.Visible == true && ddlCommitteeSecrtary.Visible == true)
             {
                 selectedUsers.Add(Convert.ToInt32(ddlCommitteeSecrtary.SelectedItem.Value));
                 selectedUsers.Add(Convert.ToInt32(ddlCommitteepresident.SelectedItem.Value));
-          
+
             }
-            
+
 
             if (selectedUsers.Contains(Convert.ToInt32(ddlMemberSelect.SelectedItem.Value)))
             {
-                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('هذا العضو موجود بالفعل كونه سكرتير او رئيس لجنه')", true);
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.error('هذا العضو موجود بالفعل ', 'تحذير')", true);
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('هذا العضو موجود بالفعل ')", true);
+                //Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.error('هذا العضو موجود بالفعل ', 'تحذير')", true);
             }
             else
             {
-               selectedUsers.Add(Convert.ToInt32(ddlMemberSelect.SelectedItem.Value));
-                //    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('تم ادخال العضو للجنة بنجاح')", true);
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم ادخال هذا العضو بنجاح', 'تم')", true);
+
+                List<int> membersList = new List<int>();
+                string apiUrl2 = Utilities.BASE_URL + "/api/CommitteesMembers";
+                int memberId = WebApiConsume.GetUserId(Utilities.BASE_URL + "/api/Users", ddlMemberSelect.SelectedItem.Text);
+                membersList.Add(memberId);
+                if (gvAddMember.Rows.Count!=0)
+                {
+                   
+                    foreach (GridViewRow row in gvAddMember.Rows)
+                    {
+
+                        //membersList.Add(memberId);
+                        if (!userGrids.Any(x=>x.رقم_العضو==memberId))
+                        {
+
+                       
+                            userGrids.Add(WebApiConsume.ShowCommitteeMembersForNew(memberId)[0]);
+
+                            gvAddMember.Visible = true;
+
+                            gvAddMember.DataSource = userGrids.Distinct().ToList();
+
+                            gvAddMember.DataBind();
+                            selectedUsers.Add(Convert.ToInt32(ddlMemberSelect.SelectedItem.Value));
+                            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('تم ادخال العضو للجنة بنجاح')", true);
+
+                        }
+
+                    }
+                }
+                else
+                {
+                    userGrids.Add(WebApiConsume.ShowCommitteeMembersForNew(memberId)[0]);
+
+                    gvAddMember.Visible = true;
+
+                    gvAddMember.DataSource = userGrids;
+
+                    gvAddMember.DataBind();
+                    selectedUsers.Add(Convert.ToInt32(ddlMemberSelect.SelectedItem.Value));
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('تم ادخال العضو للجنة بنجاح')", true);
+                }
+                if (!membersList.Contains(memberId))
+                {
+
+
+                    //CommitteesMember input = new CommitteesMember
+                    //{
+                    //    CommitteeId = Convert.ToInt32(ViewState["CommitteeId"]),
+                    //    MemberId = memberId
+                    //};
+                    //string apiUrlUser = Utilities.BASE_URL + "/api/Users";
+
+                    //string inputJson3 = (new JavaScriptSerializer()).Serialize(input);
+                    //WebApiConsume.PostCommitteeMembersUpdate(Utilities.BASE_URL + "/api/CommitteesMembers", inputJson3);
+
+                    //Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم ادخال هذا العضو بنجاح', 'تم')", true);
+
+
+                }
 
 
             }
-
-
-
         }
 
         protected void btnAdd2_Click(object sender, EventArgs e)
@@ -378,7 +571,7 @@ namespace Committee.Views.Forms
             ddlCommitteepresident.SelectedIndex = -1;
             ddlCommitteeImportancy.SelectedIndex = -1;
             ddlCommitteeDept.SelectedIndex = -1;
-            btnAdd1.Text = "Save";
+            btnSave.Text = "Save";
             //gvCommittee.Visible = false;
             gvMembersOfCommittee.Visible = false;
 
@@ -394,367 +587,82 @@ namespace Committee.Views.Forms
         protected void btnAdd3_Click(object sender, EventArgs e)
         {
             divAddMember.Visible = false;
-           
-            //gvCommittee.Visible = true;
-            //if (Committee!=null)
-            //{
-            //    txtCommitteeDate.Text = Committee.CommitteeDate;
-            //    ddlCommitteeClassification.SelectedIndex = Committee.IsMilitarized==true ? 0 : 1;
-            //    ddlCommitteeImportancy.SelectedIndex = Committee.IsImportant == true ? 1 : 0;
-            //    ddlcommitteeStatus.SelectedIndex = Committee.IsActive == true ? 1 : 0;
-            //    txtCommitteeTopic.Text = Committee.CommitteeTopic;
-            //    txtCommitteeBasedON.Text = Committee.CommitteeBasedOn;
-            //    txtEnrollmentNumber.Text = Committee.CommitteeEnrollmentNumber;
-            //    txtEnrollmentDate.Text = Committee.CommitteeEnrollmentDate;
-            //    ViewState["committeeID"] = Committee.CommitteeId;
-            //}
-            //ViewState["update"] = 1;
-            //gvCommittee.DataSource = ShowCommittees();
-            //gvCommittee.DataBind();
+
+
         }
 
-        //protected void gvCommittee_RowDeleting(object sender, GridViewDeleteEventArgs e)
-        //{
-
-        //    int committeeId = Convert.ToInt32(gvCommittee.Rows[e.RowIndex].Cells[1].Text.ToString());
-     
-        //    WebClient client = new WebClient();
-        //    client.Headers["Content-type"] = "application/json";
-        //    client.Encoding = Encoding.UTF8;
-        //    object input = new
-        //    {
-        //        id = committeeId,
-        //    };
-        //    string inputJson3 = (new JavaScriptSerializer()).Serialize(input);
-        //    string CommitteeExist = (new JavaScriptSerializer()).Deserialize<string>(client.DownloadString(apiUrl3 + "/DeleteCommittee?id=" + committeeId.ToString()));
-        //    //Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم مسح بيانات اللجنة بنجاح', 'تم')", true);
-        //    ScriptManager.RegisterClientScriptBlock(this.Page, this.Page.GetType(), "تم", "alert('تم مسح بيانات اللجنة بنجاح');", true);
-
-        //    gvCommittee.DataSource = ShowCommittees();
-        //    gvCommittee.DataBind();
-
-        //}
-
-        private List<CommitteeSearch> ShowCommittees()
-        {
-            List<CommitteeSearch> committeesUpdate = new List<CommitteeSearch>();
-            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Committees";
-
-            WebClient client = new WebClient();
-            client.Headers["Content-type"] = "application/json";
-            client.Encoding = Encoding.UTF8;
-
-            List<Committee.Models.CommitteeRetrieveData> Committees = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.CommitteeRetrieveData>>(client.DownloadString(apiUrl3 + "/GetCommitteeDetails?committeeName=" + txtCommitteeName.Text.Trim().ToLower()+"&commiteeDate="+txtCommitteeDate.Text));
-            foreach (var committee in Committees)
-            {
-                committeesUpdate.Add(new CommitteeSearch() {رقم_اللجنه=committee.CommitteeId,اسم_اللجنه=committee.CommitteeName,تاريخ_اللجنه=committee.CommitteeDate,موضوع_اللجنه=committee.CommitteeTopic,
-                الأمر_المستند_عليه=committee.CommitteeBasedOn,الإداره=committee?.Department?.DeptName,تصنيف_اللجنه=committee.Type.titleAr,
-                حال_اللجنه=committee.Activity.titleAr,مستوى_الأهميه=committee.Importance.titleAr,
-                رئيس_اللجنه=committee.CommitteeManager,سكرتير_اللجنه=committee.CommitteeSecretary,جهة_الوارد=committee.CommitteeInbox1,
-                رقم_القيد=committee.CommitteeEnrollmentNumber,سنة_القيد=committee.CommitteeEnrollmentDate,تاريخ_التعديل=committee.CreatedAt,
-                تاريخ_اللإنشاء=committee.UpdatedAt});
-            }
-
-            return committeesUpdate;
-        }
-        private List<CommitteeSearchUpdate> ShowsCommitteesForUpdate(int committeeId)
-        {
-            List<CommitteeSearchUpdate> committeesUpdate = new List<CommitteeSearchUpdate>();
-            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Committees";
-
-            WebClient client = new WebClient();
-            client.Headers["Content-type"] = "application/json";
-            client.Encoding = Encoding.UTF8;
-
-            List<Committee.Models.CommitteeRetrieveUpdate> Committees = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.CommitteeRetrieveUpdate>>(client.DownloadString(apiUrl3 + "/GetCommitteeDetails?committeeName=" + txtCommitteeName.Text.Trim().ToLower()));
-            foreach (var committee in Committees)
-            {
-                committeesUpdate.Add(new CommitteeSearchUpdate()
-                {
-                    رقم_اللجنه = committee.CommitteeId,
-                    اسم_اللجنه = committee.CommitteeName,
-                    رئيس_اللجنه = committee.CommitteeManager,
-                    سكرتير_اللجنه = committee.CommitteeSecretary,
-                    تاريخ_اللجنه = committee.CommitteeDate,
-                    موضوع_اللجنه = committee.CommitteeTopic,
-                    الأمر_المستند_عليه = committee.CommitteeBasedOn,
-                    الإداره = committee.Department,
-                    تصنيف_اللجنه = committee.Type,
-                    حال_اللجنه = committee.Activity,
-                    مستوى_الأهميه = committee.Importance,
-                    جهة_الوارد = committee.CommitteeInbox1,
-                    رقم_القيد = committee.CommitteeEnrollmentNumber,
-                    سنة_القيد = committee.CommitteeEnrollmentDate,
-                });
-            }
-
-            return committeesUpdate;
-        }
-        private List<UserGrid> ShowCommitteeMembers(int committeeId)
-        {
-            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/CommitteesMembers";
-
-            WebClient client = new WebClient();
-            client.Headers["Content-type"] = "application/json";
-            client.Encoding = Encoding.UTF8;
-
-            List<Committee.Models.User> Committees = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.User>>(client.DownloadString(apiUrl3 + "/GetCommitteesMember?id=" + committeeId));
-           
-
-            return Committees.Select(x=>new UserGrid() { رقم_العضو=x.ID,اسم_العضو=x.UserName}).ToList();
-
-        }
- //       protected void gvCommittee_RowDataBound(object sender, GridViewRowEventArgs e)
- //       {
- //           if (e.Row.RowType == DataControlRowType.DataRow)
- //           {
- //               //Change the index number as per your gridview design
- //               e.Row.Cells[1].Enabled = false;
 
 
-
- //           }
-           
- //           if (e.Row.RowType != DataControlRowType.DataRow) return;
-
- //           var deleteButton = (LinkButton)e.Row.Cells[0].Controls[2];
- //           var editButton = (LinkButton)e.Row.Cells[0].Controls[0];
- //           var selectButton = (LinkButton)e.Row.Cells[0].Controls[4];
-
-
- //           if (Session["SystemRole"].ToString() == "1")
- //           {
- //               deleteButton.Visible = true;
- //               deleteButton.Text = "مسح";
-
- //               editButton.Visible = true;
- //               editButton.Text = "تعديل";
- //               selectButton.Text = "اختيار";
- //           }
- //           else
- //           {
- //               deleteButton.Visible = false;
- //               editButton.Visible = false;
- //               selectButton.Text = "اختيار";
- //           }
- //           // var deleteButton2 = (LinkButton)e.Row.Cells[2].Controls[0];
- //           if (deleteButton.Text == "Delete" || deleteButton.Text == "مسح")
- //           {
- //               deleteButton.Text = "مسح";
- //               deleteButton.OnClientClick = "return confirm('هل تريد مسح هذا العنصر؟');";
- //              // deleteButton2.OnClientClick = "return confirm('هل تريد مسح هذا العنصر؟');";
-
- //           }
- //       }
-
- //       protected void gvCommittee_SelectedIndexChanged(object sender, EventArgs e)
- //       {
- //           int committeeId =  Convert.ToInt32(gvCommittee.SelectedRow.Cells[1].Text);
- //           GridViewRow row = gvCommittee.SelectedRow;
- //         List<UserGrid>data = ShowCommitteeMembers(committeeId);
- //           gvMembersOfCommittee.DataSource = data.Where(x => x != null).ToList();
-               
- //           gvMembersOfCommittee.DataBind();
- //           ViewState["CommitteeId"] = committeeId;
- //           WebClient webClient = new WebClient();
- //           webClient.Headers["Content-type"] = "application/json";
- //           webClient.Encoding = Encoding.UTF8;
- //           List<Committee.Models.User> Members = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.User>>(result);
- //           ddlMemberChange.DataSource = Members;
- //           ddlMemberChange.DataTextField = "UserName";
- //           ddlMemberChange.DataValueField = "ID";
- //           ddlMemberChange.DataBind();
- //         //  divAddMember.Visible = true;
- //           List<UserGrid> data2 = ShowCommitteeMembers(committeeId);
- //           gvMembersOfCommittee.DataSource = data2.Where(x => x != null).ToList() ;
-
- //           gvMembersOfCommittee.DataBind();
- //           if (Session["SystemRole"].ToString() == "2")
-
- //           {
- //               divAddMember.Visible = true;
- //           }
-               
- //       }
-
- //       protected void gvCommittee_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
- //       {
- //           //divMembers.Visible = true;
- //           //string committeeId = gvCommittee.SelectedRow.Cells[3].Text;
- //          // gvMembersOfCommittee.DataSource = ShowCommitteeMembers(committeeId);
- //           gvMembersOfCommittee.DataBind();
-
- //       }
-
- //       protected void gvCommittee_Sorting(object sender, GridViewSortEventArgs e)
- //       {
-
- //       }
-
- //       protected void gvCommittee_PageIndexChanging(object sender, GridViewPageEventArgs e)
- //       {
- //           gvCommittee.PageIndex = e.NewPageIndex;
- //           gvCommittee.DataSource = ShowCommittees();
- //           gvCommittee.DataBind();
- //       }
-
- //       protected void gvCommittee_PageIndexChanged(object sender, EventArgs e)
- //       {
-
- //       }
-
- //       protected void gvCommittee_RowEditing(object sender, GridViewEditEventArgs e)
- //       {
-
- //           List<CommitteeSearchUpdate> committeesUpdate = new List<CommitteeSearchUpdate>();
-
- //           WebClient client = new WebClient();
- //           client.Headers["Content-type"] = "application/json";
- //           client.Encoding = Encoding.UTF8;
-
- //           Committee.Models.CommitteeRetrieveUpdate Committee = (new JavaScriptSerializer()).Deserialize<Committee.Models.CommitteeRetrieveUpdate>(client.DownloadString(apiUrl3 + "/GetCommitteeByIdForWeb?committeeId=" + gvCommittee.Rows[e.NewEditIndex].Cells[1].Text));
- //           txtCommitteeDate.Text = Committee.CommitteeDate;
- //           ddlCommitteeClassification.SelectedValue = Committee.Type.Id.ToString();
- //           ddlCommitteeImportancy.SelectedValue = Committee.Importance.Id.ToString();
- //           ddlcommitteeStatus.SelectedValue = Committee.Activity.Id.ToString() ;
- //           txtCommitteeTopic.Text = Committee.CommitteeTopic;
- //           txtCommitteeBasedON.Text = Committee.CommitteeBasedOn;
- //           txtEnrollmentNumber.Text = Committee.CommitteeEnrollmentNumber;
- //           txtEnrollmentDate.Text = Committee.CommitteeEnrollmentDate;
- //           txtInboxSide.Text = Committee.CommitteeInbox1;
- //           ddlCommitteeDept.SelectedValue = Committee?.Department?.DeptId.ToString();
- //           txtCommitteeName.Text = Committee.CommitteeName;
- //           ddlCommitteepresident.SelectedValue = Committee.CommitteeManager;
- //           ddlCommitteeSecrtary.SelectedValue = Committee.CommitteeSecretary;
-
-          
- //           btnAdd1.Text = "تعديل";
- //           ViewState["committeeID"] = gvCommittee.Rows[e.NewEditIndex].Cells[1].Text;
- //           gvCommittee.EditIndex = -1;
- //           gvCommittee.DataSource = ShowCommittees();
- //           gvCommittee.DataBind();
-
-
- //       }
-
- //       protected void gvCommittee_RowUpdating(object sender, GridViewUpdateEventArgs e)
- //       {
- //           WebClient client = new WebClient();
- //           client.Headers["Content-type"] = "application/json";
- //           client.Encoding = Encoding.UTF8;
-
- //           GridViewRow row = (GridViewRow)gvCommittee.Rows[e.RowIndex];
- //           TextBox textid = (TextBox)row.Cells[1].Controls[0];
- //           int id1 = Convert.ToInt32(textid.Text);
- //           TextBox CommitteeName = (TextBox)row.Cells[3].Controls[0];
- //           DropDownList CommitteManagerName = (DropDownList)row.Cells[2].Controls[0];
-            
- //           DropDownList CommitteeSecrtary = (DropDownList)row.Cells[4].Controls[0];
- //           DropDownList Active=(DropDownList)row.Cells[11].Controls[0];
- //           DropDownList Important = (DropDownList)row.Cells[12].Controls[0];
- //           DropDownList Militraized = (DropDownList)row.Cells[13].Controls[0];
- //           TextBox committeeDate = (TextBox)row.Cells[5].Controls[0];
- //           TextBox committeeTopic = (TextBox)row.Cells[6].Controls[0];
- //           TextBox committeeBasedOn = (TextBox)row.Cells[7].Controls[0];
- //           TextBox committeeInbox1 = (TextBox)row.Cells[8].Controls[0];
- //           TextBox committeeEnrollmentNumber = (TextBox)row.Cells[9].Controls[0];
- //           TextBox committeeEnrollmentDate = (TextBox)row.Cells[10].Controls[0];
- ////Setting the EditIx property to -1 to cancel the Edit mode in Gridview  
- //           gvCommittee.EditIndex = -1;
-
- //           //Call ShowData method for displaying updated data  
-
- //           Committee.Models.Committee committeeUpdate = new Models.Committee()
- //           {
- //               CommitteeId = Convert.ToInt32(textid.Text),
- //               CommitteeName = CommitteeName.Text,
- //               CommitteeDate = committeeDate.Text,
- //               //IsMilitarized =Militraized.Checked,
- //               //IsActive = Active.Checked,
- //               //IsImportant = Important.Checked,
- //               CommitteeTopic = committeeTopic.Text,
- //               CommitteeBasedOn = committeeBasedOn.Text,
- //               CommitteeInbox1 = committeeInbox1.Text,
- //               CommitteeEnrollmentNumber = committeeEnrollmentNumber.Text,
- //               CommitteeEnrollmentDate = committeeEnrollmentDate.Text,
- //               CommitteeSecretary = CommitteeSecrtary.Text,
- //               CommitteeManager = CommitteManagerName.Text
-
- //           };
- //           string inputJson = (new JavaScriptSerializer()).Serialize(committeeUpdate);
-
- //           client.UploadString(apiUrlUpdate + "/PutCommittee?id=" + Convert.ToInt32(textid.Text), inputJson);
- //           ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('تم تعديل بيانات اللجنة بنجاح')", true);
-
- //           gvCommittee.DataSource = ShowCommittees();
- //           gvCommittee.DataBind();
- //       }
-
- //       protected void gvCommittee_DataBound(object sender, EventArgs e)
- //       {
-
- //       }
-
- //       protected void gvCommittee_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
- //       {
- //           gvCommittee.EditIndex = -1;
- //           gvCommittee.DataSource = ShowCommittees();
- //           gvCommittee.DataBind();
- //       }
 
         protected void btnAddChange_Click(object sender, EventArgs e)
         {
             List<int> membersList = new List<int>();
             foreach (GridViewRow row in gvMembersOfCommittee.Rows)
             {
-                    
-                    int member =  Convert.ToInt32(row.Cells[1].Text);
+
+                int member = Convert.ToInt32(row.Cells[1].Text);
                 membersList.Add(member);
-                
+
             }
-            string apiUrl2 = "https://committeeapi20190806070934.azurewebsites.net/api/CommitteesMembers";
-            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Users";
-            WebClient client3 = new WebClient();
-            client3.Headers["Content-type"] = "application/json";
-            client3.Encoding = Encoding.UTF8;
-            int memberId = (new JavaScriptSerializer()).Deserialize<int>(client3.DownloadString(apiUrl3 + "/GetUserId?memberName=" + ddlMemberChange.SelectedItem.Text));
+            string apiUrl2 = Utilities.BASE_URL+"/api/CommitteesMembers";
+            int memberId = WebApiConsume.GetUserId(Utilities.BASE_URL+"/api/Users", ddlMemberChange.SelectedItem.Text);
             if (!membersList.Contains(memberId))
             {
-
+                int? meetingId = WebApiConsume.GetMeetingId(Utilities.BASE_URL + "/api/Committees", Convert.ToInt32(ViewState["CommitteeId"]), ViewState["CreatedAt"].ToString());
 
                 CommitteesMember input = new CommitteesMember
                 {
                     CommitteeId = Convert.ToInt32(ViewState["CommitteeId"]),
-                    MemberId = memberId
+                    MemberId = memberId,
+                    CommitteeRole=6,
+                    UpdatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                    CreatedAt = ViewState["CreatedAt"].ToString(),
+                    MeetingId=meetingId
                 };
-                string apiUrlUser = "https://committeeapi20190806070934.azurewebsites.net/api/Users";
-                WebClient client2 = new WebClient();
-                client2.Headers["Content-type"] = "application/json";
-                client2.Encoding = Encoding.UTF8;
-                string inputJson3 = (new JavaScriptSerializer()).Serialize(input);
-                client2.UploadString(apiUrl2 + "/PostCommitteesMember", inputJson3);
-                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('تم اضافة العضو لللجنة بنجاح')", true);
-                //Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم اضافة العضو لللجنة بنجاح', 'تم')", true);
-                ScriptManager.RegisterClientScriptBlock(this.Page, this.Page.GetType(), "تم", "alert('تم اضافة العضو لللجنة بنجاح');", true);
-
-                User userFcm = (new JavaScriptSerializer()).Deserialize<User>(client2.DownloadString(apiUrlUser + "/GetUser?id=" + memberId));
-                string apiUrlFcm = "https://committeeapi20190806070934.azurewebsites.net/api/Fcm";
-                WebClient clienfcm = new WebClient();
-                clienfcm.Headers["Content-type"] = "application/json";
-                clienfcm.Encoding = Encoding.UTF8;
-                object UserFcmo = new
+                try
                 {
+                    string apiUrlUser = Utilities.BASE_URL + "/api/Users";
 
-                    Action_id = Convert.ToInt32(ViewState["CommitteeId"]),
-                    Body = "اشعار بخصوص لجنة",
-                    Click_action = "type_join_committe", Title = "اضافة لجنة"
-                };
-                string inputFcm = (new JavaScriptSerializer()).Serialize(UserFcmo);
-                clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to=" + userFcm.FCMToken, inputFcm);
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم ارسال الاشعارات بنجاح', 'تم')", true);
-                gvMembersOfCommittee.DataSource = ShowCommitteeMembers(Convert.ToInt32(ViewState["CommitteeId"]));
+                    string inputJson3 = (new JavaScriptSerializer()).Serialize(input);
+                    WebApiConsume.PostCommitteeMembersUpdate(Utilities.BASE_URL + "/api/CommitteesMembers", inputJson3);
 
-                gvMembersOfCommittee.DataBind();
+
+                    gvMembersOfCommittee.DataSource = WebApiConsume.ShowCommitteeMembers(Convert.ToInt32(ViewState["CommitteeId"]));
+
+                    gvMembersOfCommittee.DataBind();
+                    User userFcm = WebApiConsume.GetUserById(Utilities.BASE_URL + "/api/Users", memberId);
+                    string apiUrlFcm = Utilities.BASE_URL + "/api/Fcm";
+                    WebApiConsume.SendUserNotification(apiUrlFcm, Convert.ToInt32(ViewState["CommitteeId"]), txtCommitteeName.Text, userFcm.FCMToken);
+                    //SMS.SendSms("+" + Convert.ToInt64(userFcm.Phone), "انت عضو فى لجنة " + "\n" + txtCommitteeName.Text + " المشكلة بتاريخ   " + "\n" + txtCommitteeDate.Text);
+                    Utilities.SendMailToOnePerson(userFcm.UserEmailId, "انضمام للجنة", "تم اضافتك للجنة بنجاح");
+                    ScriptManager.RegisterClientScriptBlock(this.Page, this.Page.GetType(), "تم", "alert('تم اضافة العضو لللجنة بنجاح');", true);
+                }
+                catch (Exception ex)
+                {
+                    string filePath = @Utilities.LogError_Path + "Error.txt";
+
+
+                    using (StreamWriter writer = new StreamWriter(filePath, true))
+                    {
+                        writer.WriteLine("-----------------------------------------------------------------------------");
+                        writer.WriteLine("Date : " + DateTime.Now.ToString());
+                        writer.WriteLine();
+
+                        while (ex != null)
+                        {
+                            writer.WriteLine(ex.GetType().FullName);
+                            writer.WriteLine("Message : " + ex.Message);
+                            writer.WriteLine("StackTrace : " + ex.StackTrace);
+
+                            ex = ex.InnerException;
+                        }
+                    }
+
+
+                }
+
+                //Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم ارسال الاشعارات بنجاح', 'تم')", true);
+
             }
             else
             {
@@ -769,24 +677,24 @@ namespace Committee.Views.Forms
         protected void gvMembersOfCommittee_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             int memberId = Convert.ToInt32(gvMembersOfCommittee.Rows[e.RowIndex].Cells[1].Text.ToString());
-            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/CommitteeMembers";
+            string apiUrl3 = Utilities.BASE_URL+"/api/CommitteeMembers";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
-            int committeeId =Convert.ToInt32(ViewState["CommitteeId"]);
+            int committeeId = Convert.ToInt32(ViewState["CommitteeId"]);
             object input = new
             {
                 memberId = memberId,
-                committeeId= committeeId
+                committeeId = committeeId
             };
-            
+
             string inputJson3 = (new JavaScriptSerializer()).Serialize(input);
-            client.UploadString(apiUrl3 + "/DeleteCommitteeMembers?memberId="+memberId+ "&committeeId="+committeeId, inputJson3);
+            client.UploadString(apiUrl3 + "/DeleteCommitteeMembers?memberId=" + memberId + "&committeeId=" + committeeId, inputJson3);
             Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم مسح العضو من اللجنة بنجاح', 'تم')", true);
 
 
-            gvMembersOfCommittee.DataSource = ShowCommitteeMembers(Convert.ToInt32(ViewState["CommitteeId"]));
+            gvMembersOfCommittee.DataSource = WebApiConsume.ShowCommitteeMembers(Convert.ToInt32(ViewState["CommitteeId"]));
 
             gvMembersOfCommittee.DataBind();
         }
@@ -818,16 +726,70 @@ namespace Committee.Views.Forms
             {
                 deleteButton.Visible = true;
             }
-            if (deleteButton.Text == "Delete" || deleteButton.Text=="مسح")
+            if (deleteButton.Text == "Delete" || deleteButton.Text == "مسح")
             {
-                deleteButton.Text = "مسح";
+                deleteButton.Text = "مسح من اللجنة";
+                deleteButton.Font.Underline = true;
+               
+
                 deleteButton.OnClientClick = "return confirm('هل تريد مسح هذا العنصر؟');";
                 // deleteButton2.OnClientClick = "return confirm('هل تريد مسح هذا العنصر؟');";
 
             }
+            if (Request.QueryString["status"] == "selected" || Request.QueryString["status"] == "updated")
+            {
+                deleteButton.Visible = true;
+                
+            }
         }
-      
 
+        private List<Committee.Models.MeetingSearch> ShowMeetings(int committeeId)
+        {
+            List<Committee.Models.MeetingSearch> meetingResults = new List<Models.MeetingSearch>();
+            string apiUrl3 = Utilities.BASE_URL+"/api/Committees";
+
+            WebClient client = new WebClient();
+            client.Headers["Content-type"] = "application/json";
+            client.Encoding = Encoding.UTF8;
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            List<Committee.Models.Meeting> meetings = serializer.Deserialize<List<Committee.Models.Meeting>>(client.DownloadString(apiUrl3 + "/GetCommitteeMeetings?committeeId=" + committeeId));
+            if (meetings.Count != 0)
+            {
+                lblgvMeeting.Visible = true;
+                lblgvMeeting.Text = "اجتماعات اللجنة";
+                int status = 0;
+                foreach (var meeting in meetings)
+                {
+                    if (meeting != null)
+                    {
+
+
+
+                        meetingResults.Add(new Models.MeetingSearch()
+                        {
+                            الرقم = meeting.MeetingId,
+                            عنوان_الاجتماع = meeting?.MeetingTitle,
+                            تاريخ_الاجتماع = meeting?.MeetingDate,
+                            وقت_الاجتماع = meeting?.MeetingTime,
+                            موقع_الاجتماع = meeting?.MeetingAddress,
+                            حالة_الاجتماع = meeting?.MeetingHistories.Count == 0 ? "" : meeting.MeetingHistories.LastOrDefault(x => x.MeetingId == meeting.MeetingId).TitleAr
+
+
+                        });
+                    }
+                }
+
+
+            }
+            else
+            {
+                lblgvMeeting.Text = " لا يوجد اجتماعات لهذه اللجنة";
+            }
+
+            return meetingResults;
+
+        }
         protected void txtCommitteeDate_TextChanged(object sender, EventArgs e)
         {
 
@@ -836,7 +798,7 @@ namespace Committee.Views.Forms
         protected void gvMembersOfCommittee_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
             gvMembersOfCommittee.PageIndex = e.NewPageIndex;
-            gvMembersOfCommittee.DataSource = ShowCommitteeMembers(Convert.ToInt32(ViewState["CommitteeId"]));
+            gvMembersOfCommittee.DataSource = WebApiConsume.ShowCommitteeMembers(Convert.ToInt32(ViewState["CommitteeId"]));
             gvMembersOfCommittee.DataBind();
         }
 
@@ -848,6 +810,156 @@ namespace Committee.Views.Forms
         protected void btnAdd1_Command(object sender, CommandEventArgs e)
         {
 
+        }
+
+        protected void gvMeeting_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void gvMeeting_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
+        {
+            int id = Convert.ToInt32(gvMeeting.Rows[e.NewSelectedIndex].Cells[1].Text);
+            Response.Redirect("Meeting.aspx?meetingId=" + id + "&status=selected");
+        }
+
+        protected void gvMeeting_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            int id = Convert.ToInt32(gvMeeting.Rows[e.NewEditIndex].Cells[1].Text);
+            Response.Redirect("Meeting.aspx?meetingId=" + id + "&status=update");
+        }
+
+        protected void gvMeeting_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            int meetingId = Convert.ToInt32(gvMeeting.Rows[e.RowIndex].Cells[1].Text.ToString());
+            string apiUrl3 = Utilities.BASE_URL+"/api/Meetings";
+
+            WebClient client = new WebClient();
+            client.Headers["Content-type"] = "application/json";
+            client.Encoding = Encoding.UTF8;
+            object input = new
+            {
+                id = meetingId,
+            };
+            string inputJson3 = (new JavaScriptSerializer()).Serialize(input);
+            string meeting = (new JavaScriptSerializer()).Deserialize<string>(client.DownloadString(apiUrl3 + "/DeleteMeeting?id=" + meetingId));
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم مسح بيانات العضو بنجاح', 'تم')", true);
+            gvMeeting.DataSource = ShowMeetings(Convert.ToInt32(ViewState["CommitteeId"]));
+            gvMeeting.DataBind();
+        }
+
+        protected void gvMeeting_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                //Change the index number as per your gridview design
+                e.Row.Cells[1].Enabled = false;
+
+                if (e.Row.RowType != DataControlRowType.DataRow) return;
+
+                var deleteButton = (LinkButton)e.Row.Cells[0].Controls[2];
+                var editButton = (LinkButton)e.Row.Cells[0].Controls[0];
+                var selectButton = (LinkButton)e.Row.Cells[0].Controls[4];
+                if (deleteButton.Text == "Delete")
+                {
+                    deleteButton.Text = "مسح";
+                    deleteButton.OnClientClick = "return confirm('هل تريد مسح هذا العنصر؟');";
+                    // deleteButton2.OnClientClick = "return confirm('هل تريد مسح هذا العنصر؟');";
+
+                }
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    //Change the index number as per your gridview design
+                    e.Row.Cells[1].Enabled = false;
+
+
+
+                }
+
+                selectButton.Visible = true;
+                selectButton.ForeColor = System.Drawing.Color.Blue;
+                selectButton.BorderColor = System.Drawing.Color.White;
+                selectButton.Font.Size = FontUnit.Medium;
+                selectButton.Font.Underline = true;
+                deleteButton.Visible = true;
+                deleteButton.ForeColor = System.Drawing.Color.DarkRed;
+                deleteButton.BackColor = System.Drawing.Color.White;
+                deleteButton.BorderColor = System.Drawing.Color.DarkRed;
+                deleteButton.Font.Size = FontUnit.Medium;
+                deleteButton.BorderWidth = 2;
+                deleteButton.Text = "مسح";
+
+                editButton.Visible = true;
+                editButton.ForeColor = System.Drawing.Color.Gray;
+                editButton.BackColor = System.Drawing.Color.White;
+                editButton.BorderColor = System.Drawing.Color.White;
+                editButton.Font.Size = FontUnit.Medium;
+                editButton.BorderWidth = 2;
+                editButton.Text = "تعديل";
+                selectButton.Text = "اختيار";
+            }
+        }
+
+        protected void gvMeeting_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+
+        }
+
+        protected void gvAddMember_DataBound(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void gvAddMember_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+
+        }
+
+        protected void gvAddMember_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                //Change the index number as per your gridview design
+                e.Row.Cells[1].Enabled = false;
+
+                if (e.Row.RowType != DataControlRowType.DataRow) return;
+
+                var deleteButton = (LinkButton)e.Row.Cells[0].Controls[0];
+              
+                if (deleteButton.Text == "Delete")
+                {
+                    deleteButton.Text = "مسح";
+                    deleteButton.OnClientClick = "return confirm('هل تريد مسح هذا العنصر؟');";
+                    // deleteButton2.OnClientClick = "return confirm('هل تريد مسح هذا العنصر؟');";
+
+                }
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    //Change the index number as per your gridview design
+                    e.Row.Cells[1].Enabled = false;
+
+
+
+                }
+
+         
+                deleteButton.Visible = true;
+                deleteButton.ForeColor = System.Drawing.Color.DarkRed;
+                deleteButton.BackColor = System.Drawing.Color.White;
+                deleteButton.BorderColor = System.Drawing.Color.DarkRed;
+                deleteButton.Font.Size = FontUnit.Medium;
+                deleteButton.BorderWidth = 2;
+                deleteButton.Text = "مسح";
+
+             
+            }
+        }
+
+        protected void gvAddMember_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            userGrids.RemoveAt(e.RowIndex);
+            gvAddMember.DataSource = userGrids;
+            gvAddMember.DataBind();
         }
     }
 }

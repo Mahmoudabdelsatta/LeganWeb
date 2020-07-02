@@ -17,6 +17,7 @@ namespace Committee.Models
         public string CommitteeInbox1 { get; set; }
         public string CommitteeEnrollmentNumber { get; set; }
         public string CommitteeEnrollmentDate { get; set; }
+        public string CreatedAt { get; set; }
         public User User { get; set; }
         public virtual Activity Activity { get; set; }
         public virtual Importance Importance { get; set; }

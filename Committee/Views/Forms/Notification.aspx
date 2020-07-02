@@ -60,7 +60,14 @@
                         </asp:DropDownList>
 								</div>
 							</div>
-							
+								<div class="form-group">
+								<label for="field-1" class="col-sm-3 control-label">نص الرسالة :</label>
+								
+								<div class="col-sm-5">
+							 <asp:TextBox ID="textMessage" runat="server" TextMode="MultiLine" CssClass="form-control"></asp:TextBox>
+
+								</div>
+							</div>
 							<div class="form-group">
 								<label for="field-2" class="col-sm-3 control-label">ارسال عن طريق :</label>
 								

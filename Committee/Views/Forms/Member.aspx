@@ -26,11 +26,13 @@
 							</li>
 						<li class="active">
 		
-									<strong>إضافة عضو</strong>
+									<strong>
+               <asp:Label ID="lblMemberNew" runat="server" Text="Label"></asp:Label></strong>
 							</li>
 							</ol>
 					
-		<h2>إضافة عضو جديد</h2>
+		<h2>
+                   <asp:Label ID="lblMemberH1" runat="server" Text="Label"></asp:Label></h2>
 		<br />
 		
 		
@@ -41,7 +43,7 @@
 				
 					<div class="panel-heading">
 						<div class="panel-title">
-							لجنة
+							عضو
 						</div>
 						
 						<div class="panel-options">
@@ -61,44 +63,46 @@
       </div>
          <div class="col-sm-4">
             </div>
+  <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional">
+                    <ContentTemplate>
           <div class="col-sm-1">
           <asp:LinkButton ID="LinkButton1" runat="server" CssClass="btn btn-white" PostBackUrl="~/Views/Forms/MemberMangement.aspx" > الغاء</asp:LinkButton>
 
             </div>
 								<div class="col-sm-1">
 <%--                                    <asp:Button ID="btnAdd1" runat="server"  Text="حفظ" OnClick="btnAdd1_Click" ValidationGroup="a" CssClass="btn btn-success" />--%>
-                                   <asp:LinkButton ID="btnAdd1" Font-Size="Medium" runat="server" Text="حفظ" OnClick="btnAdd1_Click" ValidationGroup="a" CssClass="btn btn-success">حفظ</asp:LinkButton>
+                                   <asp:LinkButton ID="btnSave" Font-Size="Medium" runat="server" Text="حفظ" OnClick="btnSave_Click" ValidationGroup="a" CssClass="btn btn-success">حفظ</asp:LinkButton>
 
 								</div>
-
+                        </ContentTemplate></asp:UpdatePanel>
 							</div>
 
 					
 
 							<div class="form-group">
 								<label for="field-1" class="col-sm-3 control-label">الإسم :</label>
-								
+							 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="هذا الحقل مطلوب" Font-Size="Large" ValidationGroup="a" ForeColor="Red" ControlToValidate="txtMemberName"></asp:RequiredFieldValidator>
+
 								<div class="col-sm-5">
-									 <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="هذا الحقل مطلوب" Font-Size="Large" ValidationGroup="a" ForeColor="Red" ControlToValidate="txtMemberName"></asp:RequiredFieldValidator>
                         <asp:TextBox ID="txtMemberName"  runat="server" CssClass="form-control" ValidationGroup="a"></asp:TextBox>
 								</div>
 							</div>
 							
 							<div class="form-group">
 								<label for="field-2" class="col-sm-3 control-label">رقم الجوال :</label>
+									  <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="هذا الحقل مطلوب" Font-Size="Large" ValidationGroup="a" ForeColor="Red" ControlToValidate="txtPhoneNumber"></asp:RequiredFieldValidator>
+                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1"  ValidationGroup="a" runat="server" ControlToValidate="txtPhoneNumber" ErrorMessage="رقم غير صحيح" ValidationExpression="^(9665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$" ForeColor="Red"></asp:RegularExpressionValidator>
 								
 								<div class="col-sm-5">
-									  <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="هذا الحقل مطلوب" Font-Size="Large" ValidationGroup="a" ForeColor="Red" ControlToValidate="txtPhoneNumber"></asp:RequiredFieldValidator>
-                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator1"  ValidationGroup="a" runat="server" ControlToValidate="txtPhoneNumber" ErrorMessage="Invalid phone number" ValidationExpression="^(9665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$" ForeColor="Red"></asp:RegularExpressionValidator>
 
                         <asp:TextBox ID="txtPhoneNumber" runat="server"  CssClass="form-control" ValidationGroup="a"></asp:TextBox>
 								</div>
 							</div>
                         <div class="form-group">
 								<label for="field-1" class="col-sm-3 control-label">البريد الالكترونى : </label>
+									 <asp:RegularExpressionValidator ID="RegularExpressionValidator2" Font-Size="Large" ValidationGroup="a" runat="server" ControlToValidate="txtMemberEmail" ErrorMessage="ايميل غير صحيح" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" ForeColor="Red"></asp:RegularExpressionValidator>
 								
 								<div class="col-sm-5">
-									 <asp:RegularExpressionValidator ID="RegularExpressionValidator2"  ValidationGroup="a" runat="server" ControlToValidate="txtMemberEmail" ErrorMessage="Inalid Email" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" ForeColor="Red"></asp:RegularExpressionValidator>
 
                         <asp:TextBox ID="txtMemberEmail" runat="server"  CssClass="form-control" ValidationGroup="a"></asp:TextBox>
 								</div>
@@ -139,12 +143,13 @@
                         </asp:DropDownList>
 								</div>
 							</div>
-                        <div class="form-group">
+                         <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                    <ContentTemplate>
+                        <div class="form-group" id="divRoles" runat="server">
 								<label class="col-sm-3 control-label">الدور :</label>
 								
 								<div class="col-sm-5">
-                                      <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
-            <ContentTemplate>
+                                    
 									<asp:DropDownList ID="ddlMemberRole" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="ddlMemberRole_SelectedIndexChanged">
                                          <asp:ListItem Value="6">عضو</asp:ListItem>
                             <asp:ListItem Value="1">مدير نظام</asp:ListItem>
@@ -153,24 +158,57 @@
 <asp:ListItem Value="4">مدير إدارة</asp:ListItem>
                                          <asp:ListItem Value="5">مدير عام</asp:ListItem>
                         </asp:DropDownList>
-                </ContentTemplate></asp:UpdatePanel>
+                     
+              
 								</div>
 							</div>
-                            <div class="form-group" visible="false" id="divUserNameandpass" runat="server">
+                         <div class="form-group" visible="false" id="mangerForDept" runat="server">
+								<label class="col-sm-3 control-label"> مدير نظام إدارى:</label>
+								
+								<div class="col-sm-5">
+									<asp:DropDownList ID="ddlmangerForDept"  runat="server" CssClass="form-control">
+                           
+                        </asp:DropDownList>
+								</div>
+							</div>
+                          <div class="form-group" visible="false" id="divuserNameOfManager" runat="server">
                              
-                                <div class="col-sm-5">
-                <asp:Label ID="Label4" class="col-sm-3 control-label" runat="server" Text="اسم المستخدم:"></asp:Label>
+                            <asp:Label ID="Label1"  class="col-sm-3 control-label" runat="server" Text="اسم المستخدم:"></asp:Label>
 
-                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="*" ValidationGroup="a" ForeColor="Red" ControlToValidate="txtUserName"></asp:RequiredFieldValidator>
-                        <asp:TextBox ID="txtUserName" runat="server" Font-Size="Medium" style="direction:ltr" CssClass="form-control" ValidationGroup="a"></asp:TextBox>
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ErrorMessage="*" ValidationGroup="a" ForeColor="Red" ControlToValidate="txtuserNameOfManager"></asp:RequiredFieldValidator>
+
+								<div class="col-sm-5">
+                        <asp:TextBox ID="txtuserNameOfManager" runat="server" Font-Size="Medium" style="direction:rtl" CssClass="form-control" ValidationGroup="a"></asp:TextBox>
                                 </div>
-                                <div class="col-sm-5">
+                                </div>
+                                <div class="form-group" visible="false" id="divPasswordOfManager" runat="server">
+                               
+                          <asp:Label ID="Label2" class="col-sm-3 control-label" runat="server" Text="الرقم السري:"></asp:Label>
+
+                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ErrorMessage="*" ValidationGroup="a" ForeColor="Red" ControlToValidate="txtPasswordOfManager"></asp:RequiredFieldValidator>
+                         <div class="col-sm-5">
+                            <asp:TextBox ID="txtPasswordOfManager" runat="server" Font-Size="Medium"  CssClass="form-control" ValidationGroup="a" TextMode="Password"></asp:TextBox>
+                                </div>
+                            </div> 
+                            <div class="form-group" visible="false" id="divUserName" runat="server">
+                             
+                            <asp:Label ID="Label4"  class="col-sm-3 control-label" runat="server" Text="اسم المستخدم:"></asp:Label>
+
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="*" ValidationGroup="a" ForeColor="Red" ControlToValidate="txtUserName"></asp:RequiredFieldValidator>
+
+								<div class="col-sm-5">
+                        <asp:TextBox ID="txtUserName" runat="server" Font-Size="Medium" style="direction:rtl" CssClass="form-control" ValidationGroup="a"></asp:TextBox>
+                                </div>
+                                </div>
+                        <div class="form-group" visible="false" id="divpass" runat="server">
+                               
                           <asp:Label ID="Label5" class="col-sm-3 control-label" runat="server" Text="الرقم السري:"></asp:Label>
 
-                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="*" ValidationGroup="a" ForeColor="Red" ControlToValidate="txtUserName"></asp:RequiredFieldValidator>
-                        <asp:TextBox ID="txtPass" runat="server" Font-Size="Medium" style="direction:ltr" CssClass="form-control" ValidationGroup="a" TextMode="Password"></asp:TextBox>
+                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="*" ValidationGroup="a" ForeColor="Red" ControlToValidate="txtPass"></asp:RequiredFieldValidator>
+                         <div class="col-sm-5">
+                            <asp:TextBox ID="txtPass" runat="server" Font-Size="Medium"  CssClass="form-control" ValidationGroup="a" TextMode="Password"></asp:TextBox>
                                 </div>
-                </div>
+                            </div> 
                         <div class="form-group" visible="false" id="divDept" runat="server">
 								<label class="col-sm-3 control-label">الإدارة :</label>
 								
@@ -180,23 +218,34 @@
                         </asp:DropDownList>
 								</div>
 							</div>
-                         
-                        <div class="form-group">
+                            </ContentTemplate></asp:UpdatePanel> 
+                    
+                        <div class="form-group" id="divImage" runat="server">
 								<label class="col-sm-3 control-label">الصورة : </label>
 								
 								<div class="col-sm-5">
+                                      <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
+    <ContentTemplate>
 							<asp:FileUpload ID="ImgUpload" runat="server"  CssClass="form-control file2 inline btn btn-primary" AllowMultiple="false" data-label="<i class='glyphicon glyphicon-circle-arrow-up'></i> &nbsp;Browse Files" />
-                            <asp:Image ID="ImgUser" runat="server" Visible="false" Width="200px" Height="200px" />
+              </ContentTemplate>
+    <Triggers>
+ <asp:PostBackTrigger ControlID="btnSave" />
+</Triggers>
+</asp:UpdatePanel>                   
+        
 								</div>
 							</div>
-                        
-                   
-                               
+                 <div class="form-group" id="divImgPreview" runat="server">
+                     <label class="col-sm-3 control-label">الصورة : </label>
+								
+								<div class="col-sm-5">
+                        <asp:Image ID="ImgUser" runat="server" Visible="false" Width="200px" Height="200px" />
+                  
+                               </div>
 							</div>
                             
 
 	</div>
-                </div>
             
             <div class="form-group">
                          <div class="col-sm-5">

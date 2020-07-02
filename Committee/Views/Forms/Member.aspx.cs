@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Committee.Controller;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,44 +17,174 @@ namespace Committee.Views.Forms
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            Page.Form.Attributes.Add("enctype", "multipart/form-data");
+            
             if (Session["UserName"] == null || Session["SystemRole"] == null)
             {
                 Response.Redirect("login.aspx");
             }
             if (!IsPostBack)
             {
-                if (Request.QueryString["status"] == "update")
+                if (Session["SystemRole"].ToString() == "1")
                 {
-                    ImgUser.Visible = true;
-                    string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Users";
+                    mangerForDept.Visible = true;
+                    divRoles.Visible = false;
+                    divuserNameOfManager.Visible = true;
+                    divPasswordOfManager.Visible = true;
+                    divDept.Visible = false;
+                    WebClient webClient = new WebClient();
+                    webClient.Headers["Content-type"] = "application/json";
+                    webClient.Encoding = Encoding.UTF8;
+                    string result2 = webClient.DownloadString(Utilities.BASE_URL + "/api/Deapartments/GetDepartments");
+                    List<Committee.Models.Department> departments = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.Department>>(result2);
+
+
+                    ddlmangerForDept.DataSource = departments;
+                    ddlmangerForDept.DataTextField = "DeptName";
+                    ddlmangerForDept.DataValueField = "DeptId";
+                    ddlmangerForDept.DataBind();
+                    ddlmangerForDept.Items.Insert(0, new ListItem("أختر من القائمه", "NULL"));
+                }
+                else
+                {
+                    ddlMemberRole.SelectedValue = "6";
+                    ddlMemberRole.Enabled = false;
+                }
+                Committee.Models.User user = new Models.User();
+                string apiUrl3 = Utilities.BASE_URL+"/api/Users";
 
                     WebClient client = new WebClient();
                     client.Headers["Content-type"] = "application/json";
                     client.Encoding = Encoding.UTF8;
+                if (Request.QueryString["status"] == "new")
+                {
+                    divImgPreview.Visible = false;
+                
+                        lblMemberNew.Text = "اضافة عضو";
+                        lblMemberH1.Text = "اضافة عضو جديد";
+                   
+                }
+                else
+                {
+                   user = (new JavaScriptSerializer()).Deserialize<Committee.Models.User>(client.DownloadString(apiUrl3 + "/GetUserById?id=" +Convert.ToInt32(Request.QueryString["mId"])));
 
-                    Committee.Models.User user = (new JavaScriptSerializer()).Deserialize<Committee.Models.User>(client.DownloadString(apiUrl3 + "/GetUserById?id=" + Request.QueryString["mId"]));
+                }
+                if (Request.QueryString["status"] == "update")
+                {
+                    ViewState["UserID"] = Request.QueryString["mId"];
+                    lblMemberNew.Text = "تعديل عضو";
+                    lblMemberH1.Text= "تعديل عضو";
+                    ImgUser.Visible = true;
+                 
 
+                    
+                    txtPass.Text = Encryptor.MD5Hash(user.UserPassword);
 
                     txtMemberName.Text = user.Name;
                     txtMemberEmail.Text = user.UserEmailId;
                     txtPhoneNumber.Text = user.Phone;
+                    ViewState["Phone"] = txtPhoneNumber.Text;
                     txtMemberJob.Text = user.Title;
                     ddlMemberType.SelectedValue = user.Gender;
                     txtWorkSide.Text = user.WorkSide;
-                    ddlMemberRole.SelectedValue = user?.SystemRole.ToString();
+              
                     txtUserName.Text = user.UserName;
-                    txtPass.Text = user.UserPassword;
+                   // txtPass.Text = user.UserPassword;
                     txtAddress.Text = user.Address;
                     ddlCommitteeDept.SelectedValue = user?.Department?.DeptId.ToString();
-                  
-                    ImgUser.ImageUrl = "~/MasterPage/Uploads" + user?.UserImage;
+                    if (Session["SystemRole"].ToString() == "1")
+                    {
+                        divDept.Visible = false;
+                        mangerForDept.Visible = true;
+                        divUserName.Visible = false;
+                        divuserNameOfManager.Visible = true;
+                        divpass.Visible = false;
+                        divPasswordOfManager.Visible = true;
+                        txtuserNameOfManager.Text = user.UserName;
+                        txtPasswordOfManager.Text = Encryptor.MD5Hash(user.UserPassword);
+                        ddlmangerForDept.SelectedValue = user?.Department?.DeptId.ToString();
 
-
-
-                   
-                    ViewState["UserID"] = Request.QueryString["mId"];
-                 
+                    }
+                    else
+                    {
+                        ddlMemberRole.SelectedValue = "6";
+                        ddlMemberRole.Enabled = false;
+                    }
                 }
+
+               
+                    if (!String.IsNullOrWhiteSpace(user.UserImage))
+                    {
+                        ImgUser.ImageUrl = "~/MasterPage/Uploads/"+user?.UserImage;
+                        divImgPreview.Visible = true;
+
+                    }
+                    else
+                    {
+                        ImgUser.Visible = false;
+                        divImgPreview.Visible = false;
+
+                    }
+
+
+
+
+
+               
+                 
+                
+                if (Request.QueryString["status"] == "selected")
+                {
+                    lblMemberNew.Text = "عرض العضو";
+                    lblMemberH1.Text = "عرض العضو";
+                    txtPass.Text = Encryptor.MD5Hash(user.UserPassword);
+                    txtPass.Enabled = false;
+                    txtMemberName.Text = user.Name;
+                    txtMemberName.Enabled = false;
+                    txtMemberEmail.Text = user.UserEmailId;
+                    txtMemberEmail.Enabled = false;
+                    txtPhoneNumber.Text = user.Phone;
+                    txtPhoneNumber.Enabled = false;
+                    txtMemberJob.Text = user.Title;
+                    txtMemberJob.Enabled = false;
+                    ddlMemberType.SelectedValue = user.Gender;
+                    ddlMemberType.Enabled = false;
+                    txtWorkSide.Text = user.WorkSide;
+                    txtWorkSide.Enabled = false;
+                    ddlMemberRole.SelectedValue = user?.SystemRole.ToString();
+                    ddlMemberRole.Enabled = false;
+                    txtUserName.Text = user.UserName;
+                    txtUserName.Enabled = false;
+                    // txtPass.Text = user.UserPassword;
+                    txtAddress.Text = user.Address;
+                    txtAddress.Enabled = false;
+                    ddlCommitteeDept.SelectedValue = user?.Department?.DeptId.ToString();
+                    ddlCommitteeDept.Enabled = false;
+                    divImage.Visible=false;
+                    ImgUser.Visible = true;
+                    btnSave.Visible = false;
+                    if (!String.IsNullOrWhiteSpace(user.UserImage))
+                    {
+                        ImgUser.ImageUrl = "~/MasterPage/Uploads" + user?.UserImage;
+                        divImgPreview.Visible = true;
+
+                    }
+                    else
+                    {
+                        divImgPreview.Visible = false;
+                    }
+
+
+
+
+
+                    ViewState["UserID"] = Request.QueryString["mId"];
+                }
+                
+            }
+            else
+            {
+
             }
         }
 
@@ -75,91 +206,282 @@ namespace Committee.Views.Forms
             txtUserName.Text = "";
             txtWorkSide.Text = "";
             ddlMemberType.SelectedIndex = 0;
-            btnAdd1.Text = "حفظ";
+            btnSave.Text = "حفظ";
         }
 
-        protected void btnAdd1_Click(object sender, EventArgs e)
+        protected void btnSave_Click(object sender, EventArgs e)
         {
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
             if (Request.QueryString["status"] == "update")
             {
-             
-                ViewState["UserID"] = Request.QueryString["mId"];
-              
-                string apiUrlUpdate = "https://committeeapi20190806070934.azurewebsites.net/api/Users";
+           
+               
+               
+                    ViewState["UserID"] = Request.QueryString["mId"];
 
-                Committee.Models.User memberUpdate = new Models.User()
+                    string apiUrlUser = Utilities.BASE_URL+"/api/Users";
+                if (Session["SystemRole"].ToString() == "1")
                 {
-                    ID = Convert.ToInt32(Request.QueryString["mId"]),
-                    Name = txtMemberName.Text,
-                    UserEmailId = txtMemberEmail.Text,
-                    Phone = txtPhoneNumber.Text,
-                    Title = txtMemberJob.Text,
-                    Gender = ddlMemberType.SelectedItem.Text,
-                    WorkSide = txtWorkSide.Text,
-                    SystemRole = Convert.ToInt32(ddlMemberRole.SelectedItem.Value),
-                    UserName = txtUserName.Text,
-                    UserPassword = txtPass.Text,
-                    Address = txtAddress.Text,
-                    UserImage = "/"+ImgUpload?.PostedFile?.FileName
-                };
-                
+                    Committee.Models.User memberManger = new Models.User()
+                    {
+                        ID = Convert.ToInt32(Request.QueryString["mId"]),
+                        Name = txtMemberName.Text,
+                        UserEmailId = txtMemberEmail.Text,
+                        Phone = txtPhoneNumber.Text,
+                        Title = txtMemberJob.Text,
+                        Gender = ddlMemberType.SelectedItem.Text,
+                        WorkSide = txtWorkSide.Text,
+                        SystemRole = 4,
+                        UserName = txtuserNameOfManager.Text,
+                        UserPassword = Encryptor.MD5Hash(txtPasswordOfManager.Text),
+                        Address = txtAddress.Text,
+                        UserImage = "/" + ImgUpload?.PostedFile?.FileName,
+                        ManagerOfDepartment = ddlmangerForDept?.SelectedItem?.Value
 
-                string inputJson = (new JavaScriptSerializer()).Serialize(memberUpdate);
+                    };
 
-                client.UploadString(apiUrlUpdate + "/PutUser?id=" + Convert.ToInt32(ViewState["UserID"]), inputJson);
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم تعديل بيانات العضو بنجاح', 'تم')", true);
-                
-             
+                    if (string.IsNullOrEmpty(txtuserNameOfManager.Text))
+                    {
+                        memberManger.UserName = memberManger.Name;
+                    }
+                    else
+                    {
+                        memberManger.UserName = txtuserNameOfManager.Text;
+                    }
+                    if (ViewState["Phone"].ToString() == txtPhoneNumber.Text.Trim().ToLower())
+                    {
+                        memberManger.Phone = txtPhoneNumber.Text.Trim().ToLower();
+                        if (ImgUpload.PostedFile != null && ImgUpload.PostedFile.ContentLength > 0)
+                        {
+                            string fname = Path.GetFileName(ImgUpload.PostedFile.FileName);
+                            ImgUpload.SaveAs(Server.MapPath(Path.Combine("~/MasterPage/Uploads/", fname)));
+                            ImgUser.ImageUrl = "~/MasterPage/Uploads/" + fname;
+
+                            memberManger.UserImage = "/" + fname;
+
+                        }
+                        else
+                        {
+
+                            memberManger.UserImage = ImgUser.ImageUrl.Replace("~/MasterPage/Uploads/", "");
+                        }
+
+
+                        string inputJson = (new JavaScriptSerializer()).Serialize(memberManger);
+                        client.UploadString(apiUrlUser + "/PutUser?id=" + Convert.ToInt32(ViewState["UserID"]), inputJson);
+                        Response.Redirect("MemberMangement.aspx?id=redirectUpdate");
+                    }
+                    else
+                    {
+                        bool phoneExist = WebApiConsume.ValidateUserPhone(txtPhoneNumber.Text.Trim().ToLower());
+                        if (!phoneExist)
+                        {
+                            memberManger.Phone = txtPhoneNumber.Text.Trim().ToLower();
+                            if (ImgUpload.PostedFile != null && ImgUpload.PostedFile.ContentLength > 0)
+                            {
+                                string fname = Path.GetFileName(ImgUpload.PostedFile.FileName);
+                                ImgUpload.SaveAs(Server.MapPath(Path.Combine("~/MasterPage/Uploads/", fname)));
+                                ImgUser.ImageUrl = "~/MasterPage/Uploads/" + fname;
+
+                                memberManger.UserImage = "/" + fname;
+
+                            }
+                            else
+                            {
+                                memberManger.UserImage = ImgUser.ImageUrl;
+                            }
+                            string inputJson = (new JavaScriptSerializer()).Serialize(memberManger);
+
+                            client.UploadString(apiUrlUser + "/PutUser?id=" + Convert.ToInt32(ViewState["UserID"]), inputJson);
+                            Response.Redirect("MemberMangement.aspx?id=redirectUpdate");
+
+                        }
+                        else
+                        {
+                            Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('هذا الرقم موجود من قبل .من فضلك قك بتسجيل رقم اخر')", true);
+
+                        }
+                    }
+
+                }
+                else
+                {
+                    Committee.Models.User memberUpdate = new Models.User()
+                    {
+                        ID = Convert.ToInt32(Request.QueryString["mId"]),
+                        Name = txtMemberName.Text,
+                        UserEmailId = txtMemberEmail.Text,
+
+                        Title = txtMemberJob.Text,
+                        Gender = ddlMemberType.SelectedItem.Text,
+                        WorkSide = txtWorkSide.Text,
+                        SystemRole = Convert.ToInt32(ddlMemberRole.SelectedItem.Value),
+                        UserName = txtUserName.Text,
+                        UserPassword = Encryptor.MD5Hash(txtPass.Text),
+                        Address = txtAddress.Text,
+                        ManagerOfDepartment = Session["DeptId"].ToString(),
+
+                        // UserImage = "/" + ImgUpload?.PostedFile?.FileName
+                    };
+                    if (string.IsNullOrEmpty(txtUserName.Text))
+                    {
+                        memberUpdate.UserName = memberUpdate.Name;
+                    }
+                    if (ViewState["Phone"].ToString() == txtPhoneNumber.Text.Trim().ToLower())
+                    {
+                        memberUpdate.Phone = txtPhoneNumber.Text.Trim().ToLower();
+                        if (ImgUpload.PostedFile != null && ImgUpload.PostedFile.ContentLength > 0)
+                        {
+                            string fname = Path.GetFileName(ImgUpload.PostedFile.FileName);
+                            ImgUpload.SaveAs(Server.MapPath(Path.Combine("~/MasterPage/Uploads/", fname)));
+                            ImgUser.ImageUrl = "~/MasterPage/Uploads/" + fname;
+
+                            memberUpdate.UserImage = "/" + fname;
+
+                        }
+                        else
+                        {
+
+                            memberUpdate.UserImage = ImgUser.ImageUrl.Replace("~/MasterPage/Uploads/", "");
+                        }
+
+
+                        string inputJson = (new JavaScriptSerializer()).Serialize(memberUpdate);
+                        client.UploadString(apiUrlUser + "/PutUser?id=" + Convert.ToInt32(ViewState["UserID"]), inputJson);
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم تعديل بيانات العضو بنجاح', 'تم')", true);
+                    }
+                    else
+                    {
+                        bool phoneExist = WebApiConsume.ValidateUserPhone(txtPhoneNumber.Text.Trim().ToLower());
+                        if (!phoneExist)
+                        {
+                            memberUpdate.Phone = txtPhoneNumber.Text.Trim().ToLower();
+                            if (ImgUpload.PostedFile != null && ImgUpload.PostedFile.ContentLength > 0)
+                            {
+                                string fname = Path.GetFileName(ImgUpload.PostedFile.FileName);
+                                ImgUpload.SaveAs(Server.MapPath(Path.Combine("~/MasterPage/Uploads/", fname)));
+                                ImgUser.ImageUrl = "~/MasterPage/Uploads/" + fname;
+
+                                memberUpdate.UserImage = "/" + fname;
+
+                            }
+                            else
+                            {
+                                memberUpdate.UserImage = ImgUser.ImageUrl;
+                            }
+                            string inputJson = (new JavaScriptSerializer()).Serialize(memberUpdate);
+
+                            client.UploadString(apiUrlUser + "/PutUser?id=" + Convert.ToInt32(ViewState["UserID"]), inputJson);
+                            Response.Redirect("MemberMangement.aspx?id=redirectUpdate");
+
+                        }
+                        else
+                        {
+                            Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('هذا الرقم موجود من قبل .من فضلك قك بتسجيل رقم اخر')", true);
+
+                        }
+                    }
+                }
+
             }
 
             else if (Request.QueryString["status"] == "new")
             {
-
-                if (ImgUpload.PostedFile != null && ImgUpload.PostedFile.ContentLength > 0)
+                bool phoneExist = WebApiConsume.ValidateUserPhone(txtPhoneNumber.Text.Trim().ToLower());
+                if (!phoneExist)
                 {
-                    string fname = Path.GetFileName(ImgUpload.PostedFile.FileName);
-                    ImgUpload.SaveAs(Server.MapPath(Path.Combine("~/Uploads/", fname)));
+
+
+                    if (ImgUpload.PostedFile != null && ImgUpload.PostedFile.ContentLength > 0)
+                    {
+                        string fname = Path.GetFileName(ImgUpload.PostedFile.FileName);
+                        ImgUpload.SaveAs(Server.MapPath(Path.Combine("~/MasterPage/Uploads/", fname)));
+
+                    }
+
+
+                    string apiUrlMember = Utilities.BASE_URL+"/api/Users";
+                
+                    if (Session["SystemRole"].ToString() == "1")
+                    {
+                        Committee.Models.User memberManger = new Models.User()
+                        {
+
+                            Name = txtMemberName.Text,
+                            UserEmailId = txtMemberEmail.Text,
+                            Phone = txtPhoneNumber.Text,
+                            Title = txtMemberJob.Text,
+                            Gender = ddlMemberType.SelectedItem.Text,
+                            WorkSide = txtWorkSide.Text,
+                            SystemRole = 4,
+                            UserName = txtUserName.Text,
+                            UserPassword = Encryptor.MD5Hash(txtPasswordOfManager.Text),
+                            Address = txtAddress.Text,
+                            UserImage = "/" + ImgUpload?.PostedFile?.FileName,
+                            ManagerOfDepartment = ddlmangerForDept?.SelectedItem?.Value
+
+                        };
+
+                        if (string.IsNullOrEmpty(txtuserNameOfManager.Text))
+                        {
+                            memberManger.UserName = memberManger.Name;
+                        }
+                        else
+                        {
+                            memberManger.UserName = txtuserNameOfManager.Text;
+                        }
+                        string inputJsonMember = (new JavaScriptSerializer()).Serialize(memberManger);
+
+
+                        client.UploadString(apiUrlMember + "/PostUser", inputJsonMember);
+                    }
+                    else
+                    {
+                        Committee.Models.User member = new Models.User()
+                        {
+
+                            Name = txtMemberName.Text,
+                            UserEmailId = txtMemberEmail.Text,
+                            Phone = txtPhoneNumber.Text,
+                            Title = txtMemberJob.Text,
+                            Gender = ddlMemberType.SelectedItem.Text,
+                            WorkSide = txtWorkSide.Text,
+                            SystemRole = 6,
+                            UserName = txtUserName.Text,
+                            UserPassword = Encryptor.MD5Hash(txtPass.Text),
+                            Address = txtAddress.Text,
+                            UserImage = "/" + ImgUpload?.PostedFile?.FileName,
+                            ManagerOfDepartment = Session["DeptId"].ToString(),
+
+
+                        };
+                        if (string.IsNullOrEmpty(txtUserName.Text))
+                        {
+                            member.UserName = member.Name;
+                        }
+                        string inputJson = (new JavaScriptSerializer()).Serialize(member);
+
+
+                        client.UploadString(apiUrlMember + "/PostUser", inputJson);
+                    }
+
+                   
+
+
+
+                    ResetControld();
+                    Response.Redirect("MemberMangement.aspx?id=redirectSave");
+
 
                 }
-               
-
-                string apiUrlMember = "https://committeeapi20190806070934.azurewebsites.net/api/Users";
-                Committee.Models.User member = new Models.User()
+                else
                 {
-                    ID = Convert.ToInt32(ViewState["memberID"]),
-                    Name = txtMemberName.Text,
-                    UserEmailId = txtMemberEmail.Text,
-                    Phone = txtPhoneNumber.Text,
-                    Title = txtMemberJob.Text,
-                    Gender = ddlMemberType.SelectedItem.Text,
-                    WorkSide = txtWorkSide.Text,
-                    SystemRole = Convert.ToInt32(ddlMemberRole.SelectedItem.Value),
-                    UserName = txtUserName.Text,
-                    UserPassword = txtPass.Text,
-                    Address = txtAddress.Text,
-                    UserImage = "/" + ImgUpload.PostedFile.FileName,
-                    ManagerOfDepartment = ddlCommitteeDept?.SelectedItem?.Value
+                   // Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('هذا الرقم موجود من قبل .من فضلك قك بتسجيل رقم اخر', 'تم')", true);
+                    ScriptManager.RegisterClientScriptBlock(this.Page, this.Page.GetType(), "تم", "alert('هذا الرقم موجود من قبل .من فضلك قك بتسجيل رقم اخر');", true);
 
-
-
-
-            };
-
-            
-
-                string inputJson = (new JavaScriptSerializer()).Serialize(member);
-
-
-                client.UploadString(apiUrlMember + "/PostUser", inputJson);
-
-
-
-                ResetControld();
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم حفظ بيانات العضو بنجاح', 'تم')", true);
-
+                }
             }
         }
         protected void btnUpload_Click(object sender, EventArgs e)
@@ -172,7 +494,7 @@ namespace Committee.Views.Forms
         private List<Committee.Models.UserArabicSearch> ShowMembers()
         {
             List<Committee.Models.UserArabicSearch> users = new List<Models.UserArabicSearch>();
-            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Users";
+            string apiUrl3 = Utilities.BASE_URL+"/api/Users";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -193,183 +515,40 @@ namespace Committee.Views.Forms
                     الوظيفه = member.Title,
                     الدور = member.SystemRoleMap.titleAr,
                     جهة_العمل = member.WorkSide,
-                    الادارة = member?.Department?.DeptName
+                    //الادارة = member?.Department?.DeptName
                 });
             }
             return users;
         }
 
-            protected void btnAdd3_Click(object sender, EventArgs e)
-        {
-           
-            //gvMembers.DataSource = ShowMembers();
-            //gvMembers.DataBind();
-            //if (member != null)
-            //{
-            //    txtMemberName.Text = member.MemberName;
-            //    ddlMemberType.SelectedItem.Text = member.MemberType;
-            //    txtPhoneNumber.Text = member.MemberPhone;
-            //    txtMemberJob.Text = member.MemberTitle;
-            //    txtMemberEmail.Text = member.MemberMail;
-            //    txtWorkSide.Text = member.MemberWorkSide1;
-              
-            //    ViewState["memberID"] = member.MemberId;
-            //}
-            ViewState["update"] = 1;
-            btnAdd1.Text = "تعديل";
-        }
-
-        //protected void gvMembers_PageIndexChanged(object sender, EventArgs e)
-        //{
-
-        //}
-
-        //protected void gvMembers_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        //{
-
-        //}
-
-        //protected void gvMembers_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
-        //{
-
-        //}
-
-        //protected void gvMembers_RowDeleting(object sender, GridViewDeleteEventArgs e)
-        //{
-        //    int userId = Convert.ToInt32(gvMembers.Rows[e.RowIndex].Cells[1].Text.ToString());
       
-
-        //    WebClient client = new WebClient();
-        //    client.Headers["Content-type"] = "application/json";
-        //    client.Encoding = Encoding.UTF8;
-        //    object input = new
-        //    {
-        //        id = userId,
-        //    };
-        //    string inputJson3 = (new JavaScriptSerializer()).Serialize(input);
-        //   int member = (new JavaScriptSerializer()).Deserialize<int>(client.DownloadString(apiUrl3 + "/DeleteUser?id=" + userId));
-        //    Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم مسح بيانات العضو بنجاح', 'تم')", true);
-        //    gvMembers.DataSource = ShowMembers();
-        //    gvMembers.DataBind();
-        //}
-
-        //protected void gvMembers_RowEditing(object sender, GridViewEditEventArgs e)
-        //{
-          
-    
-
-        //    WebClient client = new WebClient();
-        //    client.Headers["Content-type"] = "application/json";
-        //    client.Encoding = Encoding.UTF8;
-
-        //    Committee.Models.User user = (new JavaScriptSerializer()).Deserialize<Committee.Models.User>(client.DownloadString(apiUrl3 + "/GetUserById?id=" + gvMembers.Rows[e.NewEditIndex].Cells[1].Text));
-            
-                    
-        //    txtMemberName.Text = user.Name;
-        //    txtMemberEmail.Text = user.UserEmailId;
-        //    txtPhoneNumber.Text = user.Phone;
-        //    txtMemberJob.Text = user.Title;
-        //    ddlMemberType.SelectedItem.Text = user.Gender;
-        //    txtWorkSide.Text = user.WorkSide;
-        //    ddlMemberRole.SelectedValue = user?.SystemRole.ToString();
-        //    txtUserName.Text = user.UserName;
-        //    txtPass.Text = user.UserPassword;
-        //    txtAddress.Text = user.Address;
-        //    ddlCommitteeDept.SelectedValue = user?.Department?.DeptId.ToString();
-            
-
-
-        //    btnAdd1.Text = "تعديل";
-        //    ViewState["UserID"] = gvMembers.Rows[e.NewEditIndex].Cells[1].Text;
-        //    gvMembers.SelectedIndex = gvMembers.Rows[e.NewEditIndex].RowIndex;
-        //    ViewState["UserID"] = gvMembers.Rows[e.NewEditIndex].Cells[1].Text;
-        //}
-
-        //protected void gvMembers_RowUpdating(object sender, GridViewUpdateEventArgs e)
-        //{
-
-        //}
-
-        //protected void gvMembers_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-
-        //}
-
-        //protected void gvMembers_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
-        //{
-
-        //}
-
-        //protected void gvMembers_Sorting(object sender, GridViewSortEventArgs e)
-        //{
-
-        //}
-
-        //protected void gvMembers_DataBound(object sender, EventArgs e)
-        //{
-
-        //}
-
-        //protected void gvMembers_RowDataBound(object sender, GridViewRowEventArgs e)
-        //{
-        //    if (e.Row.RowType == DataControlRowType.DataRow)
-        //    {
-        //        //Change the index number as per your gridview design
-        //        e.Row.Cells[1].Enabled = false;
-
-        //        if (e.Row.RowType != DataControlRowType.DataRow) return;
-
-        //        var deleteButton = (LinkButton)e.Row.Cells[0].Controls[2];
-        //        var editButton = (LinkButton)e.Row.Cells[0].Controls[0];
-        //        var selectButton = (LinkButton)e.Row.Cells[0].Controls[4];
-        //        if (deleteButton.Text == "Delete")
-        //        {
-        //            deleteButton.Text = "مسح";
-        //            deleteButton.OnClientClick = "return confirm('هل تريد مسح هذا العنصر؟');";
-        //            // deleteButton2.OnClientClick = "return confirm('هل تريد مسح هذا العنصر؟');";
-
-        //        }
-        //        if (e.Row.RowType == DataControlRowType.DataRow)
-        //        {
-        //            //Change the index number as per your gridview design
-        //            e.Row.Cells[1].Enabled = false;
-
-
-
-        //        }
-
-             
-        //            deleteButton.Visible = true;
-        //            deleteButton.Text = "مسح";
-
-        //            editButton.Visible = true;
-        //            editButton.Text = "تعديل";
-        //            selectButton.Text = "اختيار";
-        //        }
-               
-          
-
-        //}
 
         protected void ddlMemberRole_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (ddlMemberRole.SelectedIndex==1||ddlMemberRole.SelectedIndex==2)
             {
-                divUserNameandpass.Visible = true;
+                divUserName.Visible = true;
+                divpass.Visible = true;
+                divDept.Visible = false;
+
             }
-            else
+            else if (ddlMemberRole.SelectedIndex == 3 )
             {
-                divUserNameandpass.Visible = false;
+                divDept.Visible = false;
+                divUserName.Visible = true;
+                divpass.Visible = true;
                 txtUserName.Text = "";
                 txtPass.Text = "";
             }
             if (ddlMemberRole.SelectedIndex == 4)
             {
                 divDept.Visible = true;
+                divpass.Visible = false;
+                divUserName.Visible = false;
                 WebClient webClient = new WebClient();
                 webClient.Headers["Content-type"] = "application/json";
                 webClient.Encoding = Encoding.UTF8;
-                string result2 = webClient.DownloadString("https://committeeapi20190806070934.azurewebsites.net/api/Deapartments/GetDepartments");
+                string result2 = webClient.DownloadString(Utilities.BASE_URL+"/api/Deapartments/GetDepartments");
                 List<Committee.Models.Department> departments = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.Department>>(result2);
 
 
@@ -379,10 +558,11 @@ namespace Committee.Views.Forms
                 ddlCommitteeDept.DataBind();
                 ddlCommitteeDept.Items.Insert(0, new ListItem("أختر من القائمه", "NULL"));
             }
-            else
+            else if(ddlMemberRole.SelectedIndex != 4 && ddlMemberRole.SelectedIndex != 1 && ddlMemberRole.SelectedIndex != 2 && ddlMemberRole.SelectedIndex != 3)
             {
                 divDept.Visible = false;
-               // divUserNameandpass.Visible = false;
+                divUserName.Visible = false;
+                divpass.Visible = false;
             }
 
         }

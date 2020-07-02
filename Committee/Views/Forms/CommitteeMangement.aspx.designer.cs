@@ -13,6 +13,24 @@ namespace Committee.Views.Forms {
     public partial class CommitteeMangement {
         
         /// <summary>
+        /// ScriptManager1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.ScriptManager ScriptManager1;
+        
+        /// <summary>
+        /// UpdatePaneltypeOfservice control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePaneltypeOfservice;
+        
+        /// <summary>
         /// txtCommitteeName control.
         /// </summary>
         /// <remarks>

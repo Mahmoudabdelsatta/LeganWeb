@@ -28,7 +28,11 @@ namespace Committee.Models
         public Nullable<int> AlertId { get; set; }
         public string CreatedAt { get; set; }
         public string UpdatedAt { get; set; }
-        public int CommitteeRole { get; set; }
+        public Nullable<int> CommitteeRole { get; set; }
         public Nullable<bool>IsMinuteAccepted { get; set; }
+        public virtual User User { get; set; }
+        public virtual Meeting Meeting { get; set; }
+        public virtual Committee Committee { get; set; }
+        public virtual SystemRole SystemRole { get; set; }
     }
 }

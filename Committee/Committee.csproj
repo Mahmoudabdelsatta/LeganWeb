@@ -71,20 +71,82 @@
     <Reference Include="Google.Apis.PlatformServices, Version=1.40.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Apis.1.40.0\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Extensions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Extensions.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNetCore.Http.Features, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNetCore.Http.Features.2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.DependencyInjection.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.DependencyInjection.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.FileProviders.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.FileProviders.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.Extensions.FileProviders.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Options, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Options.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Options.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Primitives, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Net.Http.Headers, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Net.Http.Headers.2.2.0\lib\netstandard2.0\Microsoft.Net.Http.Headers.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.WebSockets, Version=0.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.WebSockets.0.2.3.1\lib\net45\Microsoft.WebSockets.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=104.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
     </Reference>
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Collections.Immutable.1.5.0\lib\netstandard2.0\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.5.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="System.Interactive.Async, Version=3.2.0.0, Culture=neutral, PublicKeyToken=94bc3704cddfc263, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Interactive.Async.3.2.0\lib\net46\System.Interactive.Async.dll</HintPath>
     </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.WebSockets, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.WebSockets.4.3.0\lib\net46\System.Net.WebSockets.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.6.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Text.Encodings.Web, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.4.5.0\lib\netstandard2.0\System.Text.Encodings.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -94,6 +156,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -112,8 +175,12 @@
     <Content Include="MasterPage\contactform\Readme.txt" />
     <Content Include="MasterPage\content\toastr.css" />
     <Content Include="MasterPage\content\toastr.min.css" />
+    <Content Include="MasterPage\css\clockpicker.css" />
     <Content Include="MasterPage\css\main.css" />
+    <Content Include="MasterPage\css\standalone.css" />
+    <Content Include="MasterPage\html\neon-rtl\assets\css\select2.css" />
     <Content Include="MasterPage\css\style.css" />
+    <Content Include="MasterPage\css\StyleSheet1.css" />
     <Content Include="MasterPage\css\util.css" />
     <Content Include="MasterPage\docs\assets\crayon.min.css" />
     <Content Include="MasterPage\docs\assets\crayon.min.js" />
@@ -148,15 +215,34 @@
     <Content Include="MasterPage\fonts\Linearicons-Free-v1.0.0\WebFont\Linearicons-Free.svg" />
     <Content Include="MasterPage\fonts\ubuntu\UFL.txt" />
     <Content Include="MasterPage\html\neon-core.css" />
+    <Content Include="MasterPage\html\neon\assets\css\select2.css" />
+    <Content Include="MasterPage\html\neon\assets\images\arabian-man-profile-icon-face-as-seen-from-the-vector-20901600.jpg" />
     <Content Include="MasterPage\img\logo_white.png" />
     <Content Include="MasterPage\img\whitelogo.png" />
+    <Content Include="MasterPage\js\clockpicker.js" />
     <Content Include="MasterPage\js\demo.min.js" />
     <Content Include="MasterPage\js\elephant.min.js" />
+    <Content Include="MasterPage\js\JavaScript.js" />
+    <Content Include="MasterPage\js\moment.js" />
+    <Content Include="MasterPage\js\moment-hijri.js" />
+    <Content Include="MasterPage\js\jquery-1.7.1.min.js" />
+    <Content Include="MasterPage\js\jquery.searchabledropdown-1.0.8.min.js" />
     <Content Include="MasterPage\js\select2.js" />
+    <Content Include="MasterPage\Uploads\3755-3.jpg" />
+    <Content Include="MasterPage\Uploads\Alert1.png" />
+    <Content Include="MasterPage\Uploads\cer.JPG" />
+    <Content Include="MasterPage\Uploads\download.png" />
+    <Content Include="MasterPage\Uploads\Images\com.png" />
+    <Content Include="MasterPage\Uploads\no-photo-717x1024.png" />
     <Content Include="Views\Forms\Agenda.aspx" />
+    <Content Include="Views\Forms\Chat.htm" />
+    <Content Include="Views\Forms\client.html" />
     <Content Include="Views\Forms\Committe.aspx" />
     <Content Include="Views\Forms\CommitteeMangement.aspx" />
     <Content Include="Views\Forms\Dashboard.aspx" />
+    <Content Include="Views\Forms\Default.aspx" />
+    <Content Include="Views\Forms\Department.aspx" />
+    <Content Include="Views\Forms\DepartmentMangement.aspx" />
     <Content Include="Views\Forms\Index.aspx" />
     <Content Include="Views\Forms\Login.aspx" />
     <Content Include="Views\Forms\Meeting.aspx" />
@@ -5112,13 +5198,14 @@
     <Content Include="MasterPage\fonts\ubuntu\Ubuntu-Medium.ttf" />
     <Content Include="MasterPage\fonts\ubuntu\Ubuntu-MediumItalic.ttf" />
     <Content Include="MasterPage\fonts\ubuntu\Ubuntu-Regular.ttf" />
+    <Content Include="MasterPage\Uploads\_Umra Manasek.pdf" />
+    <Content Include="MasterPage\js\jquery1.8.3.min.js" />
     <None Include="Properties\PublishProfiles\CommitteeClient - Web Deploy.pubxml" />
     <None Include="MasterPage\js\jquery-1.6.3-vsdoc.js" />
     <Content Include="MasterPage\js\jquery-1.6.3.js" />
     <Content Include="MasterPage\js\jquery-1.6.3.min.js" />
     <Content Include="MasterPage\js\toastr.js" />
     <Content Include="MasterPage\js\toastr.min.js" />
-    <Content Include="MasterPage\Uploads\2a307910-d3a9-4f97-88f3-49153349d421.jpg" />
     <Content Include="MasterPage\vendor\animate\animate.css" />
     <Content Include="MasterPage\vendor\animsition\css\animsition.css" />
     <Content Include="MasterPage\vendor\animsition\css\animsition.min.css" />
@@ -5150,17 +5237,41 @@
     <Content Include="MasterPage\vendor\select2\select2.min.css" />
     <Content Include="MasterPage\vendor\select2\select2.min.js" />
     <Content Include="Views\Forms\Charts.aspx" />
+    <Content Include="Views\Forms\WebForm2.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\Encryptor.cs" />
+    <Compile Include="Controller\SocketForCommittee.cs" />
+    <Compile Include="Controller\SMS.cs" />
+    <Compile Include="Controller\WebApiConsume.cs" />
+    <Compile Include="Models\ChatMessage.cs" />
+    <Compile Include="Models\ClickAction.cs" />
+    <Compile Include="Models\CommitteeMemberAddUser.cs" />
+    <Compile Include="Models\DepartmentArabicSearch.cs" />
+    <Compile Include="Models\MeetingImageForGrid.cs" />
+    <Compile Include="Models\MeetingMemberSearchUpdate.cs" />
+    <Compile Include="Models\MeetingMemberSearch.cs" />
+    <Compile Include="Models\MeetingMembers.cs" />
+    <Compile Include="Models\DepartmentCommittees.cs" />
+    <Compile Include="Models\MeetingUploadImage.cs" />
+    <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\UserPoco.cs" />
     <Compile Include="Views\Forms\Agenda.aspx.cs">
       <DependentUpon>Agenda.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Views\Forms\Agenda.aspx.designer.cs">
       <DependentUpon>Agenda.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\Chat.aspx.cs">
+      <DependentUpon>Chat.htm</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\Chat.aspx.designer.cs">
+      <DependentUpon>Chat.htm</DependentUpon>
     </Compile>
     <Compile Include="Views\Forms\Committe.aspx.cs">
       <DependentUpon>Committe.aspx</DependentUpon>
@@ -5182,6 +5293,27 @@
     </Compile>
     <Compile Include="Views\Forms\Dashboard.aspx.designer.cs">
       <DependentUpon>Dashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\Department.aspx.cs">
+      <DependentUpon>Department.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\Department.aspx.designer.cs">
+      <DependentUpon>Department.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\DepartmentMangement.aspx.cs">
+      <DependentUpon>DepartmentMangement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\DepartmentMangement.aspx.designer.cs">
+      <DependentUpon>DepartmentMangement.aspx</DependentUpon>
     </Compile>
     <Compile Include="Views\Forms\Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
@@ -5274,6 +5406,13 @@
     </Compile>
     <Compile Include="Views\Forms\Charts.aspx.designer.cs">
       <DependentUpon>Charts.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\WebForm2.aspx.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\WebForm2.aspx.designer.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -6194,6 +6333,7 @@
     <Content Include="MasterPage\vendor\bootstrap\css\bootstrap-reboot.min.css.map" />
     <Content Include="MasterPage\vendor\bootstrap\css\bootstrap.css.map" />
     <Content Include="MasterPage\vendor\bootstrap\css\bootstrap.min.css.map" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6236,6 +6376,16 @@
     <Folder Include="MasterPage\html\neon\assets\js\aci-tree\php\tree\Item 7\Item 4\Item 3\" />
     <Folder Include="MasterPage\html\neon\assets\js\aci-tree\php\tree\Item 7\Item 4\Item 4\" />
     <Folder Include="MasterPage\html\neon\assets\js\selectboxit\css\" />
+    <Folder Include="MasterPage\Uploads\Encrypted\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fleck-master\src\Fleck\Fleck.csproj">
+      <Project>{11fa9ca6-39e9-4bbb-b27c-cf96bd250ece}</Project>
+      <Name>Fleck</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -19,6 +19,11 @@ namespace Committee.Models
         public string Message { get; set; }
         public Nullable<int> UserId { get; set; }
         public string CreatedAt { get; set; }
+        public Nullable<int> Action_Id1 { get; set; }
+        public Nullable<int> Action_Id2 { get; set; }
+        public Nullable<int> Action_Type { get; set; }
+
+      //  public virtual ClickAction ClickAction { get; set; }
 
 
         //public virtual User User { get; set; }

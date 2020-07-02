@@ -1,3 +1,8 @@
+@font-face {
+    font-family: HacenSA;
+    src: url('./HacenSaudiArabia.ttf');
+}
+
 a.text-primary:hover,
 a.text-primary:focus {
   color: #7b7b7b;
@@ -286,19 +291,19 @@ select[multiple].input-lg {
 }
 .btn-default:focus,
 .btn-default.focus {
-  color: #303641;
+  color: #504740;
   background-color: #d6d6d8;
   border-color: #aeaeb3;
 }
 .btn-default:hover {
-  color: #303641;
+  color: #504740;
   background-color: #d6d6d8;
   border-color: #d0d0d3;
 }
 .btn-default:active,
 .btn-default.active,
 .open > .dropdown-toggle.btn-default {
-  color: #303641;
+  color: #504740;
   background-color: #d6d6d8;
   border-color: #d0d0d3;
 }
@@ -311,7 +316,7 @@ select[multiple].input-lg {
 .btn-default:active.focus,
 .btn-default.active.focus,
 .open > .dropdown-toggle.btn-default.focus {
-  color: #303641;
+  color: #504740;
   background-color: #c3c3c7;
   border-color: #aeaeb3;
 }
@@ -334,12 +339,12 @@ fieldset[disabled] .btn-default.focus {
 }
 .btn-default .badge {
   color: #f0f0f1;
-  background-color: #303641;
+  background-color: #504740;
 }
 .btn-default:hover,
 .btn-default:focus,
 .btn-default.focus {
-  color: #303641 !important;
+  color: #504740 !important;
 }
 .btn-default.btn-icon {
   position: relative;
@@ -458,11 +463,11 @@ fieldset[disabled] .btn-primary:focus,
 .btn-primary.disabled.focus,
 .btn-primary[disabled].focus,
 fieldset[disabled] .btn-primary.focus {
-  background-color: #303641;
+  background-color: #504740;
   border-color: #252a32;
 }
 .btn-primary .badge {
-  color: #303641;
+  color: #504740;
   background-color: #fff;
 }
 .btn-primary:hover,
@@ -1076,25 +1081,25 @@ fieldset[disabled] .btn-danger.focus {
   height: 100%;
 }
 .btn-default {
-  color: #303641;
+  color: #504740;
   background-color: #f0f0f1;
   border-color: #f0f0f1;
 }
 .btn-default:focus,
 .btn-default.focus {
-  color: #303641;
+  color: #504740;
   background-color: #d6d6d8;
   border-color: #aeaeb3;
 }
 .btn-default:hover {
-  color: #303641;
+  color: #504740;
   background-color: #d6d6d8;
   border-color: #d0d0d3;
 }
 .btn-default:active,
 .btn-default.active,
 .open > .dropdown-toggle.btn-default {
-  color: #303641;
+  color: #504740;
   background-color: #d6d6d8;
   border-color: #d0d0d3;
 }
@@ -1107,7 +1112,7 @@ fieldset[disabled] .btn-danger.focus {
 .btn-default:active.focus,
 .btn-default.active.focus,
 .open > .dropdown-toggle.btn-default.focus {
-  color: #303641;
+  color: #504740;
   background-color: #c3c3c7;
   border-color: #aeaeb3;
 }
@@ -1130,12 +1135,12 @@ fieldset[disabled] .btn-default.focus {
 }
 .btn-default .badge {
   color: #f0f0f1;
-  background-color: #303641;
+  background-color: #504740;
 }
 .btn-default:hover,
 .btn-default:focus,
 .btn-default.focus {
-  color: #303641 !important;
+  color: #504740 !important;
 }
 .btn-default.btn-icon {
   position: relative;
@@ -1211,7 +1216,7 @@ fieldset[disabled] .btn-default.focus {
 }
 .btn-primary {
   color: #fff;
-  background-color: #303641;
+  background-color: #504740;
   border-color: #252a32;
 }
 .btn-primary:focus,
@@ -1259,11 +1264,11 @@ fieldset[disabled] .btn-primary:focus,
 .btn-primary.disabled.focus,
 .btn-primary[disabled].focus,
 fieldset[disabled] .btn-primary.focus {
-  background-color: #303641;
+  background-color: #504740;
   border-color: #252a32;
 }
 .btn-primary .badge {
-  color: #303641;
+  color: #504740;
   background-color: #fff;
 }
 .btn-primary:hover,
@@ -2014,26 +2019,26 @@ fieldset[disabled] .btn-black.focus {
   border-radius: 2px;
 }
 .btn-white {
-  color: #303641;
+  color: #504740;
   background-color: #FFF;
   border-color: #FFF;
   border-color: #ebebeb !important;
 }
 .btn-white:focus,
 .btn-white.focus {
-  color: #303641;
+  color: #504740;
   background-color: #e6e6e6;
   border-color: #bfbfbf;
 }
 .btn-white:hover {
-  color: #303641;
+  color: #504740;
   background-color: #e6e6e6;
   border-color: #e0e0e0;
 }
 .btn-white:active,
 .btn-white.active,
 .open > .dropdown-toggle.btn-white {
-  color: #303641;
+  color: #504740;
   background-color: #e6e6e6;
   border-color: #e0e0e0;
 }
@@ -2046,7 +2051,7 @@ fieldset[disabled] .btn-black.focus {
 .btn-white:active.focus,
 .btn-white.active.focus,
 .open > .dropdown-toggle.btn-white.focus {
-  color: #303641;
+  color: #504740;
   background-color: #d4d4d4;
   border-color: #bfbfbf;
 }
@@ -2069,12 +2074,12 @@ fieldset[disabled] .btn-white.focus {
 }
 .btn-white .badge {
   color: #FFF;
-  background-color: #303641;
+  background-color: #504740;
 }
 .btn-white:hover,
 .btn-white:focus,
 .btn-white.focus {
-  color: #303641 !important;
+  color: #504740 !important;
 }
 .btn-white.btn-icon {
   position: relative;
@@ -2749,7 +2754,7 @@ fieldset[disabled] .btn-info.focus {
 }
 .invoice .invoice-left strong,
 .invoice .invoice-right strong {
-  color: #303641;
+  color: #504740;
 }
 .invoice .invoice-left > h3,
 .invoice .invoice-right > h3 {
@@ -2914,7 +2919,7 @@ hr + .mail-env {
   float: left;
   width: 75%;
   padding-right: 20px;
-  color: #303641;
+  color: #504740;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3466,7 +3471,7 @@ hr + .mail-env {
   }
 }
 .login-page {
-  background: #303641;
+  background: #504740;
 }
 .login-page .login-content {
   position: relative;
@@ -4105,7 +4110,7 @@ hr + .mail-env {
 }
 .tocify li a:hover {
   background: #fafafb;
-  color: #303641;
+  color: #504740;
 }
 .tocify > ul {
   border-bottom: 1px solid #f2f2f4;
@@ -4237,7 +4242,7 @@ hr + .calendar-env {
   background: #008d45;
 }
 .calendar-env .calendar-sidebar .events-list li a.color-primary {
-  background: #303641;
+  background: #504740;
   color: #fff;
 }
 .calendar-env .calendar-sidebar .events-list li a.color-primary:hover {
@@ -4292,7 +4297,7 @@ hr + .calendar-env {
   -ms-user-select: none;
   user-select: none;
   outline: 0 !important;
-  color: #303641;
+  color: #504740;
   background-color: #FFF;
   border-color: #FFF;
   border-color: #ebebeb !important;
@@ -4318,7 +4323,7 @@ hr + .calendar-env {
 .calendar-env .calendar-body .fc-header .fc-button:hover,
 .calendar-env .calendar-body .fc-header .fc-button:focus,
 .calendar-env .calendar-body .fc-header .fc-button.focus {
-  color: #303641;
+  color: #504740;
   text-decoration: none;
 }
 .calendar-env .calendar-body .fc-header .fc-button:active,
@@ -4362,19 +4367,19 @@ fieldset[disabled] a.calendar-env .calendar-body .fc-header .fc-button {
 }
 .calendar-env .calendar-body .fc-header .fc-button:focus,
 .calendar-env .calendar-body .fc-header .fc-button.focus {
-  color: #303641;
+  color: #504740;
   background-color: #e6e6e6;
   border-color: #bfbfbf;
 }
 .calendar-env .calendar-body .fc-header .fc-button:hover {
-  color: #303641;
+  color: #504740;
   background-color: #e6e6e6;
   border-color: #e0e0e0;
 }
 .calendar-env .calendar-body .fc-header .fc-button:active,
 .calendar-env .calendar-body .fc-header .fc-button.active,
 .open > .dropdown-toggle.calendar-env .calendar-body .fc-header .fc-button {
-  color: #303641;
+  color: #504740;
   background-color: #e6e6e6;
   border-color: #e0e0e0;
 }
@@ -4387,7 +4392,7 @@ fieldset[disabled] a.calendar-env .calendar-body .fc-header .fc-button {
 .calendar-env .calendar-body .fc-header .fc-button:active.focus,
 .calendar-env .calendar-body .fc-header .fc-button.active.focus,
 .open > .dropdown-toggle.calendar-env .calendar-body .fc-header .fc-button.focus {
-  color: #303641;
+  color: #504740;
   background-color: #d4d4d4;
   border-color: #bfbfbf;
 }
@@ -4410,12 +4415,12 @@ fieldset[disabled] .calendar-env .calendar-body .fc-header .fc-button.focus {
 }
 .calendar-env .calendar-body .fc-header .fc-button .badge {
   color: #FFF;
-  background-color: #303641;
+  background-color: #504740;
 }
 .calendar-env .calendar-body .fc-header .fc-button:hover,
 .calendar-env .calendar-body .fc-header .fc-button:focus,
 .calendar-env .calendar-body .fc-header .fc-button.focus {
-  color: #303641 !important;
+  color: #504740 !important;
 }
 .calendar-env .calendar-body .fc-header .fc-button.btn-icon {
   position: relative;
@@ -4559,7 +4564,7 @@ fieldset[disabled] .calendar-env .calendar-body .fc-header .fc-button.focus {
   background: #008d45;
 }
 .calendar-env .calendar-body .fc-content .fc-view .fc-event.color-primary {
-  background: #303641;
+  background: #504740;
   color: #fff;
 }
 .calendar-env .calendar-body .fc-content .fc-view .fc-event.color-primary:hover {
@@ -5133,7 +5138,7 @@ fieldset[disabled] .calendar-env .calendar-body .fc-content .fc-view table tbody
   background: #008d45;
 }
 .calendar-env .fc .fc-view-container .fc-view table tbody .fc-event.color-primary {
-  background: #303641;
+  background: #504740;
   color: #fff;
 }
 .calendar-env .fc .fc-view-container .fc-view table tbody .fc-event.color-primary:hover {
@@ -5309,7 +5314,7 @@ fieldset[disabled] .calendar-env .calendar-body .fc-content .fc-view table tbody
   background: url(../images/notes-lines.png) left top;
   background-attachment: local;
   min-height: 780px;
-  font: 14px/52px "Helvetica Neue", Helvetica, "Noto Sans", sans-serif, serif;
+  font: 14px/52px "HacenSA", Helvetica, "Noto Sans", sans-serif, serif;
   max-height: 1500px;
   padding-left: 125px;
   padding-right: 50px;
@@ -5929,7 +5934,7 @@ fieldset[disabled] .calendar-env .calendar-body .fc-content .fc-view table tbody
   transition: all 300ms ease-in-out;
 }
 .profile-env section.profile-feed .profile-post-form .form-options .post-type a:hover {
-  color: #303641;
+  color: #504740;
 }
 .profile-env section.profile-feed .profile-post-form .form-options .post-submit {
   float: right;
@@ -5980,7 +5985,7 @@ fieldset[disabled] .calendar-env .calendar-body .fc-content .fc-view table tbody
   font-size: 14px;
 }
 .profile-env section.profile-feed .profile-stories article.story .story-content header .publisher a {
-  color: #303641;
+  color: #504740;
 }
 .profile-env section.profile-feed .profile-stories article.story .story-content header .publisher em {
   display: block;
@@ -6239,7 +6244,7 @@ fieldset[disabled] .calendar-env .calendar-body .fc-content .fc-view table tbody
   margin-bottom: 2px;
 }
 .page-body .main-content .cbp_tmtimeline > li .cbp_tmtime > span:last-child {
-  color: #303641;
+  color: #504740;
   zoom: 1;
   -webkit-opacity: 0.8;
   -moz-opacity: 0.8;
@@ -6261,7 +6266,7 @@ fieldset[disabled] .calendar-env .calendar-body .fc-content .fc-view table tbody
   box-shadow: 0px 0px 0px 5px #f5f5f6;
 }
 .page-body .main-content .cbp_tmtimeline > li .cbp_tmicon.bg-primary {
-  background-color: #303641;
+  background-color: #504740;
   color: #fff;
 }
 .page-body .main-content .cbp_tmtimeline > li .cbp_tmicon.bg-secondary {
@@ -6299,7 +6304,7 @@ fieldset[disabled] .calendar-env .calendar-body .fc-content .fc-view table tbody
 .page-body .main-content .cbp_tmtimeline > li .cbp_tmlabel h2,
 .page-body .main-content .cbp_tmtimeline > li .cbp_tmlabel p {
   color: #737881;
-  font-family: "Helvetica Neue", Helvetica, "Noto Sans", sans-serif;
+  font-family: "HacenSA", Helvetica, "Noto Sans", sans-serif;
   font-size: 12px;
   margin: 0;
   line-height: 1.42857143;
@@ -6311,7 +6316,7 @@ fieldset[disabled] .calendar-env .calendar-body .fc-content .fc-view table tbody
   font-size: 16px;
 }
 .page-body .main-content .cbp_tmtimeline > li .cbp_tmlabel h2 a {
-  color: #303641;
+  color: #504740;
 }
 .page-body .main-content .cbp_tmtimeline > li .cbp_tmlabel h2 span {
   zoom: 1;
@@ -6473,7 +6478,7 @@ fieldset[disabled] .calendar-env .calendar-body .fc-content .fc-view table tbody
   float: left;
 }
 .timeline-centered .timeline-entry .timeline-entry-inner .timeline-icon.bg-primary {
-  background-color: #303641;
+  background-color: #504740;
   color: #fff;
 }
 .timeline-centered .timeline-entry .timeline-entry-inner .timeline-icon.bg-secondary {
@@ -6524,7 +6529,7 @@ fieldset[disabled] .calendar-env .calendar-body .fc-content .fc-view table tbody
 .timeline-centered .timeline-entry .timeline-entry-inner .timeline-label h2,
 .timeline-centered .timeline-entry .timeline-entry-inner .timeline-label p {
   color: #737881;
-  font-family: "Helvetica Neue", Helvetica, "Noto Sans", sans-serif;
+  font-family: "HacenSA", Helvetica, "Noto Sans", sans-serif;
   font-size: 12px;
   margin: 0;
   line-height: 1.42857143;
@@ -6537,7 +6542,7 @@ fieldset[disabled] .calendar-env .calendar-body .fc-content .fc-view table tbody
   margin-bottom: 10px;
 }
 .timeline-centered .timeline-entry .timeline-entry-inner .timeline-label h2 a {
-  color: #303641;
+  color: #504740;
 }
 .timeline-centered .timeline-entry .timeline-entry-inner .timeline-label h2 span {
   zoom: 1;
@@ -7166,3 +7171,4 @@ dd-content,
 .custom-handler .dd-item button + .dd-handle + .dd-content {
   padding-left: 50px;
 }
+

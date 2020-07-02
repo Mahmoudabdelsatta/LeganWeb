@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -20,8 +21,29 @@ namespace Committee.Views.Forms
             }
             if (!IsPostBack)
             {
-              gvMembers.DataSource= ShowMembers();
-                gvMembers.DataBind();
+                if (Request.QueryString["id"] == "redirectSave")
+                {
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم حفظ بيانات العضو بنجاح', 'تم')", true);
+
+                }
+                if (Request.QueryString["id"] == "redirectUpdate")
+                {
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم تعديل بيانات العضو بنجاح', 'تم')", true);
+
+                }
+                Loadmembers();
+                int deptId = Convert.ToInt32(Session["DeptId"]);
+                if (Session["SystemRole"].ToString()=="1")
+                {
+                    gvMembers.DataSource = ShowMembersForSystemAdmin();
+                    gvMembers.DataBind();
+                }
+                else
+                {
+                    gvMembers.DataSource = ShowMembers(deptId);
+                    gvMembers.DataBind();
+                }
+                
 
             }
 
@@ -29,8 +51,17 @@ namespace Committee.Views.Forms
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            gvMembers.DataSource = ShowMembers();
-            gvMembers.DataBind();
+            int deptId = Convert.ToInt32(Session["DeptId"]);
+            if (Session["SystemRole"].ToString() == "1")
+            {
+                gvMembers.DataSource = ShowMembersForSystemAdmin();
+                gvMembers.DataBind();
+            }
+            else
+            {
+                gvMembers.DataSource = ShowMembers(deptId);
+                gvMembers.DataBind();
+            }
         }
 
         protected void btnaddMember_Click(object sender, EventArgs e)
@@ -44,7 +75,18 @@ namespace Committee.Views.Forms
 
         protected void gvMembers_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-
+            gvMembers.PageIndex = e.NewPageIndex;
+            int deptId = Convert.ToInt32(Session["DeptId"]);
+            if (Session["SystemRole"].ToString() == "1")
+            {
+                gvMembers.DataSource = ShowMembersForSystemAdmin();
+                gvMembers.DataBind();
+            }
+            else
+            {
+                gvMembers.DataSource = ShowMembers(deptId);
+                gvMembers.DataBind();
+            }
         }
 
         protected void gvMembers_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
@@ -55,7 +97,7 @@ namespace Committee.Views.Forms
         protected void gvMembers_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             int userId = Convert.ToInt32(gvMembers.Rows[e.RowIndex].Cells[1].Text.ToString());
-            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Users";
+            string apiUrl3 = Utilities.BASE_URL+"/api/Users";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -66,20 +108,23 @@ namespace Committee.Views.Forms
             };
             string inputJson3 = (new JavaScriptSerializer()).Serialize(input);
             int member = (new JavaScriptSerializer()).Deserialize<int>(client.DownloadString(apiUrl3 + "/DeleteUser?id=" + userId));
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم مسح بيانات العضو بنجاح', 'تم')", true);
-            gvMembers.DataSource = ShowMembers();
+            int deptId = Convert.ToInt32(Session["DeptId"]);
+            gvMembers.DataSource = ShowMembers(deptId);
             gvMembers.DataBind();
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم مسح بيانات العضو بنجاح', 'تم')", true);
+     
         }
-        private List<Committee.Models.UserArabicSearch> ShowMembers()
+        private List<Committee.Models.UserArabicSearch> ShowMembers(int deptId)
         {
             List<Committee.Models.UserArabicSearch> users = new List<Models.UserArabicSearch>();
-            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Users";
+            string apiUrl3 = Utilities.BASE_URL+"/api/Users";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
 
-            List<Committee.Models.User> members = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.User>>(client.DownloadString(apiUrl3 + "/GetUserByPhoneOrName?phone=" + txtSearch.Text.Trim().ToLower() + "&name=" + txtSearch.Text.Trim().ToLower()));
+            List<Committee.Models.UserPoco> members = JsonConvert.DeserializeObject <List<Committee.Models.UserPoco>>(client.DownloadString(apiUrl3 + "/GetUserByPhoneOrName?phone=" + txtSearch.Text.Trim().ToLower() + "&name=" + txtSearch.Text.Trim().ToLower()+"&deptId="+deptId));
+            
             foreach (var member in members)
             {
                 users.Add(new Models.UserArabicSearch()
@@ -94,7 +139,37 @@ namespace Committee.Views.Forms
                     الوظيفه = member.Title,
                     الدور = member.SystemRoleMap.titleAr,
                     جهة_العمل = member.WorkSide,
-                    الادارة = member?.Department?.DeptName
+                   // الادارة = member?.Department?.DeptName
+                });
+            }
+            return users;
+        }
+        private List<Committee.Models.UserArabicSearch> ShowMembersForSystemAdmin()
+        {
+            List<Committee.Models.UserArabicSearch> users = new List<Models.UserArabicSearch>();
+            string apiUrl3 = Utilities.BASE_URL + "/api/Users";
+
+            WebClient client = new WebClient();
+            client.Headers["Content-type"] = "application/json";
+            client.Encoding = Encoding.UTF8;
+
+            List<Committee.Models.UserPoco> members = JsonConvert.DeserializeObject<List<Committee.Models.UserPoco>>(client.DownloadString(apiUrl3 + "/GetUserByPhoneOrNameForSystemAdmin?phone=" + txtSearch.Text.Trim().ToLower() + "&name=" + txtSearch.Text.Trim().ToLower()));
+
+            foreach (var member in members)
+            {
+                users.Add(new Models.UserArabicSearch()
+                {
+                    الرقم = member.ID,
+                    الاسم = member.Name,
+                    اسم_المستخدم = member.UserName,
+                    البريد_اللإلكترونى = member.UserEmailId,
+                    التليفون = member.Phone,
+                    العنوان = member.Address,
+                    النوع = member.Gender,
+                    الوظيفه = member.Title,
+                    الدور = member.SystemRoleMap.titleAr,
+                    جهة_العمل = member.WorkSide,
+                    // الادارة = member?.Department?.DeptName
                 });
             }
             return users;
@@ -118,12 +193,78 @@ namespace Committee.Views.Forms
 
         protected void gvMembers_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
         {
-
+            int id = Convert.ToInt32(gvMembers.Rows[e.NewSelectedIndex].Cells[1].Text);
+            Response.Redirect("Member.aspx?mId=" + id + "&status=selected");
         }
 
         protected void gvMembers_Sorting(object sender, GridViewSortEventArgs e)
         {
+            List<Committee.Models.UserArabicSearch> result = (List<Committee.Models.UserArabicSearch>)ViewState["dt"];
+            if (result.Count > 0)
+            {
+                if (ViewState["sort"].ToString() == "Asc")
+                {
+                    if ("الرقم" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.الرقم).ToList();
+                    if ("الاسم" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.الاسم).ToList();
+                    if ("التليفون" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.التليفون).ToList();
+                    if ("العنوان" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.العنوان).ToList();
+                    if ("الوظيفه" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.الوظيفه).ToList();
+                    if ("الدور" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.الدور).ToList();
+                    if ("البريد_اللإلكترونى" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.البريد_اللإلكترونى).ToList();
+                    if ("اسم_المستخدم" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.اسم_المستخدم).ToList();
+                    if ("جهة_العمل" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.جهة_العمل).ToList();
+                    if ("النوع" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.النوع).ToList();
+                    //if ("الادارة" == e.SortExpression)
+                    //    result = result.OrderByDescending(r => r.الادارة).ToList();
+                   
 
+                    //...do it to all the fields
+
+                    ViewState["sort"] = "Desc";
+                }
+                else
+                {
+                    if ("الرقم" == e.SortExpression)
+                        result = result.OrderBy(r => r.الرقم).ToList();
+                    if ("الاسم" == e.SortExpression)
+                        result = result.OrderBy(r => r.الاسم).ToList();
+                    if ("التليفون" == e.SortExpression)
+                        result = result.OrderBy(r => r.التليفون).ToList();
+                    if ("العنوان" == e.SortExpression)
+                        result = result.OrderBy(r => r.العنوان).ToList();
+                    if ("الوظيفه" == e.SortExpression)
+                        result = result.OrderBy(r => r.الوظيفه).ToList();
+                    if ("الدور" == e.SortExpression)
+                        result = result.OrderBy(r => r.الدور).ToList();
+                    if ("البريد_اللإلكترونى" == e.SortExpression)
+                        result = result.OrderBy(r => r.البريد_اللإلكترونى).ToList();
+                    if ("اسم_المستخدم" == e.SortExpression)
+                        result = result.OrderBy(r => r.اسم_المستخدم).ToList();
+                    if ("جهة_العمل" == e.SortExpression)
+                        result = result.OrderBy(r => r.جهة_العمل).ToList();
+                    if ("النوع" == e.SortExpression)
+                        result = result.OrderBy(r => r.النوع).ToList();
+                    ////if ("الادارة" == e.SortExpression)
+                    ////    result = result.OrderBy(r => r.الادارة).ToList();
+
+
+                    ViewState["sort"] = "Asc";
+                }
+
+                gvMembers.DataSource = result;
+                gvMembers.DataBind();
+                ViewState["dt"] = result;
+            }
         }
 
         protected void gvMembers_DataBound(object sender, EventArgs e)
@@ -158,18 +299,47 @@ namespace Committee.Views.Forms
 
 
                 }
-
-
+                selectButton.Visible = true;
+                selectButton.ForeColor = System.Drawing.Color.Blue;
+                selectButton.Font.Underline = true;
+                selectButton.Font.Size = FontUnit.Medium;
                 deleteButton.Visible = true;
+                deleteButton.ForeColor = System.Drawing.Color.DarkRed;
+                deleteButton.BackColor = System.Drawing.Color.White;
+                deleteButton.BorderColor = System.Drawing.Color.DarkRed;
+                deleteButton.Font.Size = FontUnit.Medium;
+                deleteButton.BorderWidth = 2;
                 deleteButton.Text = "مسح";
 
                 editButton.Visible = true;
+                editButton.ForeColor = System.Drawing.Color.Gray;
+                editButton.BackColor = System.Drawing.Color.White;
+                editButton.BorderColor = System.Drawing.Color.White;
+                editButton.Font.Size = FontUnit.Medium;
+                editButton.BorderWidth = 2;
                 editButton.Text = "تعديل";
                 selectButton.Text = "اختيار";
             }
 
 
 
+        }
+        private void Loadmembers()
+        {
+            int deptId = Convert.ToInt32(Session["DeptId"]);
+            if (Session["SystemRole"].ToString() == "1")
+            {
+                gvMembers.DataSource = ShowMembersForSystemAdmin();
+                gvMembers.DataBind();
+            }
+            else
+            {
+                gvMembers.DataSource = ShowMembers(deptId);
+                gvMembers.DataBind();
+            }
+
+            ViewState["dt"] = ShowMembers(deptId);
+            ViewState["sort"] = "Asc";
         }
     }
 }

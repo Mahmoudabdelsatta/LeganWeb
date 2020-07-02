@@ -31,6 +31,33 @@ namespace Committee.Views.Forms {
         protected global::System.Web.UI.UpdatePanel UpdatePaneltypeOfservice;
         
         /// <summary>
+        /// lblAddCommitteetitle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAddCommitteetitle;
+        
+        /// <summary>
+        /// lblAddCommitteeh2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAddCommitteeh2;
+        
+        /// <summary>
+        /// UpdatePanel2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
+        
+        /// <summary>
         /// LinkButton1 control.
         /// </summary>
         /// <remarks>
@@ -40,13 +67,13 @@ namespace Committee.Views.Forms {
         protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
         
         /// <summary>
-        /// btnAdd1 control.
+        /// btnSave control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnAdd1;
+        protected global::System.Web.UI.WebControls.LinkButton btnSave;
         
         /// <summary>
         /// RequiredFieldValidator1 control.
@@ -83,6 +110,15 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtCommitteeDate;
+        
+        /// <summary>
+        /// txtCommitteeDateHidden control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField txtCommitteeDateHidden;
         
         /// <summary>
         /// ddlCommitteeDept control.
@@ -274,6 +310,33 @@ namespace Committee.Views.Forms {
         protected global::System.Web.UI.WebControls.Button btnAddChange;
         
         /// <summary>
+        /// lblgvMeeting control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblgvMeeting;
+        
+        /// <summary>
+        /// gvMeeting control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvMeeting;
+        
+        /// <summary>
+        /// lblmembersOfCommittee control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblmembersOfCommittee;
+        
+        /// <summary>
         /// divMembers control.
         /// </summary>
         /// <remarks>
@@ -290,5 +353,23 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvMembersOfCommittee;
+        
+        /// <summary>
+        /// gvAddMember control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvAddMember;
+        
+        /// <summary>
+        /// lblCommitteeMeeting control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblCommitteeMeeting;
     }
 }

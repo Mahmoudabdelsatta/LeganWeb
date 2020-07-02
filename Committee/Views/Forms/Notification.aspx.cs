@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Committee.Controller;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -23,7 +24,7 @@ namespace Committee.Views.Forms
                 WebClient webClient = new WebClient();
                 webClient.Headers["Content-type"] = "application/json";
                 webClient.Encoding = Encoding.UTF8;
-                string result = webClient.DownloadString("https://committeeapi20190806070934.azurewebsites.net/api/Committees/GetCommitteesForWeb");
+                string result = webClient.DownloadString(Utilities.BASE_URL+ "/api/Committees/GetCommitteesForWeb?deptId=" + Convert.ToInt32(Session["DeptId"]));
                 List<Committee.Models.Committee> committees = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.Committee>>(result);
                 ddlCommitteeSpecified.DataSource = committees;
                 ddlCommitteeSpecified.DataTextField = "CommitteeName";
@@ -37,7 +38,7 @@ namespace Committee.Views.Forms
         {
             int committeeId = Convert.ToInt32(ddlCommitteeSpecified.SelectedItem.Value);
             ViewState["committeeId"] = committeeId;
-            string apiUrl2 = "https://committeeapi20190806070934.azurewebsites.net/api/CommitteesMembers";
+            string apiUrl2 = Utilities.BASE_URL+"/api/CommitteesMembers";
             WebClient members = new WebClient();
             members.Headers["Content-type"] = "application/json";
             members.Encoding = Encoding.UTF8;
@@ -49,15 +50,23 @@ namespace Committee.Views.Forms
                         string selectedValue = item.Value;
                         if (selectedValue == "1")
                         {
-                        Utilities.SendMail(users);
+                        Utilities.SendMail(users,textMessage.Text);
                         }
                         if (selectedValue == "2")
                         {
-                            // sendsms(users)
+                        foreach (var user in users)
+                        {
+                            if (!string.IsNullOrEmpty(user.Phone))
+                            {
+                                //SMS.SendSms("+" + user.Phone, textMessage.Text);
+
+                            }
+                        }
+                        
                         }
                         if (selectedValue == "3")
                         {
-                          int status=Utilities.SendAlert(committeeId, users);
+                          int status=Utilities.SendAlert(committeeId, users, textMessage.Text);
                         }
                         // sendemail(users)
                     }

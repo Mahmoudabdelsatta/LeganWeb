@@ -58,7 +58,7 @@
 					</div>
 
 					<div class="container-login100-form-btn m-t-32">
-                         <asp:Button ID="btnLogin" runat="server" OnClick="Button1_Click" Text="دخول" ValidationGroup="دخول" CssClass="login100-form-btn" />
+                         <asp:Button ID="btnLogin" runat="server" OnClick="btnLogin_Click" Text="دخول" ValidationGroup="دخول" CssClass="login100-form-btn" />
 						<%--<button class="login100-form-btn">
 							Login
 						</button>--%>

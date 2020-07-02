@@ -20,6 +20,17 @@ namespace Committee.Views.Forms
             }
             if (!IsPostBack)
             {
+                if (Request.QueryString["id"] == "redirectSave")
+                {
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم حفظ بيانات الاجتماع بنجاح', 'تم')", true);
+
+                }
+                if (Request.QueryString["id"] == "redirectUpdate")
+                {
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم تعديل بيانات الاجتماع بنجاح', 'تم')", true);
+
+                }
+                LoadMeetings();
                 gvMeeting.DataSource = ShowMeetings();
                 gvMeeting.DataBind();
             }
@@ -28,7 +39,8 @@ namespace Committee.Views.Forms
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-
+            gvMeeting.DataSource = ShowMeetings();
+            gvMeeting.DataBind();
         }
 
         protected void btnaddMeeting_Click(object sender, EventArgs e)
@@ -37,30 +49,38 @@ namespace Committee.Views.Forms
         }
         private List<Committee.Models.MeetingSearch> ShowMeetings()
         {
+            int deptId = Convert.ToInt32(Session["DeptId"]);
             List<Committee.Models.MeetingSearch> meetingResults = new List<Models.MeetingSearch>();
-            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
+            string apiUrl3 = Utilities.BASE_URL+"/api/Meetings";
+            string apiUrlCommittee = Utilities.BASE_URL + "/api/Committees";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
+            var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
+            
+            List<Committee.Models.Meeting> meetings = serializer.Deserialize<List<Committee.Models.Meeting>>(client.DownloadString(apiUrl3 + "/GetMeeting?meetingName=" + txtSearch.Text+"&deptId="+deptId));
 
-            List<Committee.Models.Meeting> meetings = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.Meeting>>(client.DownloadString(apiUrl3 + "/GetMeeting?meetingName=" + txtSearch.Text));
             if (meetings.Count != 0)
             {
                 int status = 0;
                 foreach (var meeting in meetings)
                 {
+                    Committee.Models.Committee committee = serializer.Deserialize<Committee.Models.Committee>(client.DownloadString(apiUrlCommittee + "/GetCommitteeByIdForWeb?committeeId=" +meeting.CommitteeId ));
+
                     status = Convert.ToInt32(meeting.Status);
                     meetingResults.Add(new Models.MeetingSearch()
                     {
-                        الرقم = meeting.MeetingId,
-                        عنوان_الاجتماع = meeting.MeetingTitle,
-                        تاريخ_الاجتماع = meeting.MeetingDate,
-                        وقت_الاجتماع = meeting.MeetingTime,
-                        موقع_الاجتماع = meeting.MeetingAddress,
-                        وصف_الاجتماع = meeting.MeetingDesc,
-                        حالة_الاجتماع = meeting.MeetingHistories.Count == 0 ? "" : meeting.MeetingHistories.LastOrDefault(x => x.MeetingId == meeting.MeetingId).TitleAr,
-                        اللجنة = meeting.CommitteeId.ToString(),
+                        الرقم = meeting?.MeetingId,
+                        عنوان_الاجتماع = meeting?.MeetingTitle,
+                        تاريخ_الاجتماع = meeting?.MeetingDate,
+                        وقت_الاجتماع = meeting?.MeetingTime,
+                        موقع_الاجتماع = meeting?.MeetingAddress,
+                        حالة_الاجتماع = meeting?.MeetingHistories?.Count == 0 ? "" : meeting?.MeetingHistories?.LastOrDefault(x => x.MeetingId == meeting?.MeetingId).TitleAr,
+                        اللجنة= committee?.CommitteeName
+
+
 
                     });
                 }
@@ -75,7 +95,7 @@ namespace Committee.Views.Forms
         protected void gvMeeting_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             int meetingId = Convert.ToInt32(gvMeeting.Rows[e.RowIndex].Cells[1].Text.ToString());
-            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
+            string apiUrl3 = Utilities.BASE_URL+"/api/Meetings";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -119,11 +139,25 @@ namespace Committee.Views.Forms
 
                 }
 
-
+                selectButton.Visible = true;
+                selectButton.ForeColor = System.Drawing.Color.Blue;
+                selectButton.BorderColor = System.Drawing.Color.White;
+                selectButton.Font.Size = FontUnit.Medium;
+                selectButton.Font.Underline = true;
                 deleteButton.Visible = true;
+                deleteButton.ForeColor = System.Drawing.Color.DarkRed;
+                deleteButton.BackColor = System.Drawing.Color.White;
+                deleteButton.BorderColor = System.Drawing.Color.DarkRed;
+                deleteButton.Font.Size = FontUnit.Medium;
+                deleteButton.BorderWidth = 2;
                 deleteButton.Text = "مسح";
 
                 editButton.Visible = true;
+                editButton.ForeColor = System.Drawing.Color.Gray;
+                editButton.BackColor = System.Drawing.Color.White;
+                editButton.BorderColor = System.Drawing.Color.White;
+                editButton.Font.Size = FontUnit.Medium;
+                editButton.BorderWidth = 2;
                 editButton.Text = "تعديل";
                 selectButton.Text = "اختيار";
             }
@@ -141,13 +175,13 @@ namespace Committee.Views.Forms
             WebClient webClient = new WebClient();
             webClient.Headers["Content-type"] = "application/json";
             webClient.Encoding = Encoding.UTF8;
-            string result = webClient.DownloadString("https://committeeapi20190806070934.azurewebsites.net/api/Meetings/GetMeetingHistory?meetingId=" + meetingId);
+            string result = webClient.DownloadString(Utilities.BASE_URL+"/api/Meetings/GetMeetingHistory?meetingId=" + meetingId);
             List<Committee.Models.MeetingHistory> Statuss = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.MeetingHistory>>(result);
             foreach (var status in Statuss)
             {
                 histories.Add(new Models.StatusSearch()
                 {
-                    الرقم = status.Id,
+                    //الرقم = status.Id,
                     الحاله = status.TitleAr,
                     التاريخ = status.CreatedAt
 
@@ -159,20 +193,19 @@ namespace Committee.Views.Forms
 
         private List<Committee.Models.AgendaUpdate> ShowmeetingAgenda(int meetingId)
         {
-            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
+            string apiUrl3 = Utilities.BASE_URL+"/api/Meetings";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
 
             List<Committee.Models.Agendum> Committees = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.Agendum>>(client.DownloadString(apiUrl3 + "/GetMeetingAgendas?meetingId=" + meetingId));
-
-
-            return Committees.Select(x => new Models.AgendaUpdate() { الرقم = x.id, وصف_الاجندة = x.AgendaDesc, وقت_الاجندة = x.AgendaTime.ToString() }).ToList();
+            
+            return Committees.Select(x => new Models.AgendaUpdate() {الاجندة = x.AgendaDesc }).ToList();
         }
         private void ShowmeetingAgendaUpdate(int meetingId)
         {
-            string apiUrl3 = "https://committeeapi20190806070934.azurewebsites.net/api/Meetings";
+            string apiUrl3 = Utilities.BASE_URL+"/api/Meetings";
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
@@ -214,5 +247,67 @@ namespace Committee.Views.Forms
             gvMeeting.DataSource = ShowMeetings();
             gvMeeting.DataBind();
         }
+
+        protected void gvMeeting_SelectedIndexChanging(object sender, GridViewSelectEventArgs e)
+        {
+            int id = Convert.ToInt32(gvMeeting.Rows[e.NewSelectedIndex].Cells[1].Text);
+            Response.Redirect("Meeting.aspx?meetingId=" + id + "&status=selected");
+        }
+
+        protected void gvMeeting_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            List<Committee.Models.MeetingSearch> result = (List<Committee.Models.MeetingSearch>)ViewState["dt"];
+            if (result.Count > 0)
+            {
+                if (ViewState["sort"].ToString() == "Asc")
+                {
+                    if ("الرقم" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.الرقم).ToList();
+                    if ("عنوان_الاجتماع" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.عنوان_الاجتماع).ToList();
+                    if ("تاريخ_الاجتماع" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.تاريخ_الاجتماع).ToList();
+                    if ("وقت_الاجتماع" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.وقت_الاجتماع).ToList();
+                    if ("موقع_الاجتماع" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.موقع_الاجتماع).ToList();
+                    if ("حالة_الاجتماع" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.حالة_الاجتماع).ToList();
+                  
+                    //...do it to all the fields
+
+                    ViewState["sort"] = "Desc";
+                }
+                else
+                {
+                    if ("الرقم" == e.SortExpression)
+                        result = result.OrderBy(r => r.الرقم).ToList();
+                    if ("عنوان_الاجتماع" == e.SortExpression)
+                        result = result.OrderBy(r => r.عنوان_الاجتماع).ToList();
+                    if ("تاريخ_الاجتماع" == e.SortExpression)
+                        result = result.OrderBy(r => r.تاريخ_الاجتماع).ToList();
+                    if ("وقت_الاجتماع" == e.SortExpression)
+                        result = result.OrderBy(r => r.وقت_الاجتماع).ToList();
+                    if ("موقع_الاجتماع" == e.SortExpression)
+                        result = result.OrderBy(r => r.موقع_الاجتماع).ToList();
+                    if ("حالة_الاجتماع" == e.SortExpression)
+                        result = result.OrderBy(r => r.حالة_الاجتماع).ToList();
+                   
+                    ViewState["sort"] = "Asc";
+                }
+
+                gvMeeting.DataSource = result;
+                gvMeeting.DataBind();
+                ViewState["dt"] = result;
+            }
+        }
+        private void LoadMeetings()
+        {
+            this.gvMeeting.DataSource =ShowMeetings();
+            this.gvMeeting.DataBind();
+            ViewState["dt"] = ShowMeetings();
+            ViewState["sort"] = "Asc";
+        }
+
     }
 }

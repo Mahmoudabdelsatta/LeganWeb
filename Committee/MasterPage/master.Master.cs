@@ -13,8 +13,18 @@ namespace Committee
         protected void Page_Load(object sender, EventArgs e)
         {
             lblUserName.Text = Session["UserName"].ToString();
-            lblUserName2.Text = Session["UserName"].ToString();
-           lblDate.Text= DateTime.Now.ToString("dd dddd , MMMM, yyyy", new CultureInfo("ar-AE"));
+            if (Session["SystemRole"].ToString()=="1")
+            {
+                spanCommitees.Visible = false;
+                spanMeetings.Visible = false;
+                spanNotifications.Visible = false;
+                
+
+            }
+            else
+            {
+                spanDepts.Visible = false;
+            }
 
         }
 
@@ -25,5 +35,6 @@ namespace Committee
             Session.Abandon();
             Response.Redirect("login.aspx");
         }
+
     }
 }
