@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Committee.Views.Forms {
-    
-    
-    public partial class Member {
-        
+namespace Committee.Views.Forms
+{
+
+
+    public partial class Member
+    {
+
         /// <summary>
         /// ScriptManager1 control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.ScriptManager ScriptManager1;
-        
+
         /// <summary>
         /// UpdatePaneltypeOfservice control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePaneltypeOfservice;
-        
+
         /// <summary>
         /// lblMemberNew control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblMemberNew;
-        
+
         /// <summary>
         /// lblMemberH1 control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblMemberH1;
-        
+
         /// <summary>
         /// UpdatePanel2 control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanel2;
-        
+
         /// <summary>
         /// LinkButton1 control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
-        
+
         /// <summary>
         /// btnSave control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton btnSave;
-        
+
         /// <summary>
         /// RequiredFieldValidator1 control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
-        
+
         /// <summary>
         /// txtMemberName control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMemberName;
-        
+
         /// <summary>
         /// RequiredFieldValidator2 control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
-        
+
         /// <summary>
         /// RegularExpressionValidator1 control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator1;
-        
+
         /// <summary>
         /// txtPhoneNumber control.
         /// </summary>
@@ -119,7 +121,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPhoneNumber;
-        
+
         /// <summary>
         /// RegularExpressionValidator2 control.
         /// </summary>
@@ -128,7 +130,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RegularExpressionValidator RegularExpressionValidator2;
-        
+
         /// <summary>
         /// txtMemberEmail control.
         /// </summary>
@@ -137,7 +139,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMemberEmail;
-        
+
         /// <summary>
         /// txtAddress control.
         /// </summary>
@@ -146,7 +148,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAddress;
-        
+
         /// <summary>
         /// txtMemberJob control.
         /// </summary>
@@ -155,7 +157,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtMemberJob;
-        
+
         /// <summary>
         /// txtWorkSide control.
         /// </summary>
@@ -164,7 +166,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtWorkSide;
-        
+
         /// <summary>
         /// ddlMemberType control.
         /// </summary>
@@ -173,7 +175,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlMemberType;
-        
+
         /// <summary>
         /// UpdatePanel1 control.
         /// </summary>
@@ -182,7 +184,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
-        
+
         /// <summary>
         /// divRoles control.
         /// </summary>
@@ -191,7 +193,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divRoles;
-        
+
         /// <summary>
         /// ddlMemberRole control.
         /// </summary>
@@ -200,7 +202,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlMemberRole;
-        
+
         /// <summary>
         /// mangerForDept control.
         /// </summary>
@@ -209,7 +211,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl mangerForDept;
-        
+
         /// <summary>
         /// ddlmangerForDept control.
         /// </summary>
@@ -218,7 +220,16 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlmangerForDept;
-        
+
+        /// <summary>
+        /// RequiredddlmangerForDept control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredddlmangerForDept;
+
         /// <summary>
         /// divuserNameOfManager control.
         /// </summary>
@@ -227,7 +238,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divuserNameOfManager;
-        
+
         /// <summary>
         /// Label1 control.
         /// </summary>
@@ -236,7 +247,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label1;
-        
+
         /// <summary>
         /// RequiredFieldValidator5 control.
         /// </summary>
@@ -245,7 +256,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator5;
-        
+
         /// <summary>
         /// txtuserNameOfManager control.
         /// </summary>
@@ -254,7 +265,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtuserNameOfManager;
-        
+
         /// <summary>
         /// divPasswordOfManager control.
         /// </summary>
@@ -263,7 +274,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divPasswordOfManager;
-        
+
         /// <summary>
         /// Label2 control.
         /// </summary>
@@ -272,7 +283,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label2;
-        
+
         /// <summary>
         /// RequiredFieldValidator6 control.
         /// </summary>
@@ -281,7 +292,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator6;
-        
+
         /// <summary>
         /// txtPasswordOfManager control.
         /// </summary>
@@ -290,7 +301,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPasswordOfManager;
-        
+
         /// <summary>
         /// divUserName control.
         /// </summary>
@@ -299,7 +310,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divUserName;
-        
+
         /// <summary>
         /// Label4 control.
         /// </summary>
@@ -308,7 +319,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label4;
-        
+
         /// <summary>
         /// RequiredFieldValidator3 control.
         /// </summary>
@@ -317,7 +328,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator3;
-        
+
         /// <summary>
         /// txtUserName control.
         /// </summary>
@@ -326,7 +337,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtUserName;
-        
+
         /// <summary>
         /// divpass control.
         /// </summary>
@@ -335,7 +346,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divpass;
-        
+
         /// <summary>
         /// Label5 control.
         /// </summary>
@@ -344,7 +355,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label Label5;
-        
+
         /// <summary>
         /// RequiredFieldValidator4 control.
         /// </summary>
@@ -353,7 +364,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator4;
-        
+
         /// <summary>
         /// txtPass control.
         /// </summary>
@@ -362,7 +373,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPass;
-        
+
         /// <summary>
         /// divDept control.
         /// </summary>
@@ -371,7 +382,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divDept;
-        
+
         /// <summary>
         /// ddlCommitteeDept control.
         /// </summary>
@@ -380,7 +391,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlCommitteeDept;
-        
+
         /// <summary>
         /// divImage control.
         /// </summary>
@@ -389,7 +400,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divImage;
-        
+
         /// <summary>
         /// UpdatePanel3 control.
         /// </summary>
@@ -398,7 +409,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.UpdatePanel UpdatePanel3;
-        
+
         /// <summary>
         /// ImgUpload control.
         /// </summary>
@@ -407,7 +418,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.FileUpload ImgUpload;
-        
+
         /// <summary>
         /// divImgPreview control.
         /// </summary>
@@ -416,7 +427,7 @@ namespace Committee.Views.Forms {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divImgPreview;
-        
+
         /// <summary>
         /// ImgUser control.
         /// </summary>

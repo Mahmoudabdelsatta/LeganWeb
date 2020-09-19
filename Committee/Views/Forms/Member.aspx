@@ -167,8 +167,11 @@
 								
 								<div class="col-sm-5">
 									<asp:DropDownList ID="ddlmangerForDept"  runat="server" CssClass="form-control">
-                           
+                                  
+
                         </asp:DropDownList>
+							  <asp:RequiredFieldValidator ID="RequiredddlmangerForDept" runat="server" ErrorMessage="من فضلك اختار من القائمه" InitialValue="0" Display="Dynamic" ValidationGroup="a" ForeColor="Red" ControlToValidate="ddlmangerForDept"></asp:RequiredFieldValidator>
+
 								</div>
 							</div>
                           <div class="form-group" visible="false" id="divuserNameOfManager" runat="server">

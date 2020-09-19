@@ -43,7 +43,7 @@ namespace Committee.Views.Forms
                     ddlmangerForDept.DataTextField = "DeptName";
                     ddlmangerForDept.DataValueField = "DeptId";
                     ddlmangerForDept.DataBind();
-                    ddlmangerForDept.Items.Insert(0, new ListItem("أختر من القائمه", "NULL"));
+                   ddlmangerForDept.Items.Insert(0, new ListItem("أختر من القائمه", "0"));
                 }
                 else
                 {

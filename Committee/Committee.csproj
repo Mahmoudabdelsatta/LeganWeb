@@ -140,6 +140,12 @@
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.6.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Http">
+      <HintPath>..\..\..\API\LVApi\CommitteeApi\CommitteeApi\bin\System.ServiceModel.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.Primitives">
+      <HintPath>..\..\..\API\LVApi\CommitteeApi\CommitteeApi\bin\System.ServiceModel.Primitives.dll</HintPath>
+    </Reference>
     <Reference Include="System.Text.Encodings.Web, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encodings.Web.4.5.0\lib\netstandard2.0\System.Text.Encodings.Web.dll</HintPath>
       <Private>True</Private>
@@ -6379,6 +6385,10 @@
     <Folder Include="MasterPage\Uploads\Encrypted\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\API\LVApi\CommitteeApi\LeganSMS\LeganSMS\SMSlegan\SMSlegan.csproj">
+      <Project>{5e48e9e7-e08c-457d-8796-421f2ad4a61d}</Project>
+      <Name>SMSlegan</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fleck-master\src\Fleck\Fleck.csproj">
       <Project>{11fa9ca6-39e9-4bbb-b27c-cf96bd250ece}</Project>
       <Name>Fleck</Name>

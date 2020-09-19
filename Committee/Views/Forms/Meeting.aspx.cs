@@ -591,7 +591,7 @@ namespace Committee.Views.Forms
                             };
                             string inputFcm = (new JavaScriptSerializer()).Serialize(UserFcmo);
                             clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to=" + user.FCMToken, inputFcm);
-                            // SMS.SendSms(Convert.ToInt64(user.Phone), "تم اضافتك للاجتماع");
+                           // SMSlegan.SMSGateway.SendSms(Convert.ToInt64(user.Phone), "تم اضافتك للاجتماع");
                             Utilities.SendMailToOnePerson(user.UserEmailId, "انضمام للاجتماع", "تم اضافتك للاجتماع");
 
                             string apiUrlAlert = Utilities.BASE_URL + "/api/Committees";
