@@ -31,7 +31,7 @@ namespace Committee.Views.Forms
             }
         }
 
-      [WebMethod]
+        [WebMethod]
         public static List<object> GetChartData()
         {
             string apiUrl3 = Utilities.BASE_URL+"/api/Chart";
@@ -39,8 +39,12 @@ namespace Committee.Views.Forms
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
+            var DeptId = HttpContext.Current.Session["DeptId"];
+            //if (DeptId==null)
+            //{
 
-            List<int> Charts = (new JavaScriptSerializer()).Deserialize<List<int>>(client.DownloadString(apiUrl3 + "/GetActiveAndNonActiveCommittee"));
+            //}
+            List<int> Charts = (new JavaScriptSerializer()).Deserialize<List<int>>(client.DownloadString(apiUrl3 + "/GetActiveAndNonActiveCommittee?deptId=" + DeptId));
             
             List<object> chartData = new List<object>();
             chartData.Add(new object[] { "اللجان النشطة", Charts[0] });
@@ -56,8 +60,8 @@ namespace Committee.Views.Forms
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
-
-            List<int> Charts = (new JavaScriptSerializer()).Deserialize<List<int>>(client.DownloadString(apiUrl3 + "/GetTypeCommittee"));
+            var DeptId = HttpContext.Current.Session["DeptId"];
+            List<int> Charts = (new JavaScriptSerializer()).Deserialize<List<int>>(client.DownloadString(apiUrl3 + "/GetTypeCommittee?deptId=" + DeptId));
 
             List<object> chartData = new List<object>();
             chartData.Add(new object[] { "اللجان العسكرية", Charts[0] });
@@ -73,8 +77,8 @@ namespace Committee.Views.Forms
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
-
-            List<int> Charts = (new JavaScriptSerializer()).Deserialize<List<int>>(client.DownloadString(apiUrl3 + "/AcceptedAndRejectedCount"));
+            var DeptId = HttpContext.Current.Session["DeptId"];
+            List<int> Charts = (new JavaScriptSerializer()).Deserialize<List<int>>(client.DownloadString(apiUrl3 + "/AcceptedAndRejectedCount?deptId=" + DeptId));
 
             List<object> chartData = new List<object>();
             chartData.Add(new object[] { "عدد مرات قبول المحاضر", Charts[0] });
@@ -86,24 +90,27 @@ namespace Committee.Views.Forms
         public  void GetMemeberCount()
         {
             string apiUrl3 = Utilities.BASE_URL+"/api/Chart";
+            var DeptId = HttpContext.Current.Session["DeptId"];
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
 
-            int Charts = (new JavaScriptSerializer()).Deserialize<int>(client.DownloadString(apiUrl3 + "/GetMemeberCount"));
+            int Charts = (new JavaScriptSerializer()).Deserialize<int>(client.DownloadString(apiUrl3 + "/GetMemeberCount?deptId=" + DeptId));
+
             lblMembersCount.Text = Charts.ToString();
         }
         [WebMethod]
         public void GetCommitteeCount()
         {
             string apiUrl3 = Utilities.BASE_URL+"/api/Chart";
+            var DeptId = HttpContext.Current.Session["DeptId"];
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
 
-            int Charts = (new JavaScriptSerializer()).Deserialize<int>(client.DownloadString(apiUrl3 + "/GetCommitteeCount"));
+            int Charts = (new JavaScriptSerializer()).Deserialize<int>(client.DownloadString(apiUrl3 + "/GetCommitteeCount?deptId=" + DeptId));
             lblCommitteeCount.Text = Charts.ToString();
         }
 
@@ -111,12 +118,13 @@ namespace Committee.Views.Forms
         public void GetDepartmentCount()
         {
             string apiUrl3 = Utilities.BASE_URL+"/api/Chart";
+            var DeptId = HttpContext.Current.Session["DeptId"];
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
 
-            int Charts = (new JavaScriptSerializer()).Deserialize<int>(client.DownloadString(apiUrl3 + "/GetDepartmentCount"));
+            int Charts = (new JavaScriptSerializer()).Deserialize<int>(client.DownloadString(apiUrl3 + "/GetDepartmentCount?deptId=" + DeptId));
             lblDeptCount.Text = Charts.ToString();
         }
 
@@ -126,12 +134,13 @@ namespace Committee.Views.Forms
             List<DepartmentCommittees> departmentCommittees = new List<DepartmentCommittees>();
             List<object> chartData = new List<object>();
             string apiUrl3 = Utilities.BASE_URL+"/api/Chart";
+            var DeptId = HttpContext.Current.Session["DeptId"];
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
 
-            List <DepartmentCommittees> Charts = (new JavaScriptSerializer()).Deserialize<List<DepartmentCommittees>>(client.DownloadString(apiUrl3 + "/GetDepartmentsOfEachCommittee"));
+            List <DepartmentCommittees> Charts = (new JavaScriptSerializer()).Deserialize<List<DepartmentCommittees>>(client.DownloadString(apiUrl3 + "/GetDepartmentsOfEachCommittee?deptId=" + DeptId));
 
             foreach (var chart in Charts)
             {
