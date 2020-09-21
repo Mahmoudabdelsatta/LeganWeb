@@ -7,13 +7,13 @@ namespace Committee.Controller
 {
     public static class SMS
     {
-        //public static bool SendSms(string phone,string text)
-        //{
+        public static void SendSms(string text, string phone)
+        {
 
-        //    LeganSMS.Legansms.smsSoapClient service = new LeganSMS.Legansms.smsSoapClient();
+            SMSV2.ApplicantMessagesServiceSoapClient service = new SMSV2.ApplicantMessagesServiceSoapClient(SMSV2.ApplicantMessagesServiceSoapClient.EndpointConfiguration.ApplicantMessagesServiceSoap);
+            service.SendVerificationCodeFortawteenAsync(text, phone);
 
-        //    bool isSMSSent = service.Stcsms(phone, "EMARARIYADH", "test sms");
-        //    return isSMSSent;
-        //}
+
+        }
     }
 }

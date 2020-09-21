@@ -58,7 +58,7 @@ namespace Committee.Views.Forms
                         {
                             if (!string.IsNullOrEmpty(user.Phone))
                             {
-                                //SMS.SendSms("+" + user.Phone, textMessage.Text);
+                                SMS.SendSms("+" + user.Phone, textMessage.Text);
 
                             }
                         }
@@ -68,7 +68,7 @@ namespace Committee.Views.Forms
                         {
                           int status=Utilities.SendAlert(committeeId, users, textMessage.Text);
                         }
-                        // sendemail(users)
+                   
                     }
                
 

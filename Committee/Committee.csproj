@@ -6385,10 +6385,6 @@
     <Folder Include="MasterPage\Uploads\Encrypted\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\API\LVApi\CommitteeApi\LeganSMS\LeganSMS\SMSlegan\SMSlegan.csproj">
-      <Project>{5e48e9e7-e08c-457d-8796-421f2ad4a61d}</Project>
-      <Name>SMSlegan</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Fleck-master\src\Fleck\Fleck.csproj">
       <Project>{11fa9ca6-39e9-4bbb-b27c-cf96bd250ece}</Project>
       <Name>Fleck</Name>
