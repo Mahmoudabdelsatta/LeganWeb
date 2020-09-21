@@ -36,43 +36,57 @@ namespace Committee.Views.Forms
 
         protected void btnSend_Click(object sender, EventArgs e)
         {
-            int committeeId = Convert.ToInt32(ddlCommitteeSpecified.SelectedItem.Value);
-            ViewState["committeeId"] = committeeId;
-            string apiUrl2 = Utilities.BASE_URL+"/api/CommitteesMembers";
-            WebClient members = new WebClient();
-            members.Headers["Content-type"] = "application/json";
-            members.Encoding = Encoding.UTF8;
-            List<Committee.Models.User> users = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.User>>(members.DownloadString(apiUrl2 + "/GetCommitteesMember?id=" + committeeId));
-                 foreach (ListItem item in ChkSentWay.Items)
+            try
+            {
+                int committeeId = Convert.ToInt32(ddlCommitteeSpecified.SelectedItem.Value);
+                ViewState["committeeId"] = committeeId;
+                string apiUrl2 = Utilities.BASE_URL + "/api/CommitteesMembers";
+                WebClient members = new WebClient();
+                members.Headers["Content-type"] = "application/json";
+                members.Encoding = Encoding.UTF8;
+                List<Committee.Models.User> users = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.User>>(members.DownloadString(apiUrl2 + "/GetCommitteesMember?id=" + committeeId));
+                foreach (ListItem item in ChkSentWay.Items)
                 {
                     if (item.Selected)
                     {
                         string selectedValue = item.Value;
                         if (selectedValue == "1")
                         {
-                        Utilities.SendMail(users,textMessage.Text);
+                            Utilities.SendMail(users, textMessage.Text);
                         }
                         if (selectedValue == "2")
                         {
-                        foreach (var user in users)
-                        {
-                            if (!string.IsNullOrEmpty(user.Phone))
+                            foreach (var user in users)
                             {
-                                SMS.SendSms("+" + user.Phone, textMessage.Text);
+                                if (!string.IsNullOrEmpty(user.Phone))
+                                {
+                                    SMS.SendSms("+" + user.Phone, textMessage.Text);
 
+                                }
                             }
-                        }
-                        
+
                         }
                         if (selectedValue == "3")
                         {
-                          int status=Utilities.SendAlert(committeeId, users, textMessage.Text);
+                            int status = Utilities.SendAlert(committeeId, users, textMessage.Text);
                         }
-                   
+
                     }
-               
+
+
+                }
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم إرسال الرساله بنجاح ', 'تم')", true);
+            }
+            catch (Exception ex)
+            {
+                ScriptManager.RegisterClientScriptBlock(this.Page, this.Page.GetType(), "تم", "alert('هناك خطأ فى إرسال الرساله');", true);
+
 
             }
+
+
+
+
         }
     }
         
