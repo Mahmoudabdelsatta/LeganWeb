@@ -70,11 +70,17 @@ namespace Committee.Views.Forms
                     Committee.Models.Committee committee = serializer.Deserialize<Committee.Models.Committee>(client.DownloadString(apiUrlCommittee + "/GetCommitteeByIdForWeb?committeeId=" +meeting.CommitteeId ));
 
                     status = Convert.ToInt32(meeting.Status);
+                    string date = null;
+                    if (!String.IsNullOrEmpty(meeting?.MeetingDate))
+                    {
+                        DateTime createdAt = DateTime.Parse(meeting?.MeetingDate);
+                        date = createdAt.ToString("yyyy/MM/dd");
+                    }
                     meetingResults.Add(new Models.MeetingSearch()
                     {
                         الرقم = meeting?.MeetingId,
                         عنوان_الاجتماع = meeting?.MeetingTitle,
-                        تاريخ_الاجتماع = meeting?.MeetingDate,
+                        تاريخ_الاجتماع = date,
                         وقت_الاجتماع = meeting?.MeetingTime,
                         موقع_الاجتماع = meeting?.MeetingAddress,
                         حالة_الاجتماع = meeting?.MeetingHistories?.Count == 0 ? "" : meeting?.MeetingHistories?.LastOrDefault(x => x.MeetingId == meeting?.MeetingId).TitleAr,

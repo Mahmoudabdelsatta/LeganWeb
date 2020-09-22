@@ -97,10 +97,10 @@ namespace Committee.Controller
                     userssec = (new JavaScriptSerializer()).Deserialize<Committee.Models.User>(client2.DownloadString(apiUrl2 + "/GetUserById?id=" + committee.CommitteeSecretary));
                 }
                 string date = null;
-                if (committee.CommitteeDate!=null)
+                if (!String.IsNullOrEmpty(committee?.CommitteeDate))
                 {
-               DateTime createdAt = DateTime.Parse(committee.CommitteeDate);
-                 date = Utilities.ConvertDateCalendar(createdAt, "Hijri", "ar-sa");
+               DateTime createdAt = DateTime.Parse(committee?.CommitteeDate);
+                 date = createdAt.ToString("yyyy/MM/dd");
                 }
               
                 committeesUpdate.Add(new CommitteeSearch()

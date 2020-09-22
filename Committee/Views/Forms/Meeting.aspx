@@ -1,4 +1,5 @@
 ﻿
+
 <%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage/master.Master" AutoEventWireup="true" CodeBehind="~/Views/Forms/Meeting.aspx.cs" EnableSessionState="True"  Inherits="Committee.Views.Forms.Meeting" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 
@@ -570,10 +571,10 @@ body
 
             var value = $('#<%= txtMeetingDate.ClientID %>').val();
             if (value) {
-                m = moment($('#<%= txtMeetingDate.ClientID %>').val(), 'YYYY-MM-DD'); // Parse a Hijri date.
+                m = moment($('#<%= txtMeetingDate.ClientID %>').val(), 'iYYYY/iMM/iDD'); // Parse a Hijri date.
                    var x = m.format('iYYYY/iMM/iDD'); // 1410/8/28 is 1990/3/25
                    $('#<%= txtMeetingDate.ClientID %>').val(x);
-                   $('#<%= txtMeetingDateHidden.ClientID %>').val(m.format('YYYY-MM-DD'))
+                $('#<%= txtMeetingDateHidden.ClientID %>').val(m.format('iYYYY/iMM/iDD'))
             }
 
             $('#<%= txtMeetingDate.ClientID %>').calendarsPicker({
@@ -738,9 +739,7 @@ geocoder.geocode(
    </script>
             
 
-       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.24/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+     
  <script type="text/javascript">
      function LoadDiv(url) {
          var img = new Image();
@@ -781,7 +780,7 @@ geocoder.geocode(
          }
      }
 </script>   
-    
+     
 
     </asp:Content>
 

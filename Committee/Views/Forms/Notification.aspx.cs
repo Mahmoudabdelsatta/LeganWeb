@@ -75,7 +75,8 @@ namespace Committee.Views.Forms
 
 
                 }
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم إرسال الرساله بنجاح ', 'تم')", true);
+                ScriptManager.RegisterClientScriptBlock(this.Page, this.Page.GetType(), "تم", "alert('تم إرسال الرساله بنجاح');", true);
+
             }
             catch (Exception ex)
             {

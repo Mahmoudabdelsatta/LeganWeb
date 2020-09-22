@@ -6389,6 +6389,10 @@
       <Project>{11fa9ca6-39e9-4bbb-b27c-cf96bd250ece}</Project>
       <Name>Fleck</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LeganSMS\LeganSMS\SMSlegan\SMSlegan.csproj">
+      <Project>{50859c70-f7a6-46b9-b4fb-a12a47c40f08}</Project>
+      <Name>SMSlegan</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

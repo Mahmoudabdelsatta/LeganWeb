@@ -11,7 +11,7 @@ namespace Committee.Controller
         {
 
             SMSV2.ApplicantMessagesServiceSoapClient service = new SMSV2.ApplicantMessagesServiceSoapClient(SMSV2.ApplicantMessagesServiceSoapClient.EndpointConfiguration.ApplicantMessagesServiceSoap);
-            service.SendVerificationCodeFortawteenAsync(text, phone);
+            service.SendVerificationCodeFortawteenAsync(phone, text);
 
 
         }

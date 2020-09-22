@@ -429,7 +429,7 @@ namespace Committee.Views.Forms
                         WebApiConsume.SendUserNotification(Utilities.BASE_URL+"/api/Fcm", member.CommitteeId,txtCommitteeName.Text, userFcm.FCMToken);
                         if (userFcm.Phone!="" || userFcm.Phone!=null)
                         {
-                           // SMS.SendSms("+"+Convert.ToInt64(userFcm.Phone), "انت عضو فى لجنة " + "\n" + txtCommitteeName.Text + " المشكلة بتاريخ   " + "\n" +txtCommitteeDate.Text );
+                           SMS.SendSms("+"+Convert.ToInt64(userFcm.Phone), "انت عضو فى لجنة " + "\n" + txtCommitteeName.Text + " المشكلة بتاريخ   " + "\n" +txtCommitteeDate.Text );
                                 Utilities.SendMailToOnePerson(userFcm.UserEmailId, "انضمام للجنة", "تم اضافتك للجنة بنجاح");
 
                             }
@@ -471,84 +471,98 @@ namespace Committee.Views.Forms
         }
         protected void btnAdd_Click(object sender, EventArgs e)
         {
-            if (selectedUsers.Count == 0 && ddlCommitteepresident.Visible == true && ddlCommitteeSecrtary.Visible == true)
+            if ((ddlCommitteepresident.SelectedValue!= "NULL" && ddlCommitteeSecrtary.SelectedValue != "NULL"))
             {
                 selectedUsers.Add(Convert.ToInt32(ddlCommitteeSecrtary.SelectedItem.Value));
                 selectedUsers.Add(Convert.ToInt32(ddlCommitteepresident.SelectedItem.Value));
 
             }
-
-
-            if (selectedUsers.Contains(Convert.ToInt32(ddlMemberSelect.SelectedItem.Value)))
-            {
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('هذا العضو موجود بالفعل ')", true);
-                //Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.error('هذا العضو موجود بالفعل ', 'تحذير')", true);
-            }
             else
             {
+               // ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('من فضلك قم باختيار رئيس لجنه وسكرتير لجنه ')", true);
 
-                List<int> membersList = new List<int>();
-                string apiUrl2 = Utilities.BASE_URL + "/api/CommitteesMembers";
-                int memberId = WebApiConsume.GetUserId(Utilities.BASE_URL + "/api/Users", ddlMemberSelect.SelectedItem.Text);
-                membersList.Add(memberId);
-                if (gvAddMember.Rows.Count!=0)
+            }
+
+            if (selectedUsers.Count!=0)
+            {
+                if (ddlMemberSelect?.SelectedItem?.Value!="NULL")
                 {
-                   
-                    foreach (GridViewRow row in gvAddMember.Rows)
+                    if (selectedUsers.Contains(Convert.ToInt32(ddlMemberSelect?.SelectedItem?.Value)))
+                    {
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('هذا العضو موجود بالفعل ')", true);
+                        //Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.error('هذا العضو موجود بالفعل ', 'تحذير')", true);
+                    }
+                    else
                     {
 
-                        //membersList.Add(memberId);
-                        if (!userGrids.Any(x=>x.رقم_العضو==memberId))
+                        List<int> membersList = new List<int>();
+                        string apiUrl2 = Utilities.BASE_URL + "/api/CommitteesMembers";
+                        int memberId = WebApiConsume.GetUserId(Utilities.BASE_URL + "/api/Users", ddlMemberSelect.SelectedItem.Text);
+                        membersList.Add(memberId);
+                        if (gvAddMember.Rows.Count != 0)
                         {
 
-                       
+                            foreach (GridViewRow row in gvAddMember.Rows)
+                            {
+
+                                //membersList.Add(memberId);
+                                if (!userGrids.Any(x => x.رقم_العضو == memberId))
+                                {
+
+
+                                    userGrids.Add(WebApiConsume.ShowCommitteeMembersForNew(memberId)[0]);
+
+                                    gvAddMember.Visible = true;
+
+                                    gvAddMember.DataSource = userGrids.Distinct().ToList();
+
+                                    gvAddMember.DataBind();
+                                    selectedUsers.Add(Convert.ToInt32(ddlMemberSelect.SelectedItem.Value));
+                                   ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('تم ادخال العضو للجنة بنجاح')", true);
+
+
+                                }
+
+                            }
+                        }
+                        else
+                        {
                             userGrids.Add(WebApiConsume.ShowCommitteeMembersForNew(memberId)[0]);
 
                             gvAddMember.Visible = true;
 
-                            gvAddMember.DataSource = userGrids.Distinct().ToList();
+                            gvAddMember.DataSource = userGrids;
 
                             gvAddMember.DataBind();
                             selectedUsers.Add(Convert.ToInt32(ddlMemberSelect.SelectedItem.Value));
                             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('تم ادخال العضو للجنة بنجاح')", true);
+                        }
+                        if (!membersList.Contains(memberId))
+                        {
+
+
+                            //CommitteesMember input = new CommitteesMember
+                            //{
+                            //    CommitteeId = Convert.ToInt32(ViewState["CommitteeId"]),
+                            //    MemberId = memberId
+                            //};
+                            //string apiUrlUser = Utilities.BASE_URL + "/api/Users";
+
+                            //string inputJson3 = (new JavaScriptSerializer()).Serialize(input);
+                            //WebApiConsume.PostCommitteeMembersUpdate(Utilities.BASE_URL + "/api/CommitteesMembers", inputJson3);
+
+                            //Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم ادخال هذا العضو بنجاح', 'تم')", true);
+
 
                         }
 
+
                     }
                 }
-                else
-                {
-                    userGrids.Add(WebApiConsume.ShowCommitteeMembersForNew(memberId)[0]);
-
-                    gvAddMember.Visible = true;
-
-                    gvAddMember.DataSource = userGrids;
-
-                    gvAddMember.DataBind();
-                    selectedUsers.Add(Convert.ToInt32(ddlMemberSelect.SelectedItem.Value));
-                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('تم ادخال العضو للجنة بنجاح')", true);
-                }
-                if (!membersList.Contains(memberId))
-                {
-
-
-                    //CommitteesMember input = new CommitteesMember
-                    //{
-                    //    CommitteeId = Convert.ToInt32(ViewState["CommitteeId"]),
-                    //    MemberId = memberId
-                    //};
-                    //string apiUrlUser = Utilities.BASE_URL + "/api/Users";
-
-                    //string inputJson3 = (new JavaScriptSerializer()).Serialize(input);
-                    //WebApiConsume.PostCommitteeMembersUpdate(Utilities.BASE_URL + "/api/CommitteesMembers", inputJson3);
-
-                    //Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم ادخال هذا العضو بنجاح', 'تم')", true);
-
-
-                }
-
-
+                
             }
+           
+
         }
 
         protected void btnAdd2_Click(object sender, EventArgs e)
@@ -666,8 +680,8 @@ namespace Committee.Views.Forms
             }
             else
             {
-                //Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.error('هذا العضو موجود بالفعل داخل اللجنه', 'تحذير')", true);
-                ScriptManager.RegisterClientScriptBlock(this.Page, this.Page.GetType(), "تحذير", "alert('هذا العضو موجود بالفعل داخل اللجنه');", true);
+               Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.error('هذا العضو موجود بالفعل داخل اللجنه', 'تحذير')", true);
+                //ScriptManager.RegisterClientScriptBlock(this.Page, this.Page.GetType(), "تحذير", "alert('هذا العضو موجود بالفعل داخل اللجنه');", true);
 
 
             }

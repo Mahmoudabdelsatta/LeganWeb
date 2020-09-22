@@ -139,6 +139,12 @@
 								<div class="col-sm-5">
 									    <asp:DropDownList ID="ddlCommitteeSecrtary"  runat="server" CssClass="form-control">
                                     </asp:DropDownList>
+
+                                     <asp:RequiredFieldValidator ID="DropDownListRequiredFieldValidator" runat="server"
+                                ControlToValidate="ddlCommitteeSecrtary"    ValidationGroup="add"  Font-Size="Large" ForeColor="Red"
+                                InitialValue="NULL"
+                                ErrorMessage="إختر سكرتير اللجنة"   >                              
+                               </asp:RequiredFieldValidator>
 								</div>
 							</div>
                             <div class="form-group">
@@ -147,6 +153,11 @@
 								<div class="col-sm-5">
 									    <asp:DropDownList ID="ddlCommitteepresident"  runat="server" CssClass="form-control">
                                     </asp:DropDownList>
+                                       <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server"
+                                ControlToValidate="ddlCommitteepresident"   ValidationGroup="add" Font-Size="Large" ForeColor="Red"
+                                InitialValue="NULL"
+                                ErrorMessage="إختر رئيس اللجنة"   >                              
+                               </asp:RequiredFieldValidator>
 								</div>
 							</div>
                             <div class="form-group">
@@ -173,14 +184,18 @@
                             <div class="form-group">
 								<label for="field-ta" class="col-sm-3 control-label">سنة القيد : </label>
 									  <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="هذا الحقل مطلوب" Font-Size="Large" ValidationGroup="a" ForeColor="Red" ControlToValidate="txtEnrollmentDate"></asp:RequiredFieldValidator>
-								
+								<asp:RegularExpressionValidator ID="RegularExpressionValidator1"
+    ControlToValidate="txtEnrollmentDate" runat="server" Font-Size="Large" ValidationGroup="a" ForeColor="Red"
+    ErrorMessage="ضع ارقام فقط"
+    ValidationExpression="\d+">
+</asp:RegularExpressionValidator>
 								<div class="col-sm-5">
-                                    <asp:TextBox ID="txtEnrollmentDate" runat="server" CssClass="form-control" ValidationGroup="a"></asp:TextBox>
+                                    <asp:TextBox ID="txtEnrollmentDate" runat="server" CssClass="form-control" ValidationGroup="a" ></asp:TextBox>
 								</div>
 							</div>
                             <div class="form-group">
 								<label for="field-ta" class="col-sm-3 control-label">رقم القيد : </label>
-									      <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="هذا الحقل مطلوب" Font-Size="Large" ValidationGroup="a" ForeColor="Red" ControlToValidate="txtEnrollmentNumber"></asp:RequiredFieldValidator>
+									      <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server"  ErrorMessage="هذا الحقل مطلوب" Font-Size="Large" ValidationGroup="a" ForeColor="Red" ControlToValidate="txtEnrollmentNumber"></asp:RequiredFieldValidator>
 								
 								<div class="col-sm-5">
                                     <asp:TextBox ID="txtEnrollmentNumber" runat="server" CssClass="form-control" ValidationGroup="a"></asp:TextBox>
@@ -195,7 +210,7 @@
                                     </asp:DropDownList>
                                 </div>
                                  <div class="col-sm-3">
-                                   <asp:Button ID="btnAdd" runat="server" Font-Size="Medium" Text="إضافة" CssClass="btn-green btn" OnClick="btnAdd_Click" />
+                                   <asp:Button ID="btnAdd" runat="server" Font-Size="Medium" Text="إضافة" CssClass="btn-green btn" OnClick="btnAdd_Click" ValidationGroup="add" />
 
                             </div>
                                  </div>
@@ -324,14 +339,15 @@
  
 
           </script>
+
        <script type="text/javascript">
            jQuery(document).ready(function ($) {
                var value = $('#<%= txtCommitteeDate.ClientID %>').val();
                if (value) {
-                     m = moment($('#<%= txtCommitteeDate.ClientID %>').val(), 'YYYY-MM-DD'); // Parse a Hijri date.
+                   m = moment($('#<%= txtCommitteeDate.ClientID %>').val(), 'iYYYY/iMM/iDD'); // Parse a Hijri date.
                var x = m.format('iYYYY/iMM/iDD'); // 1410/8/28 is 1990/3/25
                $('#<%= txtCommitteeDate.ClientID %>').val(x);
-           $('#<%= txtCommitteeDateHidden.ClientID %>').val(m.format('YYYY-MM-DD'))
+                   $('#<%= txtCommitteeDateHidden.ClientID %>').val(m.format('iYYYY/iMM/iDD'))
                }
               
                $('#<%= txtCommitteeDate.ClientID %>').calendarsPicker({
@@ -340,7 +356,7 @@
                    showOtherMonths: true,
                    onClose: function () {
                        m = moment($('#<%= txtCommitteeDate.ClientID %>').val(), 'iYYYY/iMM/iDD'); // Parse a Hijri date.
-                       var x=m.format('YYYY-MM-DD'); // 1410/8/28 is 1990/3/25
+                       var x = m.format('iYYYY/iMM/iDD'); // 1410/8/28 is 1990/3/25
                      
                        $('#<%= txtCommitteeDateHidden.ClientID %>').val(x)
                         
