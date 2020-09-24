@@ -457,7 +457,7 @@ namespace Committee.Views.Forms
                     };
                     string inputFcm = (new JavaScriptSerializer()).Serialize(UserFcmo);
                     clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to=" + user.FCMToken, inputFcm);
-                    //  SMS.SendSms(Convert.ToInt64(user.Phone), "تم رفع محضر");
+                     SMS.SendSms("تم رفع محضر",user.Phone);
                     Utilities.SendMailToOnePerson(user.UserEmailId, "رفع المحضر", "تم رفع المحضر الخاص باللجنة");
                     string apiUrlAlert = Utilities.BASE_URL + "/api/Committees";
                     WebClient client4 = new WebClient();
@@ -591,7 +591,7 @@ namespace Committee.Views.Forms
                             };
                             string inputFcm = (new JavaScriptSerializer()).Serialize(UserFcmo);
                             clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to=" + user.FCMToken, inputFcm);
-                           // SMSlegan.SMSGateway.SendSms(Convert.ToInt64(user.Phone), "تم اضافتك للاجتماع");
+                          SMS.SendSms("تم اضافتك للاجتماع",user.Phone);
                             Utilities.SendMailToOnePerson(user.UserEmailId, "انضمام للاجتماع", "تم اضافتك للاجتماع");
 
                             string apiUrlAlert = Utilities.BASE_URL + "/api/Committees";
@@ -633,7 +633,7 @@ namespace Committee.Views.Forms
                             };
                             string inputFcm2 = (new JavaScriptSerializer()).Serialize(UserFcmo);
                             clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to=" + user.FCMToken, inputFcm);
-                            //  SMS.SendSms(Convert.ToInt64(user.Phone), "تم رفع محضرالاجتماع");
+                           SMS.SendSms("تم رفع محضرالاجتماع", user.Phone);
                             Utilities.SendMailToOnePerson(user.UserEmailId, "محضر للاجتماع", "تم رفع محضرالاجتماع");
 
                         }
@@ -1220,7 +1220,7 @@ namespace Committee.Views.Forms
                 };
                 string inputFcm = (new JavaScriptSerializer()).Serialize(UserFcmo);
                 clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to=" + user.FCMToken, inputFcm);
-                //SMS.SendSms(Convert.ToInt64(user.Phone), "تم تعديل بيانات  اجندة الاجتماع");
+                SMS.SendSms("تم تعديل بيانات  اجندة الاجتماع", user.Phone);
                 Utilities.SendMailToOnePerson(user.UserEmailId, "اجندة الاجتماع", "تم تعديل بيانات اجندة الاجتماع");
 
                 string apiUrlAlert = Utilities.BASE_URL + "/api/Committees";

@@ -60,7 +60,7 @@ namespace Committee.Views.Forms
                             {
                                 if (!string.IsNullOrEmpty(user.Phone))
                                 {
-                                    SMS.SendSms("+" + user.Phone, textMessage.Text);
+                                    SMS.SendSms(textMessage.Text,user.Phone);
 
                                 }
                             }

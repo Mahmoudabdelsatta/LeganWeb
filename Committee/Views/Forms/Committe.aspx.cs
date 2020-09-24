@@ -427,10 +427,11 @@ namespace Committee.Views.Forms
                         
                         User userFcm = WebApiConsume.GetUserById(Utilities.BASE_URL+"/api/Users", member.MemberId);
                         WebApiConsume.SendUserNotification(Utilities.BASE_URL+"/api/Fcm", member.CommitteeId,txtCommitteeName.Text, userFcm.FCMToken);
-                        if (userFcm.Phone!="" || userFcm.Phone!=null)
+                          SMS.SendSms("تم إنشاء لجنة جديده ", userFcm.Phone);
+                            if (userFcm.Phone!="" || userFcm.Phone!=null)
                         {
-                           SMS.SendSms("+"+Convert.ToInt64(userFcm.Phone), "انت عضو فى لجنة " + "\n" + txtCommitteeName.Text + " المشكلة بتاريخ   " + "\n" +txtCommitteeDate.Text );
-                                Utilities.SendMailToOnePerson(userFcm.UserEmailId, "انضمام للجنة", "تم اضافتك للجنة بنجاح");
+                           SMS.SendSms(userFcm.Phone, "انت عضو فى لجنة " + "\n" + txtCommitteeName.Text + " المشكلة بتاريخ   " + "\n" +txtCommitteeDate.Text );
+                              //  Utilities.SendMailToOnePerson(userFcm.UserEmailId, "انضمام للجنة", "تم اضافتك للجنة بنجاح");
 
                             }
 
@@ -647,8 +648,8 @@ namespace Committee.Views.Forms
                     User userFcm = WebApiConsume.GetUserById(Utilities.BASE_URL + "/api/Users", memberId);
                     string apiUrlFcm = Utilities.BASE_URL + "/api/Fcm";
                     WebApiConsume.SendUserNotification(apiUrlFcm, Convert.ToInt32(ViewState["CommitteeId"]), txtCommitteeName.Text, userFcm.FCMToken);
-                    //SMS.SendSms("+" + Convert.ToInt64(userFcm.Phone), "انت عضو فى لجنة " + "\n" + txtCommitteeName.Text + " المشكلة بتاريخ   " + "\n" + txtCommitteeDate.Text);
-                    Utilities.SendMailToOnePerson(userFcm.UserEmailId, "انضمام للجنة", "تم اضافتك للجنة بنجاح");
+                    SMS.SendSms("انت عضو فى لجنة " + "\n" + txtCommitteeName.Text + " المشكلة بتاريخ   " + "\n" + txtCommitteeDate.Text,userFcm.Phone);
+                  //  Utilities.SendMailToOnePerson(userFcm.UserEmailId, "انضمام للجنة", "تم اضافتك للجنة بنجاح");
                     ScriptManager.RegisterClientScriptBlock(this.Page, this.Page.GetType(), "تم", "alert('تم اضافة العضو لللجنة بنجاح');", true);
                 }
                 catch (Exception ex)

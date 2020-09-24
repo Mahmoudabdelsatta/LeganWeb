@@ -583,7 +583,7 @@ body
                 showOtherMonths: true,
                 onClose: function () {
                     m = moment($('#<%= txtMeetingDate.ClientID %>').val(), 'iYYYY/iMM/iDD'); // Parse a Hijri date.
-                       var x = m.format('YYYY-MM-DD'); // 1410/8/28 is 1990/3/25
+                    var x = m.format('iYYYY/iMM/iDD'); // 1410/8/28 is 1990/3/25
 
                        $('#<%= txtMeetingDateHidden.ClientID %>').val(x)
 
