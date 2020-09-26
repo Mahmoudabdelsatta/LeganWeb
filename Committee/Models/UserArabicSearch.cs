@@ -21,7 +21,7 @@ namespace Committee.Models
         public string اسم_المستخدم { get; set; }
         public string جهة_العمل { get; set; }
         public string النوع { get; set; }
-     //   public string الادارة { get; set; }
+       public string الادارة { get; set; }
         public  SystemRole SystemRoleMap { get; set; }
         public  Department Department { get; set; }
 

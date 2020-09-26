@@ -25,7 +25,7 @@ namespace Committee.Models
         public string UserImage { get; set; }
         public string Name { get; set; }
         public string WorkSide { get; set; }
-        public string Gender { get; set; }
+        public string SecrtaryOfDept { get; set; }
         public string ManagerOfDepartment { get; set; }
         public string FCMToken { get; set; }
         public string DeviceType { get; set; }

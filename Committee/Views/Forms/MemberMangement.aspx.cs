@@ -135,11 +135,11 @@ namespace Committee.Views.Forms
                     البريد_اللإلكترونى = member.UserEmailId,
                     التليفون = member.Phone,
                     العنوان = member.Address,
-                    النوع = member.Gender,
+                  //  النوع = member.Gender,
                     الوظيفه = member.Title,
                     الدور = member.SystemRoleMap.titleAr,
                     جهة_العمل = member.WorkSide,
-                   // الادارة = member?.Department?.DeptName
+                  الادارة = member?.Department?.DeptName
                 });
             }
             return users;
@@ -165,11 +165,11 @@ namespace Committee.Views.Forms
                     البريد_اللإلكترونى = member.UserEmailId,
                     التليفون = member.Phone,
                     العنوان = member.Address,
-                    النوع = member.Gender,
+                   // النوع = member.Gender,
                     الوظيفه = member.Title,
                     الدور = member.SystemRoleMap.titleAr,
                     جهة_العمل = member.WorkSide,
-                    // الادارة = member?.Department?.DeptName
+                    الادارة = member?.Department?.DeptName
                 });
             }
             return users;
@@ -299,26 +299,44 @@ namespace Committee.Views.Forms
 
 
                 }
-                selectButton.Visible = true;
-                selectButton.ForeColor = System.Drawing.Color.Blue;
-                selectButton.Font.Underline = true;
-                selectButton.Font.Size = FontUnit.Medium;
-                deleteButton.Visible = true;
-                deleteButton.ForeColor = System.Drawing.Color.DarkRed;
-                deleteButton.BackColor = System.Drawing.Color.White;
-                deleteButton.BorderColor = System.Drawing.Color.DarkRed;
-                deleteButton.Font.Size = FontUnit.Medium;
-                deleteButton.BorderWidth = 2;
-                deleteButton.Text = "مسح";
 
-                editButton.Visible = true;
-                editButton.ForeColor = System.Drawing.Color.Gray;
-                editButton.BackColor = System.Drawing.Color.White;
-                editButton.BorderColor = System.Drawing.Color.White;
-                editButton.Font.Size = FontUnit.Medium;
-                editButton.BorderWidth = 2;
-                editButton.Text = "تعديل";
-                selectButton.Text = "اختيار";
+                if (Session["SystemRole"].ToString() == "5")
+                {
+                    selectButton.Visible = true;
+                    selectButton.ForeColor = System.Drawing.Color.Blue;
+                    selectButton.BorderColor = System.Drawing.Color.White;
+                    selectButton.Font.Size = FontUnit.Medium;
+                    selectButton.Font.Underline = true;
+                    selectButton.Text = "اختيار";
+                    deleteButton.Visible = false;
+                    editButton.Visible = false;
+                    btnaddMember.Visible = false;
+
+                }
+                else
+                {
+                    selectButton.Visible = true;
+                    selectButton.ForeColor = System.Drawing.Color.Blue;
+                    selectButton.Font.Underline = true;
+                    selectButton.Font.Size = FontUnit.Medium;
+                    deleteButton.Visible = true;
+                    deleteButton.ForeColor = System.Drawing.Color.DarkRed;
+                    deleteButton.BackColor = System.Drawing.Color.White;
+                    deleteButton.BorderColor = System.Drawing.Color.DarkRed;
+                    deleteButton.Font.Size = FontUnit.Medium;
+                    deleteButton.BorderWidth = 2;
+                    deleteButton.Text = "مسح";
+
+                    editButton.Visible = true;
+                    editButton.ForeColor = System.Drawing.Color.Gray;
+                    editButton.BackColor = System.Drawing.Color.White;
+                    editButton.BorderColor = System.Drawing.Color.White;
+                    editButton.Font.Size = FontUnit.Medium;
+                    editButton.BorderWidth = 2;
+                    editButton.Text = "تعديل";
+                    selectButton.Text = "اختيار";
+                }
+                   
             }
 
 

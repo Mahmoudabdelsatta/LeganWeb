@@ -60,10 +60,14 @@ namespace Committee.Views.Forms
            var selectButton = (LinkButton)e.Row.Cells[0].Controls[4];
 
 
-            if (Session["SystemRole"].ToString() == "1")
+            if (Session["SystemRole"].ToString() == "5")
             {
-                selectButton.Visible = false;
-                deleteButton.Visible = true;
+                selectButton.Visible = true;
+                selectButton.ForeColor = System.Drawing.Color.Blue;
+                selectButton.BorderColor = System.Drawing.Color.White;
+                selectButton.Font.Size = FontUnit.Medium;
+                selectButton.Font.Underline = true;
+                deleteButton.Visible = false;
                 deleteButton.ForeColor = System.Drawing.Color.DarkRed;
                 deleteButton.BackColor = System.Drawing.Color.White;
                 deleteButton.BorderColor = System.Drawing.Color.DarkRed;
@@ -71,7 +75,7 @@ namespace Committee.Views.Forms
                 deleteButton.BorderWidth = 2;
                 deleteButton.Text = "مسح";
 
-                editButton.Visible = true;
+                editButton.Visible = false;
                 editButton.ForeColor = System.Drawing.Color.Gray;
                 editButton.BackColor = System.Drawing.Color.White;
                 editButton.BorderColor = System.Drawing.Color.White;
@@ -79,10 +83,13 @@ namespace Committee.Views.Forms
                 editButton.BorderWidth = 2;
                 editButton.Text = "تعديل";
                selectButton.Text = "اختيار";
+                btnaddNewCommittee.Visible = false;
             }
             else
             {
-                deleteButton.Visible = false;
+                btnaddNewCommittee.Visible = true;
+
+                deleteButton.Visible = true;
                 editButton.Visible = true;
                 selectButton.Visible = true;
               selectButton.Text = "اختيار";

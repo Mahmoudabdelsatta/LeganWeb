@@ -133,13 +133,13 @@
 								</div>
 							</div>
                             	<div class="form-group">
-								<label class="col-sm-3 control-label">نوع العضو :</label>
+								<label class="col-sm-3 control-label">دور العضو :</label>
 								
 								<div class="col-sm-5">
 									 <asp:DropDownList ID="ddlMemberType" runat="server" CssClass="form-control">
                             <asp:ListItem Value="0">إختر من القائمة</asp:ListItem>
-                            <asp:ListItem Value="ذكر">ذكر</asp:ListItem>
-                            <asp:ListItem Value="أنثى">أنثى</asp:ListItem>
+                            <asp:ListItem Value="5">مدير إداره</asp:ListItem>
+                            <asp:ListItem Value="4">سكرتير إداره</asp:ListItem>
                         </asp:DropDownList>
 								</div>
 							</div>
@@ -163,7 +163,7 @@
 								</div>
 							</div>
                          <div class="form-group" visible="false" id="mangerForDept" runat="server">
-								<label class="col-sm-3 control-label"> مدير نظام إدارى:</label>
+								<label class="col-sm-3 control-label"> الإداره:</label>
 								
 								<div class="col-sm-5">
 									<asp:DropDownList ID="ddlmangerForDept"  runat="server" CssClass="form-control">

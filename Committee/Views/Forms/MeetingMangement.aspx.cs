@@ -129,6 +129,8 @@ namespace Committee.Views.Forms
                 var deleteButton = (LinkButton)e.Row.Cells[0].Controls[2];
                 var editButton = (LinkButton)e.Row.Cells[0].Controls[0];
                 var selectButton = (LinkButton)e.Row.Cells[0].Controls[4];
+
+
                 if (deleteButton.Text == "Delete")
                 {
                     deleteButton.Text = "مسح";
@@ -145,27 +147,48 @@ namespace Committee.Views.Forms
 
                 }
 
-                selectButton.Visible = true;
-                selectButton.ForeColor = System.Drawing.Color.Blue;
-                selectButton.BorderColor = System.Drawing.Color.White;
-                selectButton.Font.Size = FontUnit.Medium;
-                selectButton.Font.Underline = true;
-                deleteButton.Visible = true;
-                deleteButton.ForeColor = System.Drawing.Color.DarkRed;
-                deleteButton.BackColor = System.Drawing.Color.White;
-                deleteButton.BorderColor = System.Drawing.Color.DarkRed;
-                deleteButton.Font.Size = FontUnit.Medium;
-                deleteButton.BorderWidth = 2;
-                deleteButton.Text = "مسح";
+                if (Session["SystemRole"].ToString() == "5")
+                {
+                    selectButton.Visible = true;
+                    selectButton.Text = "اختيار";
+                    selectButton.ForeColor = System.Drawing.Color.Blue;
+                    selectButton.BorderColor = System.Drawing.Color.White;
+                    selectButton.Font.Size = FontUnit.Medium;
+                    selectButton.Font.Underline = true;
+                    editButton.Visible = false;
+                    deleteButton.Visible = false;
+                    btnaddMeeting.Visible = false;
 
-                editButton.Visible = true;
-                editButton.ForeColor = System.Drawing.Color.Gray;
-                editButton.BackColor = System.Drawing.Color.White;
-                editButton.BorderColor = System.Drawing.Color.White;
-                editButton.Font.Size = FontUnit.Medium;
-                editButton.BorderWidth = 2;
-                editButton.Text = "تعديل";
-                selectButton.Text = "اختيار";
+
+                }
+                else
+                {
+                    selectButton.Visible = true;
+                    selectButton.ForeColor = System.Drawing.Color.Blue;
+                    selectButton.BorderColor = System.Drawing.Color.White;
+                    selectButton.Font.Size = FontUnit.Medium;
+                    selectButton.Font.Underline = true;
+                    deleteButton.Visible = true;
+                    deleteButton.ForeColor = System.Drawing.Color.DarkRed;
+                    deleteButton.BackColor = System.Drawing.Color.White;
+                    deleteButton.BorderColor = System.Drawing.Color.DarkRed;
+                    deleteButton.Font.Size = FontUnit.Medium;
+                    deleteButton.BorderWidth = 2;
+                    deleteButton.Text = "مسح";
+
+                    editButton.Visible = true;
+                    editButton.ForeColor = System.Drawing.Color.Gray;
+                    editButton.BackColor = System.Drawing.Color.White;
+                    editButton.BorderColor = System.Drawing.Color.White;
+                    editButton.Font.Size = FontUnit.Medium;
+                    editButton.BorderWidth = 2;
+                    editButton.Text = "تعديل";
+                    selectButton.Text = "اختيار";
+                    btnaddMeeting.Visible = true;
+
+                }
+
+                    
             }
         }
 

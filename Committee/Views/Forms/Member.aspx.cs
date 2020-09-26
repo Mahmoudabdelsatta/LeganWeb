@@ -85,7 +85,7 @@ namespace Committee.Views.Forms
                     txtPhoneNumber.Text = user.Phone;
                     ViewState["Phone"] = txtPhoneNumber.Text;
                     txtMemberJob.Text = user.Title;
-                    ddlMemberType.SelectedValue = user.Gender;
+                    ddlMemberType.SelectedValue = user.SecrtaryOfDept;
                     txtWorkSide.Text = user.WorkSide;
               
                     txtUserName.Text = user.UserName;
@@ -147,7 +147,7 @@ namespace Committee.Views.Forms
                     txtPhoneNumber.Enabled = false;
                     txtMemberJob.Text = user.Title;
                     txtMemberJob.Enabled = false;
-                    ddlMemberType.SelectedValue = user.Gender;
+                    ddlMemberType.SelectedValue = user.SecrtaryOfDept;
                     ddlMemberType.Enabled = false;
                     txtWorkSide.Text = user.WorkSide;
                     txtWorkSide.Enabled = false;
@@ -231,7 +231,7 @@ namespace Committee.Views.Forms
                         UserEmailId = txtMemberEmail.Text,
                         Phone = txtPhoneNumber.Text,
                         Title = txtMemberJob.Text,
-                        Gender = ddlMemberType.SelectedItem.Text,
+                        SecrtaryOfDept = ddlmangerForDept?.SelectedItem?.Value,
                         WorkSide = txtWorkSide.Text,
                         SystemRole = 4,
                         UserName = txtuserNameOfManager.Text,
@@ -315,7 +315,7 @@ namespace Committee.Views.Forms
                         UserEmailId = txtMemberEmail.Text,
 
                         Title = txtMemberJob.Text,
-                        Gender = ddlMemberType.SelectedItem.Text,
+                        SecrtaryOfDept = Session["DeptId"].ToString(),
                         WorkSide = txtWorkSide.Text,
                         SystemRole = Convert.ToInt32(ddlMemberRole.SelectedItem.Value),
                         UserName = txtUserName.Text,
@@ -406,6 +406,15 @@ namespace Committee.Views.Forms
                 
                     if (Session["SystemRole"].ToString() == "1")
                     {
+                        int systemRole = 0;
+                        if (ddlMemberType.SelectedItem.Value=="4")
+                        {
+                            systemRole = 4;
+                        }
+                        if (ddlMemberType.SelectedItem.Value == "5")
+                        {
+                            systemRole = 5;
+                        }
                         Committee.Models.User memberManger = new Models.User()
                         {
 
@@ -413,9 +422,9 @@ namespace Committee.Views.Forms
                             UserEmailId = txtMemberEmail.Text,
                             Phone = txtPhoneNumber.Text,
                             Title = txtMemberJob.Text,
-                            Gender = ddlMemberType.SelectedItem.Text,
+                            SecrtaryOfDept = ddlmangerForDept?.SelectedItem?.Value,
                             WorkSide = txtWorkSide.Text,
-                            SystemRole = 4,
+                            SystemRole = systemRole,
                             UserName = txtUserName.Text,
                             UserPassword = Encryptor.MD5Hash(txtPasswordOfManager.Text),
                             Address = txtAddress.Text,
@@ -446,7 +455,7 @@ namespace Committee.Views.Forms
                             UserEmailId = txtMemberEmail.Text,
                             Phone = txtPhoneNumber.Text,
                             Title = txtMemberJob.Text,
-                            Gender = ddlMemberType.SelectedItem.Text,
+                            SecrtaryOfDept = ddlmangerForDept.SelectedItem.Value,
                             WorkSide = txtWorkSide.Text,
                             SystemRole = 6,
                             UserName = txtUserName.Text,
@@ -511,7 +520,7 @@ namespace Committee.Views.Forms
                     البريد_اللإلكترونى = member.UserEmailId,
                     التليفون = member.Phone,
                     العنوان = member.Address,
-                    النوع = member.Gender,
+                    //النوع = member.Gender,
                     الوظيفه = member.Title,
                     الدور = member.SystemRoleMap.titleAr,
                     جهة_العمل = member.WorkSide,
