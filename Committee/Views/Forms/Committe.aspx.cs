@@ -37,18 +37,18 @@ namespace Committee.Views.Forms
 
 
                 ddlMemberSelect.DataSource = Members;
-                ddlMemberSelect.DataTextField = "UserName";
+                ddlMemberSelect.DataTextField = "Name";
                 ddlMemberSelect.DataValueField = "ID";
                 ddlMemberSelect.DataBind();
                 ddlMemberSelect.Items.Insert(0, new ListItem("أختر من القائمه", "NULL"));
                 ddlCommitteeSecrtary.DataSource = Members;
-                ddlCommitteeSecrtary.DataTextField = "UserName";
+                ddlCommitteeSecrtary.DataTextField = "Name";
                 ddlCommitteeSecrtary.DataValueField = "ID";
                 ddlCommitteeSecrtary.DataBind();
                 ddlCommitteeSecrtary.Items.Insert(0, new ListItem("أختر من القائمه", "NULL"));
 
                 ddlCommitteepresident.DataSource = Members;
-                ddlCommitteepresident.DataTextField = "UserName";
+                ddlCommitteepresident.DataTextField = "Name";
                 ddlCommitteepresident.DataValueField = "ID";
                 ddlCommitteepresident.DataBind();
                 ddlCommitteepresident.Items.Insert(0, new ListItem("أختر من القائمه", "NULL"));
@@ -88,7 +88,7 @@ namespace Committee.Views.Forms
                     gvMembersOfCommittee.DataBind();
                     ddlMemberChange.Visible = true;
                     ddlMemberChange.DataSource = Members;
-                    ddlMemberChange.DataTextField = "UserName";
+                    ddlMemberChange.DataTextField = "Name";
                     ddlMemberChange.DataValueField = "ID";
                     ddlMemberChange.DataBind();
                     ddlMemberChange.Items.Insert(0, new ListItem("أختر من القائمه", "NULL"));
@@ -109,7 +109,7 @@ namespace Committee.Views.Forms
                     divAddMembers.Visible = true;
                     ddlMemberSelect.Visible = true;
                     ddlMemberSelect.DataSource = Members;
-                    ddlMemberSelect.DataTextField = "UserName";
+                    ddlMemberSelect.DataTextField = "Name";
                     ddlMemberSelect.DataValueField = "ID";
                     ddlMemberSelect.DataBind();
                     ddlMemberSelect.Items.Insert(0, new ListItem("أختر من القائمه", "NULL"));
@@ -255,7 +255,7 @@ namespace Committee.Views.Forms
                     divAddMembers.Visible = false;
                     ddlMemberChange.Visible = true;
                     ddlMemberChange.DataSource = Members;
-                    ddlMemberChange.DataTextField = "UserName";
+                    ddlMemberChange.DataTextField = "Name";
                     ddlMemberChange.DataValueField = "ID";
                     ddlMemberChange.DataBind();
                     ddlMemberChange.Items.Insert(0, new ListItem("أختر من القائمه", "NULL"));
@@ -283,7 +283,7 @@ namespace Committee.Views.Forms
                 ViewState["CommitteeId"] = committeeId;
                 List<User> Members = WebApiConsume.GetUsers(Utilities.BASE_URL+"/api/Users/GetUsers");
                 ddlMemberChange.DataSource = Members;
-                ddlMemberChange.DataTextField = "UserName";
+                ddlMemberChange.DataTextField = "Name";
                 ddlMemberChange.DataValueField = "ID";
                 ddlMemberChange.DataBind();
                 divAddMember.Visible = true;

@@ -211,7 +211,7 @@ namespace Committee.Controller
                 CommitteesMember committeesMember = (new JavaScriptSerializer()).Deserialize<CommitteesMember>(client.DownloadString(apiUrl3 + "/GetMemberDataFromCommitteeMember?committeeId=" + committeeId + "&userId="+user.ID));
                 string roleName  = (new JavaScriptSerializer()).Deserialize<string>(client.DownloadString(apiUrl3 + "/GetRoleName?committeeRole=" + committeesMember?.CommitteeRole));
 
-                userGrids.Add(new UserGrid() { رقم_العضو = committeesMember.User.ID, اسم_العضو = committeesMember?.User?.UserName, رقم_التليقون = committeesMember?.User?.Phone, البريد_الالكترونى = committeesMember?.User?.UserEmailId, جهة_العمل = committeesMember?.User?.WorkSide, الدور = roleName });
+                userGrids.Add(new UserGrid() { رقم_العضو = committeesMember.User.ID, اسم_العضو = committeesMember?.User?.Name, رقم_التليقون = committeesMember?.User?.Phone, البريد_الالكترونى = committeesMember?.User?.UserEmailId, جهة_العمل = committeesMember?.User?.WorkSide, الدور = roleName });
             }
 
 

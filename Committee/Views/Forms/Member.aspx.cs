@@ -28,10 +28,10 @@ namespace Committee.Views.Forms
                 if (Session["SystemRole"].ToString() == "1")
                 {
                     mangerForDept.Visible = true;
-                    divRoles.Visible = false;
                     divuserNameOfManager.Visible = true;
                     divPasswordOfManager.Visible = true;
                     divDept.Visible = false;
+                    divRole.Visible = true;
                     WebClient webClient = new WebClient();
                     webClient.Headers["Content-type"] = "application/json";
                     webClient.Encoding = Encoding.UTF8;
@@ -44,6 +44,8 @@ namespace Committee.Views.Forms
                     ddlmangerForDept.DataValueField = "DeptId";
                     ddlmangerForDept.DataBind();
                    ddlmangerForDept.Items.Insert(0, new ListItem("أختر من القائمه", "0"));
+                    ddlMemberType.DataBind();
+                    divRoles.Visible = false;
                 }
                 else
                 {
@@ -95,6 +97,7 @@ namespace Committee.Views.Forms
                     if (Session["SystemRole"].ToString() == "1")
                     {
                         divDept.Visible = false;
+                        divRoles.Visible = false;
                         mangerForDept.Visible = true;
                         divUserName.Visible = false;
                         divuserNameOfManager.Visible = true;
@@ -103,6 +106,7 @@ namespace Committee.Views.Forms
                         txtuserNameOfManager.Text = user.UserName;
                         txtPasswordOfManager.Text = Encryptor.MD5Hash(user.UserPassword);
                         ddlmangerForDept.SelectedValue = user?.Department?.DeptId.ToString();
+                        ddlMemberType.SelectedValue = user?.SystemRole.ToString();
 
                     }
                     else
@@ -407,13 +411,17 @@ namespace Committee.Views.Forms
                     if (Session["SystemRole"].ToString() == "1")
                     {
                         int systemRole = 0;
+                        string secRole=null;
                         if (ddlMemberType.SelectedItem.Value=="4")
                         {
                             systemRole = 4;
+                            secRole = ddlmangerForDept?.SelectedItem?.Value;
                         }
                         if (ddlMemberType.SelectedItem.Value == "5")
                         {
                             systemRole = 5;
+                            secRole = null;
+
                         }
                         Committee.Models.User memberManger = new Models.User()
                         {
@@ -422,14 +430,15 @@ namespace Committee.Views.Forms
                             UserEmailId = txtMemberEmail.Text,
                             Phone = txtPhoneNumber.Text,
                             Title = txtMemberJob.Text,
-                            SecrtaryOfDept = ddlmangerForDept?.SelectedItem?.Value,
+                            SecrtaryOfDept = secRole,
                             WorkSide = txtWorkSide.Text,
                             SystemRole = systemRole,
                             UserName = txtUserName.Text,
                             UserPassword = Encryptor.MD5Hash(txtPasswordOfManager.Text),
                             Address = txtAddress.Text,
                             UserImage = "/" + ImgUpload?.PostedFile?.FileName,
-                            ManagerOfDepartment = ddlmangerForDept?.SelectedItem?.Value
+                            ManagerOfDepartment = ddlmangerForDept?.SelectedItem?.Value,
+
 
                         };
 
@@ -455,7 +464,7 @@ namespace Committee.Views.Forms
                             UserEmailId = txtMemberEmail.Text,
                             Phone = txtPhoneNumber.Text,
                             Title = txtMemberJob.Text,
-                            SecrtaryOfDept = ddlmangerForDept.SelectedItem.Value,
+                            SecrtaryOfDept = ddlmangerForDept?.SelectedItem?.Value,
                             WorkSide = txtWorkSide.Text,
                             SystemRole = 6,
                             UserName = txtUserName.Text,

@@ -31,6 +31,14 @@ namespace Committee.Views.Forms
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم تعديل بيانات الإدارة بنجاح', 'تم')", true);
 
                 }
+                if (Session["SystemRole"].ToString() == "5")
+                {
+                    btnaddMember.Visible = false;
+                }
+                else
+                {
+                    btnaddMember.Visible = true;
+                }
                 Loadmembers();
                 gvDepts.DataSource = ShowDepartments();
                 gvDepts.DataBind();

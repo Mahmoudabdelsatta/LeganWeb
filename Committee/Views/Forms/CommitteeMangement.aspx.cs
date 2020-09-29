@@ -36,6 +36,14 @@ namespace Committee.Views.Forms
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم تعديل بيانات اللجنة بنجاح', 'تم')", true);
 
                 }
+                if (Session["SystemRole"].ToString() == "5")
+                {
+                    btnaddNewCommittee.Visible = false;
+                }
+                else
+                {
+                    btnaddNewCommittee.Visible = true;
+                }
                 LoadCommittees();
              gvCommittee.DataSource= WebApiConsume.ShowCommittees(txtCommitteeName.Text.Trim().ToLower(), deptId);
                 gvCommittee.DataBind();

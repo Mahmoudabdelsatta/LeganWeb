@@ -26,6 +26,8 @@ namespace Committee.Views.Forms
                 Response.Redirect("login.aspx");
             }
             txtMeetingDate.Text = txtMeetingDateHidden.Value;
+            txtMeetingTime.Text = txtmeetingTimeHiddenfField.Value;
+            
             Page.Form.Attributes.Add("enctype", "multipart/form-data");
 
             if (!IsPostBack)
@@ -455,31 +457,36 @@ namespace Committee.Views.Forms
 
 
                     };
-                    string inputFcm = (new JavaScriptSerializer()).Serialize(UserFcmo);
-                    clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to=" + user.FCMToken, inputFcm);
-                     SMS.SendSms("تم رفع محضر",user.Phone);
-                    Utilities.SendMailToOnePerson(user.UserEmailId, "رفع المحضر", "تم رفع المحضر الخاص باللجنة");
-                    string apiUrlAlert = Utilities.BASE_URL + "/api/Committees";
-                    WebClient client4 = new WebClient();
 
-                    client4.Headers["Content-type"] = "application/json";
-                    client4.Encoding = Encoding.UTF8;
-
-                    Alert alert = new Alert()
+                    if (ddlMeetingStatus.SelectedItem.Text == "تم رفع المحضر")
                     {
-                        Action_Id1 = Convert.ToInt32(ddlCommitteeSpecified.SelectedItem.Value),
-                        Message = "تم رفع محضر",
-                        Title = "رفع محضر",
-                        Action_Id2 = Convert.ToInt32(ViewState["MeetingId"]),
-                        CreatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                        Action_Type = 5,
-                        UserId = user.ID
+                        string inputFcm = (new JavaScriptSerializer()).Serialize(UserFcmo);
+                        clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to=" + user.FCMToken, inputFcm);
+                        SMS.SendSms("تم رفع محضر", user.Phone);
+                        Utilities.SendMailToOnePerson(user.UserEmailId, "رفع المحضر", "تم رفع المحضر الخاص باللجنة");
+                        string apiUrlAlert = Utilities.BASE_URL + "/api/Committees";
+                        WebClient client4 = new WebClient();
+
+                        client4.Headers["Content-type"] = "application/json";
+                        client4.Encoding = Encoding.UTF8;
+
+                        Alert alert = new Alert()
+                        {
+                            Action_Id1 = Convert.ToInt32(ddlCommitteeSpecified.SelectedItem.Value),
+                            Message = "تم رفع محضر",
+                            Title = "رفع محضر",
+                            Action_Id2 = Convert.ToInt32(ViewState["MeetingId"]),
+                            CreatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                            Action_Type = 5,
+                            UserId = user.ID
 
 
 
-                    };
-                    string inputAlert = (new JavaScriptSerializer()).Serialize(alert);
-                    client4.UploadString(apiUrlAlert + "/PostAlert", inputAlert);
+                        };
+                        string inputAlert = (new JavaScriptSerializer()).Serialize(alert);
+                        client4.UploadString(apiUrlAlert + "/PostAlert", inputAlert);
+                    }
+                       
 
 
                 }
@@ -618,23 +625,27 @@ namespace Committee.Views.Forms
                             client4.UploadString(apiUrlAlert + "/PostAlert", inputAlert);
 
                             string apiUrlFcm2 = Utilities.BASE_URL + "/api/Fcm";
-                            WebClient clienfcm2 = new WebClient();
-                            clienfcm.Headers["Content-type"] = "application/json";
-                            clienfcm.Encoding = Encoding.UTF8;
-                            object UserFcmo2 = new
+                            if (ddlMeetingStatus.SelectedItem.Text == "تم رفع المحضر")
                             {
-                                Action_Id1 = ddlCommitteeSpecified.SelectedItem.Value,
-                                Body = "تم رفع محضر",
-                                Title = "رفع محضر",
-                                Action_Id2 = Convert.ToInt32(ViewState["MeetingId"]),
-                                CreatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                                Action_Type = "type_upload_minute"
+                                WebClient clienfcm2 = new WebClient();
+                                clienfcm.Headers["Content-type"] = "application/json";
+                                clienfcm.Encoding = Encoding.UTF8;
+                                object UserFcmo2 = new
+                                {
+                                    Action_Id1 = ddlCommitteeSpecified.SelectedItem.Value,
+                                    Body = "تم رفع محضر",
+                                    Title = "رفع محضر",
+                                    Action_Id2 = Convert.ToInt32(ViewState["MeetingId"]),
+                                    CreatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                                    Action_Type = "type_upload_minute"
 
-                            };
-                            string inputFcm2 = (new JavaScriptSerializer()).Serialize(UserFcmo);
-                            clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to=" + user.FCMToken, inputFcm);
-                           SMS.SendSms("تم رفع محضرالاجتماع", user.Phone);
-                            Utilities.SendMailToOnePerson(user.UserEmailId, "محضر للاجتماع", "تم رفع محضرالاجتماع");
+                                };
+                                string inputFcm2 = (new JavaScriptSerializer()).Serialize(UserFcmo);
+                                clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to=" + user.FCMToken, inputFcm);
+                                SMS.SendSms("تم رفع محضرالاجتماع", user.Phone);
+                                Utilities.SendMailToOnePerson(user.UserEmailId, "محضر للاجتماع", "تم رفع محضرالاجتماع");
+                            }
+                           
 
                         }
                     }

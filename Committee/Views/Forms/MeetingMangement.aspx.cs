@@ -30,6 +30,14 @@ namespace Committee.Views.Forms
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم تعديل بيانات الاجتماع بنجاح', 'تم')", true);
 
                 }
+                if (Session["SystemRole"].ToString() == "5")
+                {
+                    btnaddMeeting.Visible = false;
+                }
+                else
+                {
+                    btnaddMeeting.Visible = true;
+                }
                 LoadMeetings();
                 gvMeeting.DataSource = ShowMeetings();
                 gvMeeting.DataBind();

@@ -168,6 +168,15 @@ namespace Committee.Views.Forms
         protected global::System.Web.UI.WebControls.TextBox txtWorkSide;
 
         /// <summary>
+        /// divRole control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divRole;
+
+        /// <summary>
         /// ddlMemberType control.
         /// </summary>
         /// <remarks>

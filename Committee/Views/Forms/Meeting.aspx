@@ -136,16 +136,17 @@ body
 
 								</div>
 							</div>
-                          <asp:HiddenField ID="txtmeetingTimeHiddenfField" runat="server" />
                         <div class="form-group">
                           
 								<label for="field-1" class="col-sm-3 control-label">وقت الاجتماع :</label>
                             <div  class="col-sm-5">
-                            <div class="input-group clockpicker" data-placement="left" data-align="top" data-autoclose="true">
-    <input type="text" class="form-control" value="13:14">
-    <span class="input-group-addon">
+                            <div class="input-group clockpicker  data-placement="left" data-align="top" data-autoclose="true" >
+                      <span class="input-group-addon">
         <span class="glyphicon glyphicon-time"></span>
-    </span>
+    </span>   <asp:TextBox ID="txtMeetingTime" runat="server" ValidationGroup="a"  class="form-control col-sm-5" > </asp:TextBox>
+                                                          <asp:HiddenField ID="txtmeetingTimeHiddenfField" runat="server" />
+
+   
 </div>
                             </div>
 							</div>
@@ -444,7 +445,7 @@ body
                 <SortedDescendingCellStyle BackColor="#CAC9C9" />
                 <SortedDescendingHeaderStyle BackColor="#383838" />
                    <Columns>
-        <asp:BoundField DataField="User.UserName" HeaderText="الإسم" />
+        <asp:BoundField DataField="User.Name" HeaderText="الإسم" />
         <asp:BoundField DataField="MemberWillAttend" HeaderText="حالة الحضور"  />
         <asp:BoundField DataField="IsMemberAcceptedMiutesOfCommittee" HeaderText="قبول المحضر"  />
         <asp:BoundField DataField="RejectionReason" HeaderText="سبب الرفض " />
@@ -591,7 +592,7 @@ body
                });
             $('#<%= RequiredFieldValidator4.ClientID %>').hide();
             $('.clockpicker').clockpicker()
-                .find('input').change(function () {
+                .find('#txtMeetingTime').change(function () {
                     debugger;
                     $('#<%= txtmeetingTimeHiddenfField.ClientID %>').val(this.value)
 

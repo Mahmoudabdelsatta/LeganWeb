@@ -132,7 +132,7 @@
                   <asp:TextBox ID="txtWorkSide" runat="server" TextMode="MultiLine"  CssClass="form-control" ></asp:TextBox>
 								</div>
 							</div>
-                            	<div class="form-group">
+                            	<div class="form-group" id="divRole" runat="server" visible="false" >
 								<label class="col-sm-3 control-label">دور العضو :</label>
 								
 								<div class="col-sm-5">
@@ -155,8 +155,8 @@
                             <asp:ListItem Value="1">مدير نظام</asp:ListItem>
                             <asp:ListItem Value="2">سكرتير نظام</asp:ListItem>
                             <asp:ListItem Value="3">مستخدم</asp:ListItem>
-<asp:ListItem Value="4">مدير إدارة</asp:ListItem>
-                                         <asp:ListItem Value="5">مدير عام</asp:ListItem>
+<asp:ListItem Value="4">سكرتير إداره</asp:ListItem>
+                                         <asp:ListItem Value="5">مدير إداره</asp:ListItem>
                         </asp:DropDownList>
                      
               

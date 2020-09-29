@@ -31,7 +31,15 @@ namespace Committee.Views.Forms
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "toastr_message", "toastr.success('تم تعديل بيانات العضو بنجاح', 'تم')", true);
 
                 }
-                Loadmembers();
+                if (Session["SystemRole"].ToString() == "5")
+                {
+                    btnaddMember.Visible = false;
+                }
+                else
+                {
+                    btnaddMember.Visible = true;
+                }
+                    Loadmembers();
                 int deptId = Convert.ToInt32(Session["DeptId"]);
                 if (Session["SystemRole"].ToString()=="1")
                 {
