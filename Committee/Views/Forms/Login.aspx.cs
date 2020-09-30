@@ -23,12 +23,14 @@ namespace Committee.Forms
         {
             try
             {
-                bool validate = WebApiConsume.login(Utilities.BASE_URL+"/api/Users", txtuserName.Text, txtPass.Text, out string UserName, out int? SystemRole,out string DepartmentId);
+                bool validate = WebApiConsume.login(Utilities.BASE_URL+"/api/Users", txtuserName.Text, txtPass.Text, out string UserName,out string LoginName, out int? SystemRole,out string DepartmentId);
            
             if (validate)
                 {
                     Session["SystemRole"] = SystemRole;
                     Session["UserName"] = UserName;
+                    Session["Name"] = LoginName;
+
                     Session["DeptId"] = DepartmentId;
                     Response.Redirect("Dashboard.aspx");
             }

@@ -39,10 +39,14 @@ namespace Committee.Views.Forms
                 if (Session["SystemRole"].ToString() == "5")
                 {
                     btnaddNewCommittee.Visible = false;
+                    LinkButton1.Visible = false;
+
                 }
                 else
                 {
                     btnaddNewCommittee.Visible = true;
+                                        LinkButton1.Visible = true;
+
                 }
                 LoadCommittees();
              gvCommittee.DataSource= WebApiConsume.ShowCommittees(txtCommitteeName.Text.Trim().ToLower(), deptId);
@@ -92,10 +96,13 @@ namespace Committee.Views.Forms
                 editButton.Text = "تعديل";
                selectButton.Text = "اختيار";
                 btnaddNewCommittee.Visible = false;
+                LinkButton1.Visible = false;
+
             }
             else
             {
                 btnaddNewCommittee.Visible = true;
+                LinkButton1.Visible = true;
 
                 deleteButton.Visible = true;
                 editButton.Visible = true;
@@ -235,8 +242,8 @@ namespace Committee.Views.Forms
                         result = result.OrderByDescending(r => r.سكرتير_اللجنه).ToList();
                     if ("تاريخ_اللجنه" == e.SortExpression)
                         result = result.OrderByDescending(r => r.تاريخ_اللجنه).ToList();
-                    if ("حال_اللجنه" == e.SortExpression)
-                        result = result.OrderByDescending(r => r.حال_اللجنه).ToList();
+                    if ("حالة_اللجنه" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.حالة_اللجنه).ToList();
                     if ("مستوى_الأهميه" == e.SortExpression)
                         result = result.OrderByDescending(r => r.مستوى_الأهميه).ToList();
                     if ("تصنيف_اللجنه" == e.SortExpression)
@@ -259,8 +266,8 @@ namespace Committee.Views.Forms
                         result = result.OrderBy(r => r.سكرتير_اللجنه).ToList();
                     if ("تاريخ_اللجنه" == e.SortExpression)
                         result = result.OrderBy(r => r.تاريخ_اللجنه).ToList();
-                    if ("حال_اللجنه" == e.SortExpression)
-                        result = result.OrderBy(r => r.حال_اللجنه).ToList();
+                    if ("حالة_اللجنه" == e.SortExpression)
+                        result = result.OrderBy(r => r.حالة_اللجنه).ToList();
                     if ("مستوى_الأهميه" == e.SortExpression)
                         result = result.OrderBy(r => r.مستوى_الأهميه).ToList();
                     if ("تصنيف_اللجنه" == e.SortExpression)

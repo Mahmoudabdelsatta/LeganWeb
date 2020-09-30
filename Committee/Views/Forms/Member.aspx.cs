@@ -527,11 +527,11 @@ namespace Committee.Views.Forms
                     الاسم = member.Name,
                     اسم_المستخدم = member.UserName,
                     البريد_اللإلكترونى = member.UserEmailId,
-                    التليفون = member.Phone,
+                    رقم_الجوال = member.Phone,
                     العنوان = member.Address,
                     //النوع = member.Gender,
                     الوظيفه = member.Title,
-                    الدور = member.SystemRoleMap.titleAr,
+                    الصلاحيات = member.SystemRoleMap.titleAr,
                     جهة_العمل = member.WorkSide,
                     //الادارة = member?.Department?.DeptName
                 });

@@ -33,10 +33,15 @@ namespace Committee.Views.Forms
                 if (Session["SystemRole"].ToString() == "5")
                 {
                     btnaddMeeting.Visible = false;
+                    LinkButton1.Visible = false;
+
+                    
                 }
                 else
                 {
                     btnaddMeeting.Visible = true;
+                    LinkButton1.Visible = true;
+
                 }
                 LoadMeetings();
                 gvMeeting.DataSource = ShowMeetings();
@@ -166,11 +171,15 @@ namespace Committee.Views.Forms
                     editButton.Visible = false;
                     deleteButton.Visible = false;
                     btnaddMeeting.Visible = false;
+                    LinkButton1.Visible = false;
+
 
 
                 }
                 else
                 {
+                    LinkButton1.Visible = true;
+
                     selectButton.Visible = true;
                     selectButton.ForeColor = System.Drawing.Color.Blue;
                     selectButton.BorderColor = System.Drawing.Color.White;

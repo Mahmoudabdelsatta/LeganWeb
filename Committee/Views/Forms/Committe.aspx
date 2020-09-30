@@ -116,7 +116,7 @@
 								</div>
 							</div>
                                   <div class="form-group">
-								<label class="col-sm-3 control-label">حال اللجنة : </label>
+								<label class="col-sm-3 control-label">حالة اللجنة : </label>
 								
 								<div class="col-sm-5">
 									 <asp:DropDownList Style="text-align: right" ID="ddlcommitteeStatus" runat="server" CssClass="form-control">

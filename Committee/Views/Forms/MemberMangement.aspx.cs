@@ -34,9 +34,11 @@ namespace Committee.Views.Forms
                 if (Session["SystemRole"].ToString() == "5")
                 {
                     btnaddMember.Visible = false;
+                    LinkButton1.Visible = false;
                 }
                 else
                 {
+                    btnaddMember.Visible = true;
                     btnaddMember.Visible = true;
                 }
                     Loadmembers();
@@ -141,13 +143,13 @@ namespace Committee.Views.Forms
                     الاسم = member.Name,
                     اسم_المستخدم = member.UserName,
                     البريد_اللإلكترونى = member.UserEmailId,
-                    التليفون = member.Phone,
+                    رقم_الجوال = member.Phone,
                     العنوان = member.Address,
                   //  النوع = member.Gender,
                     الوظيفه = member.Title,
-                    الدور = member.SystemRoleMap.titleAr,
+                    الصلاحيات = member.SystemRoleMap.titleAr,
                     جهة_العمل = member.WorkSide,
-                  الادارة = member?.Department?.DeptName
+                  
                 });
             }
             return users;
@@ -171,13 +173,12 @@ namespace Committee.Views.Forms
                     الاسم = member.Name,
                     اسم_المستخدم = member.UserName,
                     البريد_اللإلكترونى = member.UserEmailId,
-                    التليفون = member.Phone,
+                    رقم_الجوال = member.Phone,
                     العنوان = member.Address,
                    // النوع = member.Gender,
                     الوظيفه = member.Title,
-                    الدور = member.SystemRoleMap.titleAr,
+                    الصلاحيات = member.SystemRoleMap.titleAr,
                     جهة_العمل = member.WorkSide,
-                    الادارة = member?.Department?.DeptName
                 });
             }
             return users;
@@ -213,25 +214,24 @@ namespace Committee.Views.Forms
                 if (ViewState["sort"].ToString() == "Asc")
                 {
                     if ("الرقم" == e.SortExpression)
-                        result = result.OrderByDescending(r => r.الرقم).ToList();
+                        result = result.OrderByDescending(r => r.رقم_الجوال).ToList();
                     if ("الاسم" == e.SortExpression)
                         result = result.OrderByDescending(r => r.الاسم).ToList();
-                    if ("التليفون" == e.SortExpression)
-                        result = result.OrderByDescending(r => r.التليفون).ToList();
+                    if ("رقم_الجوال" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.رقم_الجوال).ToList();
                     if ("العنوان" == e.SortExpression)
                         result = result.OrderByDescending(r => r.العنوان).ToList();
                     if ("الوظيفه" == e.SortExpression)
                         result = result.OrderByDescending(r => r.الوظيفه).ToList();
-                    if ("الدور" == e.SortExpression)
-                        result = result.OrderByDescending(r => r.الدور).ToList();
+                    if ("الصلاحيات" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.الصلاحيات).ToList();
                     if ("البريد_اللإلكترونى" == e.SortExpression)
                         result = result.OrderByDescending(r => r.البريد_اللإلكترونى).ToList();
                     if ("اسم_المستخدم" == e.SortExpression)
                         result = result.OrderByDescending(r => r.اسم_المستخدم).ToList();
                     if ("جهة_العمل" == e.SortExpression)
                         result = result.OrderByDescending(r => r.جهة_العمل).ToList();
-                    if ("النوع" == e.SortExpression)
-                        result = result.OrderByDescending(r => r.النوع).ToList();
+                   
                     //if ("الادارة" == e.SortExpression)
                     //    result = result.OrderByDescending(r => r.الادارة).ToList();
                    
@@ -246,22 +246,20 @@ namespace Committee.Views.Forms
                         result = result.OrderBy(r => r.الرقم).ToList();
                     if ("الاسم" == e.SortExpression)
                         result = result.OrderBy(r => r.الاسم).ToList();
-                    if ("التليفون" == e.SortExpression)
-                        result = result.OrderBy(r => r.التليفون).ToList();
+                    if ("رقم_الجوال" == e.SortExpression)
+                        result = result.OrderBy(r => r.رقم_الجوال).ToList();
                     if ("العنوان" == e.SortExpression)
                         result = result.OrderBy(r => r.العنوان).ToList();
                     if ("الوظيفه" == e.SortExpression)
                         result = result.OrderBy(r => r.الوظيفه).ToList();
-                    if ("الدور" == e.SortExpression)
-                        result = result.OrderBy(r => r.الدور).ToList();
+                    if ("الصلاحيات" == e.SortExpression)
+                        result = result.OrderBy(r => r.الصلاحيات).ToList();
                     if ("البريد_اللإلكترونى" == e.SortExpression)
                         result = result.OrderBy(r => r.البريد_اللإلكترونى).ToList();
                     if ("اسم_المستخدم" == e.SortExpression)
                         result = result.OrderBy(r => r.اسم_المستخدم).ToList();
                     if ("جهة_العمل" == e.SortExpression)
                         result = result.OrderBy(r => r.جهة_العمل).ToList();
-                    if ("النوع" == e.SortExpression)
-                        result = result.OrderBy(r => r.النوع).ToList();
                     ////if ("الادارة" == e.SortExpression)
                     ////    result = result.OrderBy(r => r.الادارة).ToList();
 
@@ -319,6 +317,7 @@ namespace Committee.Views.Forms
                     deleteButton.Visible = false;
                     editButton.Visible = false;
                     btnaddMember.Visible = false;
+                    LinkButton1.Visible = false;
 
                 }
                 else

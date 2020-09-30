@@ -23,7 +23,7 @@ namespace Committee.Views.Forms
             }
             if (!IsPostBack)
             {
-                lblUserName2.Text = Session["UserName"].ToString();
+                lblUserName2.Text = Session["Name"].ToString();
                 lblDate.Text = DateTime.Now.ToString("dd dddd , MMMM, yyyy", new CultureInfo("ar-AE"));
                 GetMemeberCount();
                 GetCommitteeCount();

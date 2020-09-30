@@ -12,7 +12,7 @@ namespace Committee
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            lblUserName.Text = Session["UserName"].ToString();
+            lblUserName.Text = Session["Name"].ToString();
             if (Session["SystemRole"].ToString()=="1")
             {
                 spanCommitees.Visible = false;

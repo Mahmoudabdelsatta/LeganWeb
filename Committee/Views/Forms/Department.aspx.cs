@@ -282,8 +282,8 @@ namespace Committee.Views.Forms
                         result = result.OrderByDescending(r => r.سكرتير_اللجنه).ToList();
                     if ("تاريخ_اللجنه" == e.SortExpression)
                         result = result.OrderByDescending(r => r.تاريخ_اللجنه).ToList();
-                    if ("حال_اللجنه" == e.SortExpression)
-                        result = result.OrderByDescending(r => r.حال_اللجنه).ToList();
+                    if ("حالة_اللجنه" == e.SortExpression)
+                        result = result.OrderByDescending(r => r.حالة_اللجنه).ToList();
                     if ("مستوى_الأهميه" == e.SortExpression)
                         result = result.OrderByDescending(r => r.مستوى_الأهميه).ToList();
                     if ("تصنيف_اللجنه" == e.SortExpression)
@@ -306,8 +306,8 @@ namespace Committee.Views.Forms
                         result = result.OrderBy(r => r.سكرتير_اللجنه).ToList();
                     if ("تاريخ_اللجنه" == e.SortExpression)
                         result = result.OrderBy(r => r.تاريخ_اللجنه).ToList();
-                    if ("حال_اللجنه" == e.SortExpression)
-                        result = result.OrderBy(r => r.حال_اللجنه).ToList();
+                    if ("حالة_اللجنه" == e.SortExpression)
+                        result = result.OrderBy(r => r.حالة_اللجنه).ToList();
                     if ("مستوى_الأهميه" == e.SortExpression)
                         result = result.OrderBy(r => r.مستوى_الأهميه).ToList();
                     if ("تصنيف_اللجنه" == e.SortExpression)
@@ -359,7 +359,7 @@ namespace Committee.Views.Forms
                     //الأمر_المستند_عليه = committee.CommitteeBasedOn,
                     الإداره = committee?.Department?.DeptName,
                     تصنيف_اللجنه = committee.Type.titleAr,
-                    حال_اللجنه = committee.Activity.titleAr,
+                    حالة_اللجنه = committee.Activity.titleAr,
                     مستوى_الأهميه = committee.Importance.titleAr,
                     رئيس_اللجنه = userman?.UserName,
                     سكرتير_اللجنه = userssec?.UserName,

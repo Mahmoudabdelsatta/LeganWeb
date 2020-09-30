@@ -133,7 +133,7 @@
 								</div>
 							</div>
                             	<div class="form-group" id="divRole" runat="server" visible="false" >
-								<label class="col-sm-3 control-label">دور العضو :</label>
+								<label class="col-sm-3 control-label">الصلاحيات :</label>
 								
 								<div class="col-sm-5">
 									 <asp:DropDownList ID="ddlMemberType" runat="server" CssClass="form-control">
@@ -146,7 +146,7 @@
                          <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
                     <ContentTemplate>
                         <div class="form-group" id="divRoles" runat="server">
-								<label class="col-sm-3 control-label">الدور :</label>
+								<label class="col-sm-3 control-label">الصلاحيات :</label>
 								
 								<div class="col-sm-5">
                                     

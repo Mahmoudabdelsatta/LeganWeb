@@ -21,7 +21,7 @@ namespace Committee.Models
         //    public string سنة_القيد { get; set; }
         //public string تاريخ_اللإنشاء { get; set; }
         //public string تاريخ_التعديل { get; set; }
-        public string حال_اللجنه { get; set; }
+        public string حالة_اللجنه { get; set; }
         public string مستوى_الأهميه{ get; set; }
         public string تصنيف_اللجنه { get; set; }
         public string الإداره { get; set; }

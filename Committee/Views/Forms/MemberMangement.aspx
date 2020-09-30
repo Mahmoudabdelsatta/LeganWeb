@@ -5,7 +5,7 @@
     <div class="form-group">
 								<%--<label for="field-1" class="col-sm-3 control-label">حفظ :</label>--%>
         <div class="col-sm-3">
-							 <asp:TextBox ID="txtSearch" runat="server" placeholder="ابحث بإسم العضو أو رقم التليفون" CssClass="form-control"></asp:TextBox>
+							 <asp:TextBox ID="txtSearch" runat="server" placeholder="ابحث بإسم العضو أو رقم الجوال" CssClass="form-control"></asp:TextBox>
             </div>
 								<div class="col-sm-3">
                                     <asp:Button ID="btnSearch" Font-Size="Medium" runat="server" Text="بحث"  CssClass="btn btn-success" OnClick="btnSearch_Click"/>

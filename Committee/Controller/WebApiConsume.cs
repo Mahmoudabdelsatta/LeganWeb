@@ -11,7 +11,7 @@ namespace Committee.Controller
 {
     public class WebApiConsume
     {
-        public static bool login(string url, string UserName, string Password, out string Name, out int? SystemRole, out string DepartmentId)
+        public static bool login(string url, string UserName, string Password, out string Name, out string LoginName, out int? SystemRole, out string DepartmentId)
         {
 
             Password = Encryptor.MD5Hash(Password);
@@ -31,6 +31,7 @@ namespace Committee.Controller
             Committee.Models.User user = (new JavaScriptSerializer()).Deserialize<Committee.Models.User>(client.DownloadString(apiUrlUser + "/GetUser?userName=" + UserName.ToLower() + "&password=" + Password.Trim().ToLower()));
 
             Name = user?.UserName;
+            LoginName = user?.Name;
             SystemRole = user == null ? SystemRole = 0: user.SystemRole;
             DepartmentId = user?.ManagerOfDepartment;
             return validate;
@@ -112,10 +113,10 @@ namespace Committee.Controller
                     //الأمر_المستند_عليه = committee.CommitteeBasedOn,
                     الإداره = committee?.Department?.DeptName,
                     تصنيف_اللجنه = committee.Type.titleAr,
-                    حال_اللجنه = committee.Activity.titleAr,
+                    حالة_اللجنه = committee.Activity.titleAr,
                     مستوى_الأهميه = committee.Importance.titleAr,
-                    رئيس_اللجنه = userman?.UserName,
-                    سكرتير_اللجنه = userssec?.UserName,
+                    رئيس_اللجنه = userman?.Name,
+                    سكرتير_اللجنه = userssec?.Name,
                     //جهة_الوارد = committee.CommitteeInbox1,
                     //رقم_القيد = committee.CommitteeEnrollmentNumber,
                     //سنة_القيد = committee.CommitteeEnrollmentDate,
@@ -148,7 +149,7 @@ namespace Committee.Controller
                     //الأمر_المستند_عليه = committee.CommitteeBasedOn,
                     الإداره = committee?.Department?.DeptName,
                     تصنيف_اللجنه = committee.Type.titleAr,
-                    حال_اللجنه = committee.Activity.titleAr,
+                    حالة_اللجنه = committee.Activity.titleAr,
                     مستوى_الأهميه = committee.Importance.titleAr,
                     رئيس_اللجنه = committee.CommitteeManager,
                     سكرتير_اللجنه = committee.CommitteeSecretary,
@@ -211,7 +212,7 @@ namespace Committee.Controller
                 CommitteesMember committeesMember = (new JavaScriptSerializer()).Deserialize<CommitteesMember>(client.DownloadString(apiUrl3 + "/GetMemberDataFromCommitteeMember?committeeId=" + committeeId + "&userId="+user.ID));
                 string roleName  = (new JavaScriptSerializer()).Deserialize<string>(client.DownloadString(apiUrl3 + "/GetRoleName?committeeRole=" + committeesMember?.CommitteeRole));
 
-                userGrids.Add(new UserGrid() { رقم_العضو = committeesMember.User.ID, اسم_العضو = committeesMember?.User?.Name, رقم_التليقون = committeesMember?.User?.Phone, البريد_الالكترونى = committeesMember?.User?.UserEmailId, جهة_العمل = committeesMember?.User?.WorkSide, الدور = roleName });
+                userGrids.Add(new UserGrid() { رقم_العضو = committeesMember.User.ID, اسم_العضو = committeesMember?.User?.Name, رقم_الجوال = committeesMember?.User?.Phone, البريد_الالكترونى = committeesMember?.User?.UserEmailId, جهة_العمل = committeesMember?.User?.WorkSide, الدور = roleName });
             }
 
 
@@ -229,7 +230,7 @@ namespace Committee.Controller
 
            Committee.Models.User user = (new JavaScriptSerializer()).Deserialize<User>(client.DownloadString(apiUrl3 + "/GetMemberForGrid?userId=" + userId));
 
-            UserGrid.Add(new UserGrid() { رقم_العضو = user.ID, اسم_العضو = user.UserName, رقم_التليقون = user.Phone, البريد_الالكترونى = user.UserEmailId, جهة_العمل = user.WorkSide,الدور="عضو"});
+            UserGrid.Add(new UserGrid() { رقم_العضو = user.ID, اسم_العضو = user.Name, رقم_الجوال = user.Phone, البريد_الالكترونى = user.UserEmailId, جهة_العمل = user.WorkSide,الدور="عضو"});
             return UserGrid ;
 
         }
