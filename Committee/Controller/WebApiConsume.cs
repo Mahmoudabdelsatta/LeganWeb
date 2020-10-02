@@ -33,6 +33,10 @@ namespace Committee.Controller
             Name = user?.UserName;
             LoginName = user?.Name;
             SystemRole = user == null ? SystemRole = 0: user.SystemRole;
+            if (SystemRole==6)
+            {
+                validate = false;
+            }
             DepartmentId = user?.ManagerOfDepartment;
             return validate;
         }

@@ -111,7 +111,8 @@ namespace Committee.Views.Forms
                     }
                     else
                     {
-                        ddlMemberRole.SelectedValue = "6";
+                        // ddlMemberRole.SelectedValue = "6";
+                        ddlMemberRole.SelectedValue = user?.SystemRole.ToString();
                         ddlMemberRole.Enabled = false;
                     }
                 }
@@ -237,7 +238,7 @@ namespace Committee.Views.Forms
                         Title = txtMemberJob.Text,
                         SecrtaryOfDept = ddlmangerForDept?.SelectedItem?.Value,
                         WorkSide = txtWorkSide.Text,
-                        SystemRole = 4,
+                        SystemRole =Convert.ToInt32(ddlMemberType?.SelectedItem?.Value),
                         UserName = txtuserNameOfManager.Text,
                         UserPassword = Encryptor.MD5Hash(txtPasswordOfManager.Text),
                         Address = txtAddress.Text,

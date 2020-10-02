@@ -382,7 +382,7 @@ namespace Committee.Views.Forms
                 }
                 if (base64String == null)
                 {
-                    base64String = Session["meetingMinute"].ToString();
+                    base64String = Session["meetingMinute"]?.ToString();
                 }
                 else
                 {
@@ -491,7 +491,7 @@ namespace Committee.Views.Forms
 
                 }
 
-                filenamepdf = Session["meetingMinute"].ToString();
+                filenamepdf = Session["meetingMinute"]?.ToString();
                 shpwPdf.Visible = true;
                 Response.Redirect("MeetingMangement.aspx?id=redirectUpdate");
             }

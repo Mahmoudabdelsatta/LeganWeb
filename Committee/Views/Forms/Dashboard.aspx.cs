@@ -129,27 +129,32 @@ namespace Committee.Views.Forms
         }
 
         [WebMethod]
-        public static List<object> GetDepartmentsOfEachCommittee()
+        public static object GetDepartmentsOfEachCommittee()
         {
-            List<DepartmentCommittees> departmentCommittees = new List<DepartmentCommittees>();
-            List<object> chartData = new List<object>();
             string apiUrl3 = Utilities.BASE_URL+"/api/Chart";
+            List<object> chartData = new List<object>();
             var DeptId = HttpContext.Current.Session["DeptId"];
 
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
 
-            List <DepartmentCommittees> Charts = (new JavaScriptSerializer()).Deserialize<List<DepartmentCommittees>>(client.DownloadString(apiUrl3 + "/GetDepartmentsOfEachCommittee?deptId=" + DeptId));
+        List< DepartmentCommittees> Charts = (new JavaScriptSerializer()).Deserialize<List<DepartmentCommittees>>(client.DownloadString(apiUrl3 + "/GetDepartmentsOfEachCommittee?deptId=" + DeptId));
 
-            foreach (var chart in Charts)
+            if (DeptId==null)
             {
-             
-                chartData.Add(new object[] {chart.DeptName, chart.CommitteesCount });
+                foreach (var Chart in Charts)
+                {
+                    chartData.Add(new object[] { Chart.DeptName, Chart.CommitteesCount });
+
+
+                }
+            }
+            else
+            {
+                chartData.Add(new object[] { Charts[0].DeptName, Charts[0].CommitteesCount });
 
             }
-
-
 
             return chartData;
         }
