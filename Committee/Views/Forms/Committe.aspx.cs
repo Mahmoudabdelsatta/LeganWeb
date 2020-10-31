@@ -649,7 +649,15 @@ namespace Committee.Views.Forms
                     string apiUrlFcm = Utilities.BASE_URL + "/api/Fcm";
                     WebApiConsume.SendUserNotification(apiUrlFcm, Convert.ToInt32(ViewState["CommitteeId"]), txtCommitteeName.Text, userFcm.FCMToken);
                     SMS.SendSms("انت عضو فى لجنة " + "\n" + txtCommitteeName.Text + " المشكلة بتاريخ   " + "\n" + txtCommitteeDate.Text,userFcm.Phone);
-                  //  Utilities.SendMailToOnePerson(userFcm.UserEmailId, "انضمام للجنة", "تم اضافتك للجنة بنجاح");
+
+                    foreach (GridViewRow row in gvMembersOfCommittee.Rows)
+                    {
+                        string mobile = row.Cells[3].Text;
+                        SMS.SendSms("تم اضافة عضو للجنة " + "\n" + txtCommitteeName.Text + " المشكلة بتاريخ   " + "\n" + txtCommitteeDate.Text, mobile);
+
+
+                    }
+                    //  Utilities.SendMailToOnePerson(userFcm.UserEmailId, "انضمام للجنة", "تم اضافتك للجنة بنجاح");
                     ScriptManager.RegisterClientScriptBlock(this.Page, this.Page.GetType(), "تم", "alert('تم اضافة العضو لللجنة بنجاح');", true);
                 }
                 catch (Exception ex)

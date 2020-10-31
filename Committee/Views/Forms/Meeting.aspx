@@ -14,7 +14,8 @@
     line-height: 1.42857143;
     vertical-align: top;
     border-top: 1px solid #ebebeb;
-    text-align: left;
+    text-align: right;
+
  }
 body
 {
@@ -564,6 +565,7 @@ body
                                 width: 500
                             }]
                         };
+
                         pdfMake.createPdf(docDefinition).download("صور الاجتماع.pdf");
                     }
                 });
@@ -579,7 +581,7 @@ body
             }
 
             $('#<%= txtMeetingDate.ClientID %>').calendarsPicker({
-                calendar: $.calendars.instance('islamic', 'ar'),
+                calendar: $.calendars.instance('ummalqura', 'ar'),
                 monthsToShow: [1, 1],
                 showOtherMonths: true,
                 onClose: function () {
@@ -702,10 +704,10 @@ body
 
                long = e.latLng.lng();
                lat = e.latLng.lat();
-
                document.getElementById('<%= lat.ClientID %>').value = lat;
                document.getElementById('<%= lng.ClientID %>').value = long;
-
+               alert("تم اختيار الاحداثيات ")
+               
    <%--             var geocoder;
 geocoder = new google.maps.Geocoder();
 var latlng = new google.maps.LatLng(lat, long);

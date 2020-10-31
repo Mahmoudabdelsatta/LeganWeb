@@ -47,7 +47,8 @@ namespace Committee.Views.Forms
                     lblgvStatus.Text = "حالات الاجتماع";
                     gvStatus.Visible = true;
                     gvAgenda.Visible = true;
-                    addAgenda.Visible = false;
+                   
+
                     lblAddMeeting.Text = "تعديل اجتماع";
                     lblAddMeetingh2.Text = "تعديل اجتماع";
                     List<Committee.Models.StatusSearch> histories = new List<Models.StatusSearch>();
@@ -81,7 +82,16 @@ namespace Committee.Views.Forms
                     gvAgenda.DataSource = data.Where(x => x != null).ToList();
 
                     gvAgenda.DataBind();
+                    if (gvAgenda.Rows.Count==0)
+                    {
+                        addAgenda.Visible = true;
 
+                    }
+                    else
+                    {
+                        addAgenda.Visible = false;
+
+                    }
                     string result2 = client.DownloadString(Utilities.BASE_URL + "/api/Meetings/GetMeetingHistory?meetingId=" + Convert.ToInt32(ViewState["MeetingId"]));
                     List<Committee.Models.MeetingHistory> Statuss = (new JavaScriptSerializer()).Deserialize<List<Committee.Models.MeetingHistory>>(result2);
                     foreach (var status in Statuss)
@@ -493,6 +503,30 @@ namespace Committee.Views.Forms
 
                 filenamepdf = Session["meetingMinute"]?.ToString();
                 shpwPdf.Visible = true;
+                for (int i = 0; i < Agendas.Count; i++)
+                {
+                    string apiUrlAgenda = Utilities.BASE_URL + "/api/Meetings";
+                    Committee.Models.Agendum agenda = new Models.Agendum()
+                    {
+
+                        AgendaDesc = ViewState["agendaDesc"].ToString(),
+                        // AgendaTime = Agendas[0].AgendaTime,
+                        MeetingId = Convert.ToInt32(ViewState["MeetingId"]),
+                        CreatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+
+
+                        // AgendaDescription = txtMeetingAgenda.Text,
+                        //MinutesOfMeeting = file.ToString()
+
+                    };
+                    WebClient client2 = new WebClient();
+                    client2.Headers["Content-type"] = "application/json";
+                    client2.Encoding = Encoding.UTF8;
+                    string inputJson2 = (new JavaScriptSerializer()).Serialize(agenda);
+
+                    client2.UploadString(apiUrlUpdate + "/PostAgendaOfMeeting", inputJson2);
+                }
+                Agendas = new List<Models.Agendum>();
                 Response.Redirect("MeetingMangement.aspx?id=redirectUpdate");
             }
             else
@@ -921,9 +955,9 @@ namespace Committee.Views.Forms
 
                 if (e.Row.RowType != DataControlRowType.DataRow) return;
 
-                var deleteButton = (LinkButton)e.Row.Cells[0].Controls[2];
-                var editButton = (LinkButton)e.Row.Cells[0].Controls[0];
-                var selectButton = (LinkButton)e.Row.Cells[0].Controls[4];
+                var deleteButton = (LinkButton)e.Row.Cells[0]?.Controls[2];
+                var editButton = (LinkButton)e.Row.Cells[0]?.Controls[0];
+                var selectButton = (LinkButton)e?.Row?.Cells[0]?.Controls[4];
                 if (deleteButton.Text == "Delete")
                 {
                     deleteButton.Text = "مسح";

@@ -353,7 +353,7 @@
                }
               
                $('#<%= txtCommitteeDate.ClientID %>').calendarsPicker({
-                   calendar: $.calendars.instance('islamic', 'ar'),
+                   calendar: $.calendars.instance('ummalqura', 'ar'),
                    monthsToShow: [1, 1],
                    showOtherMonths: true,
                    onClose: function () {
