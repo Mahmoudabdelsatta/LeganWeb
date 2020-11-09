@@ -264,6 +264,7 @@ namespace Committee.Views.Forms
             }
             else
             {
+                divButtonExport.Visible = false;
                 lblmeetingmembers.Visible = true;
                 lblmeetingmembers.Text = "لا يوجد اعضاء";
             }
@@ -426,7 +427,7 @@ namespace Committee.Views.Forms
                     MeetingDate = txtMeetingDate.Text,
 
                     MeetingId = Convert.ToInt32(ViewState["MeetingId"]),
-                    CreatedAt = DateTime.Now.ToString("yyyy-MM-dd"),
+                    CreatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
 
 
 
@@ -472,7 +473,7 @@ namespace Committee.Views.Forms
                     {
                         string inputFcm = (new JavaScriptSerializer()).Serialize(UserFcmo);
                         clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to=" + user.FCMToken, inputFcm);
-                        SMS.SendSms("تم رفع محضر", user.Phone);
+                        SMS.SendSms("تم رفع محضر إجتماع" + "\n" + txtMeetingName.Text , user.Phone);
                         Utilities.SendMailToOnePerson(user.UserEmailId, "رفع المحضر", "تم رفع المحضر الخاص باللجنة");
                         string apiUrlAlert = Utilities.BASE_URL + "/api/Committees";
                         WebClient client4 = new WebClient();
@@ -632,7 +633,7 @@ namespace Committee.Views.Forms
                             };
                             string inputFcm = (new JavaScriptSerializer()).Serialize(UserFcmo);
                             clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to=" + user.FCMToken, inputFcm);
-                          SMS.SendSms("تم اضافتك للاجتماع",user.Phone);
+                          SMS.SendSms("تم اضافتك لإجتماع" + "\n" + txtMeetingName.Text+ "  بتاريخ " + "\n" + txtMeetingDate.Text, user.Phone);
                             Utilities.SendMailToOnePerson(user.UserEmailId, "انضمام للاجتماع", "تم اضافتك للاجتماع");
 
                             string apiUrlAlert = Utilities.BASE_URL + "/api/Committees";
@@ -676,7 +677,7 @@ namespace Committee.Views.Forms
                                 };
                                 string inputFcm2 = (new JavaScriptSerializer()).Serialize(UserFcmo);
                                 clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to=" + user.FCMToken, inputFcm);
-                                SMS.SendSms("تم رفع محضرالاجتماع", user.Phone);
+                                SMS.SendSms("تم رفع محضرإجتماع" + "\n" + txtMeetingName.Text, user.Phone);
                                 Utilities.SendMailToOnePerson(user.UserEmailId, "محضر للاجتماع", "تم رفع محضرالاجتماع");
                             }
                            
@@ -1265,7 +1266,7 @@ namespace Committee.Views.Forms
                 };
                 string inputFcm = (new JavaScriptSerializer()).Serialize(UserFcmo);
                 clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to=" + user.FCMToken, inputFcm);
-                SMS.SendSms("تم تعديل بيانات  اجندة الاجتماع", user.Phone);
+                SMS.SendSms("تم تعديل اجندة اجتماع"+ "\n" + txtMeetingName.Text, user.Phone);
                 Utilities.SendMailToOnePerson(user.UserEmailId, "اجندة الاجتماع", "تم تعديل بيانات اجندة الاجتماع");
 
                 string apiUrlAlert = Utilities.BASE_URL + "/api/Committees";
@@ -1302,10 +1303,11 @@ namespace Committee.Views.Forms
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            divagendaUpdate.Visible = false;
-            gvAgenda.SelectedIndex = -1;
-            gvAgenda.DataSource = ShowmeetingAgenda(Convert.ToInt32(ViewState["MeetingId"]));
-            gvAgenda.DataBind();
+            Response.Redirect("Meeting.aspx?meetingId="+ Convert.ToInt32(ViewState["MeetingId"]) + "&status=update");
+            //divagendaUpdate.Visible = false;
+            //gvAgenda.SelectedIndex = -1;
+            //gvAgenda.DataSource = ShowmeetingAgenda(Convert.ToInt32(ViewState["MeetingId"]));
+            //gvAgenda.DataBind();
 
         }
 

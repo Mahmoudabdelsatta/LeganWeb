@@ -1,6 +1,7 @@
 ﻿using Committee.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -13,7 +14,10 @@ namespace Committee.Controller
     {
         public static bool login(string url, string UserName, string Password, out string Name, out string LoginName, out int? SystemRole, out string DepartmentId)
         {
+            try
+            {
 
+        
             Password = Encryptor.MD5Hash(Password);
             string apiUrlUser = Utilities.BASE_URL + "/api/Users";
 
@@ -39,6 +43,29 @@ namespace Committee.Controller
             }
             DepartmentId = user?.ManagerOfDepartment;
             return validate;
+            }
+            catch (Exception ex)
+            {
+                string filePath = @Utilities.LogError_Path + "Error.txt";
+
+
+                using (StreamWriter writer = new StreamWriter(filePath, true))
+                {
+                    writer.WriteLine("-----------------------------------------------------------------------------");
+                    writer.WriteLine("Date : " + DateTime.Now.ToString());
+                    writer.WriteLine();
+
+                    while (ex != null)
+                    {
+                        writer.WriteLine(ex.GetType().FullName);
+                        writer.WriteLine("Message : " + ex.Message);
+                        writer.WriteLine("StackTrace : " + ex.StackTrace);
+
+                        ex = ex.InnerException;
+                    }
+                }
+                throw;
+            }
         }
         public static bool CheckAccessToken(string accessToken)
         {
@@ -360,7 +387,7 @@ namespace Committee.Controller
             return userFcm;
 
         }
-        public static void SendUserNotification(string url, int CommitteeId,string CommitteeName,string FcmToken)
+        public static void SendUserNotification( string url, int CommitteeId,string CommitteeName,string FcmToken)
         {
             try
             {
@@ -368,15 +395,18 @@ namespace Committee.Controller
                 WebClient clienfcm = new WebClient();
                 clienfcm.Headers["Content-type"] = "application/json";
                 clienfcm.Encoding = Encoding.UTF8;
-                object UserFcmo = new
-                {
-                    Action_Id1 = CommitteeId,
-                    Title = "اضافة عضو",
-                    Action_Id2 = 0,
-                    CreatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                    Action_Type = "type_join_committee",
-                    Body = "عضو جديد",
-                };
+
+                    object UserFcmo = new
+                    {
+                        Action_Id1 = CommitteeId,
+                        Title = "تم اضافتك للجنة جديده",
+                        Action_Id2 = 0,
+                        CreatedAt = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                        Action_Type = "type_join_committee",
+                        Body = "لجنة جديده",
+                    };
+                
+             
                 string inputFcm = (new JavaScriptSerializer()).Serialize(UserFcmo);
                 clienfcm.UploadString(apiUrlFcm + "/SendMessage?_to=" + FcmToken, inputFcm);
             }

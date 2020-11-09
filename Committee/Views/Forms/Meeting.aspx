@@ -461,7 +461,9 @@ body
                    </Columns>
             </asp:GridView>
 
+                 <div id="divButtonExport" runat="server">
                   <button id="btnExportPdf" style="font-size:medium" type="button" >استخراج على هيئة Pdf</button>
+                     </div>
                  <div>
 
                  </div>

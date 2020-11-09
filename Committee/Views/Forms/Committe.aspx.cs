@@ -427,10 +427,10 @@ namespace Committee.Views.Forms
                         
                         User userFcm = WebApiConsume.GetUserById(Utilities.BASE_URL+"/api/Users", member.MemberId);
                         WebApiConsume.SendUserNotification(Utilities.BASE_URL+"/api/Fcm", member.CommitteeId,txtCommitteeName.Text, userFcm.FCMToken);
-                          SMS.SendSms("تم إنشاء لجنة جديده ", userFcm.Phone);
+                        //  SMS.SendSms("تم إنشاء لجنة جديده : " + "\n" + txtCommitteeName.Text, userFcm.Phone);
                             if (userFcm.Phone!="" || userFcm.Phone!=null)
                         {
-                           SMS.SendSms(userFcm.Phone, "انت عضو فى لجنة " + "\n" + txtCommitteeName.Text + " المشكلة بتاريخ   " + "\n" +txtCommitteeDate.Text );
+                           SMS.SendSms("تم إنشاء لجنه " + "\n" + txtCommitteeName.Text + " المشكلة بتاريخ   " + "\n" + txtCommitteeDate.Text ,userFcm.Phone);
                               //  Utilities.SendMailToOnePerson(userFcm.UserEmailId, "انضمام للجنة", "تم اضافتك للجنة بنجاح");
 
                             }
