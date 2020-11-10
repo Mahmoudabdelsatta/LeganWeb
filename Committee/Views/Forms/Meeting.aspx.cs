@@ -321,8 +321,9 @@ namespace Committee.Views.Forms
             WebClient client = new WebClient();
             client.Headers["Content-type"] = "application/json";
             client.Encoding = Encoding.UTF8;
-
-            List<Committee.Models.MeetingUploadImage> meetings = (new JavaScriptSerializer()).Deserialize<List<MeetingUploadImage>>(client.DownloadString(apiUrl3 + "/GetMeetingImageForWeb?meetingId=" + meetingId));
+            var JsonSerializer = new JavaScriptSerializer();
+            JsonSerializer.MaxJsonLength = Int32.MaxValue;
+            List<Committee.Models.MeetingUploadImage> meetings = (JsonSerializer).Deserialize<List<MeetingUploadImage>>(client.DownloadString(apiUrl3 + "/GetMeetingImageForWeb?meetingId=" + meetingId));
             if (meetings.Count != 0)
             {
                 lblMeetingImg.Visible = true;
